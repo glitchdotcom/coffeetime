@@ -43,12 +43,14 @@ function userPairKey(userA, userB) {
 
 function pairUsers(users, pastMatches) {
   const pastMatchesSet = new Set(pastMatches.flat());
+  
+  const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
+  const matches = []; // this will become a new entry in pastMatches
+  
+  const shuffledUsers = shuffle(users); // we are biased towards early users, so keep it fair
+  
+  // who has been added to a group and shouldn't be considered for new groups
   const matchedUsersSet = new Set();
-  
-  const pairs = [];
-  const matches = {};
-  
-  const shuffledUsers = shuffle(users);
   
   for (const user of shuffledUsers) {
     if (matchedUsersSet.has(user)) continue;
@@ -56,31 +58,29 @@ function pairUsers(users, pastMatches) {
     // find the first person in the list that we can match with and isn't matched with anybody else
     let match = null;
     for (const potentialUser of shuffledUsers) {
-      const key = userPairKey(user, potentialUser);
       if (potentialUser === user) continue;
-      if (matchedUsers.has(potentialUser)) continue;
-      if (pastMatchesSet.has(key)) continue;
-      if (matches[userPairKey(user, potentialUser)]) continue;
+      if (matchedUsersSet.has(potentialUser)) continue;
+      if (pastMatchesSet.has(userPairKey(user, potentialUser))) continue;
       match = potentialUser;
       break;
     }
     
     if (match !== null) {
       // we did find a match
-      matches[userPairKey(user, match)] = true;
+      matches.push(userPairKey(user, match));
       pairs.push([user, match]);
-      matchedUsers.add(user);
-      matchedUsers.add(match);
+      matchedUsersSet.add(user);
+      matchedUsersSet.add(match);
       
-    } else if (matchedUsers.size === users.length - 1) {
+    } else if (matchedUsersSet.size === users.length - 1) {
       // we couldn't find anyone because we are the only unmatched person
       // pick a random group to stick them in
       const pair = pairs[Math.floor(Math.random() * pairs.length)];
       for (const otherUser of pair) {
-        matches[userPairKey(user, otherUser)] = true;
+        matches.push(userPairKey(user, otherUser));
       }
       pair.push(user);
-      matchedUsers.add(user);
+      matchedUsersSet.add(user);
       
     } else {
       // we couldn't find anyone, remove the oldest history entry and try again
