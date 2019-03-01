@@ -18,15 +18,6 @@ const dataFormat = {
   pastMatches: [],
 };
 
-function loadData() {
-  const data = fs.readFileSync('coffee.json').toString('utf8');
-  return { ...dataFormat, ...JSON.parse(data) };
-}
-
-function saveData() {
-  
-}
-
 function userPairKey(userA, userB) {
   if (userB < userA) {
     return `${userB}-${userA}`;
@@ -84,3 +75,24 @@ function pairUsers(users, pastMatches) {
   return {pairs, pastMatches: [...pastMatches, matches]};
 }
 
+function loadData() {
+  try {
+    const data = fs.readFileSync('coffee.json').toString('utf8');
+    return { ...dataFormat, ...JSON.parse(data) };
+  } catch (error) {
+    console.warn(error);
+    return dataFormat;
+  }
+}
+
+function saveData(data) {
+  fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
+}
+
+let testUsers = Array.from(new Array(30), (x, i) => i);
+let testPastMatches = [];
+for (let i = 0; i < 25; ++i) {
+  const { pairs, pastMatches } = pairUsers(testUsers, testPastMatches);
+  console.log(pairs.toString());
+  testPastMatches = pastMatches;
+}

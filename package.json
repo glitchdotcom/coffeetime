@@ -7,6 +7,7 @@
     "start": "node bot.js"
   },
   "dependencies": {
+    "array-shuffle": "^1.0.1",
     "body-parser": "^1.18.3",
     "botkit": "^0.7.3",
     "botkit-storage-mongo": "^1.0.7",
