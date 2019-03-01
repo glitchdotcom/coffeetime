@@ -26,7 +26,7 @@ function userPairKey(userA, userB) {
 }
 
 function pairUsers(users, pastMatches) {
-  const pastMatchesSet = new Set(pastMatches.flat());
+  const pastMatchesSet = new Set([].concat(...pastMatches));
   
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
   const matches = []; // this will become a new entry in pastMatches
@@ -89,10 +89,10 @@ function saveData(data) {
   fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
 }
 
-let testUsers = Array.from(new Array(30), (x, i) => i);
+let testUsers = [0,1,2,3,4,5,6,7,8,9];
 let testPastMatches = [];
-for (let i = 0; i < 25; ++i) {
+for (let i = 0; i < 10; ++i) {
   const { pairs, pastMatches } = pairUsers(testUsers, testPastMatches);
-  console.log(pairs.toString());
+  console.log(JSON.stringify(pairs), pastMatches.length);
   testPastMatches = pastMatches;
 }
