@@ -3,16 +3,6 @@
 const fs = require('fs');
 const shuffle = require('array-shuffle');
 
-function loadData(datastore) {
-  const json = datastore.get('coffee');
-  return JSON.parse(json);
-}
-
-function saveData(datastore, data) {
-  const json = JSON.stringify(data);
-  datastore.set('coffee', json);
-}
-
 const baseUser = {
   slackId: null,
   managerSlackId: null,
@@ -21,17 +11,21 @@ const baseUser = {
 
 const dataFormat = {
   // the full list of user ids
-  users: ['id'],
+  users: [],
   // extra data about each user
-  userData: {
-    id: {...baseUser},
-  },
-  // a list of every user pair from the previous weeks
-  pastMatches: [
-    // store weeks separately so we can drop the oldest week
-    ['idA-idB'],
-  ],
+  userData: {},
+  // tracks past matches by week
+  pastMatches: [],
 };
+
+function loadData() {
+  const data = fs.readFileSync('coffee.json').toString('utf8');
+  return { ...dataFormat, ...JSON.parse(data) };
+}
+
+function saveData() {
+  
+}
 
 function userPairKey(userA, userB) {
   if (userB < userA) {
@@ -40,14 +34,13 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-
 function pairUsers(users, pastMatches) {
   const pastMatchesSet = new Set(pastMatches.flat());
   
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
   const matches = []; // this will become a new entry in pastMatches
   
-  const shuffledUsers = shuffle(users); // we are biased towards early users, so keep it fair
+  const shuffledUsers = shuffle(users); // we are biased against the last user
   
   // who has been added to a group and shouldn't be considered for new groups
   const matchedUsersSet = new Set();
@@ -91,4 +84,3 @@ function pairUsers(users, pastMatches) {
   return {pairs, pastMatches: [...pastMatches, matches]};
 }
 
-module.exports = {pairUsers};
