@@ -20,13 +20,17 @@ const baseUser = {
 };
 
 const dataFormat = {
-  users: ['slackId'],
+  // the full list of user ids
+  users: ['id'],
+  // extra data about each user
   userData: {
-    slackId: {...baseUser},
+    id: {...baseUser},
   },
-  pastMatches: [{
-    'slackIdA-slackIdB': false,
-  }],
+  // a list of every user pair from the previous weeks
+  pastMatches: [
+    // store weeks separately so we can drop the oldest week
+    ['idA-idB'],
+  ],
 };
 
 function userPairKey(userA, userB) {
@@ -38,22 +42,24 @@ function userPairKey(userA, userB) {
 
 
 function pairUsers(users, pastMatches) {
-  const combinedMatches = Object.assign({}, ...pastMatches);
+  const pastMatchesSet = new Set(pastMatches.flat());
+  const matchedUsersSet = new Set();
+  
   const pairs = [];
   const matches = {};
   
   const shuffledUsers = shuffle(users);
-  const matchedUsers = new Set();
   
   for (const user of shuffledUsers) {
-    if (matchedUsers.has(user)) continue;
+    if (matchedUsersSet.has(user)) continue;
     
     // find the first person in the list that we can match with and isn't matched with anybody else
     let match = null;
     for (const potentialUser of shuffledUsers) {
+      const key = userPairKey(user, potentialUser);
       if (potentialUser === user) continue;
       if (matchedUsers.has(potentialUser)) continue;
-      if (combinedMatches[userPairKey(user, potentialUser)]) continue;
+      if (pastMatchesSet.has(key)) continue;
       if (matches[userPairKey(user, potentialUser)]) continue;
       match = potentialUser;
       break;
