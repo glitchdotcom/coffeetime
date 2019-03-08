@@ -12,12 +12,13 @@ const baseUser = {
 const dataFormat = {
   // the full list of user ids
   users: [],
-  // extra data about each user
+  // extra data about each user like who their managers are and interests
   userData: {},
   // tracks past matches by week
   pastMatches: [],
 };
 
+// This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
   if (userB < userA) {
     return `${userB}-${userA}`;
@@ -42,17 +43,24 @@ function pairUsers(users, pastMatches) {
     // find the first person in the list that we can match with and isn't matched with anybody else
     let match = null;
     for (const potentialUser of shuffledUsers) {
+      // don't match people with themselves
       if (potentialUser === user) continue;
+      // if the matched users set already has this user, don't match
       if (matchedUsersSet.has(potentialUser)) continue;
+      // if they were paired in the recorded past, don't match
       if (pastMatchesSet.has(userPairKey(user, potentialUser))) continue;
+      // ok looks like we can make a match since we checked those things
       match = potentialUser;
       break;
     }
     
     if (match !== null) {
       // we did find a match
+      // put the match we just made in matches
       matches.push(userPairKey(user, match));
+      // we put the pair we just made in pairs
       pairs.push([user, match]);
+      // we record that we matched the user and their match already so we don't match them again this cycle
       matchedUsersSet.add(user);
       matchedUsersSet.add(match);
       
