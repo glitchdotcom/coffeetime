@@ -112,8 +112,8 @@ for (let i = 0; i < 10; ++i) {
 //  console.log(typeof pairs);
   //pairs is an array
   
-  console.log(pairs);
- // console.dir(pastMatches);
+  //console.log(pairs);
+  console.dir(pastMatches);
 
 
 
