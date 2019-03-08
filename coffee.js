@@ -68,14 +68,19 @@ function pairUsers(users, pastMatches) {
       // we couldn't find anyone because we are the only unmatched person
       // pick a random group to stick them in
       const pair = pairs[Math.floor(Math.random() * pairs.length)];
+      // so match each one of the randomly selected pair with this sad solo user
       for (const otherUser of pair) {
         matches.push(userPairKey(user, otherUser));
       }
+      // put the sad solo user in the pair
       pair.push(user);
+      // record that the sad solo user is now paired and not sad
       matchedUsersSet.add(user);
       
     } else {
       // we couldn't find anyone, remove the oldest history entry and try again
+      // if you already was paired with everyone in the company
+      // allow you to start pairing with people you've paired with in the past
       return pairUsers(users, pastMatches.splice(1));
     }
   }
