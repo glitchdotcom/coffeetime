@@ -102,10 +102,20 @@ function saveData(data) {
   fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
 }
 
-let testUsers = [0,1,2,3,4,5,6,7,8,9];
+let testUsers = [0,1,2,3,4,5,6,7,8,9, 11];
 let testPastMatches = [];
 for (let i = 0; i < 10; ++i) {
+ 
   const { pairs, pastMatches } = pairUsers(testUsers, testPastMatches);
-  console.log(JSON.stringify(pairs), pastMatches.length);
+ // console.log(JSON.stringify(pairs), pastMatches.length);
+ // console.log(typeof pastMatches);
+//  console.log(typeof pairs);
+  //pairs is an array
+  
+  console.log(pairs);
+ // console.dir(pastMatches);
+
+
+
   testPastMatches = pastMatches;
 }
