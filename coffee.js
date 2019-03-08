@@ -104,6 +104,26 @@ function saveData(data) {
 
 let testUsers = [0,1,2,3,4,5,6,7,8,9, 11];
 let testPastMatches = [];
+let testData = {
+	"pastMatches": [
+		[
+			[1, 3],
+			[4, 5]
+		],
+		[
+			[4, 3],
+			[3, 4]
+		]
+	],
+	"currentMatches": [
+		[3, 3],
+		[4, 5],
+		[5, 5]
+
+	]
+}
+
+
 for (let i = 0; i < 10; ++i) {
  
   const { pairs, pastMatches } = pairUsers(testUsers, testPastMatches);
@@ -113,9 +133,18 @@ for (let i = 0; i < 10; ++i) {
   //pairs is an array
   
   //console.log(pairs);
-  console.dir(pastMatches);
-
 
 
   testPastMatches = pastMatches;
+  const pastMatchesSettest = new Set([].concat(...testPastMatches));
+  console.log(pastMatchesSettest)
+
 }
+
+
+  testData["pastMatches"].push(testPastMatches);
+//console.log(testData);
+
+testData["pastMatches"].forEach(function(pair){
+//console.log(pair);
+})
