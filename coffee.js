@@ -81,7 +81,7 @@ function pairUsers(users, pastMatches) {
   return { pairs, pastMatches: [...pastMatches, matches] };
 }
 
-function formatData(data){
+function dataFormat(data){
   const { userData } = data;
   const userLIst = []
   data.forEach(function(user) {

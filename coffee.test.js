@@ -7,8 +7,18 @@ const data = JSON.parse(jsonData);
 
 
 test('coffee time should pair everyone', () => {
-   var { userData } = data;
+  const users = [1, 2, 3, 4]
+  const coffeepairs = coffee.pairUsers(users, '');
+  console.log(coffeepairs);
+    console.log(coffeepairs.pairs);
 
- var { pastMatches } = data;
-  expect(coffee.pairUsers(userData, pastMatches)).toEqual(3);
+const pairs = coffeepairs.pairs;
+var flattened = pairs.reduce(
+  function(accumulator, currentValue) {
+    return accumulator.concat(currentValue);
+  },
+  []
+);
+  expect(flattened).toEqual(expect.arrayContaining(users))
+
 });
