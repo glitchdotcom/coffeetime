@@ -9,15 +9,6 @@ const baseUser = {
   interests: ''
 };
 
-const dataFormat = {
-  // the full list of user ids
-  users: [],
-  // extra data about each user like who their managers are and interests
-  userData: {},
-  // tracks past matches by week
-  pastMatches: [],
-};
-
 // This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
   if (userB < userA) {

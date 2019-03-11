@@ -4,5 +4,8 @@ const coffee = require('./coffee');
 const data = fs.readFileSync('coffee.json').toString('utf8')
 
 test('coffee time should pair everyone', () => {
-  expect(coffee.pairUsers(data)).toBe(3);
+  
+ var { pastMatches } = data;
+  console.log(pastMatches); 
+  expect(coffee.pairUsers(data.pastMatches)).toBe(3);
 });
