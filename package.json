@@ -20,10 +20,12 @@
     "node-env-file": "^0.1.8",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
-    "wordfilter": "^0.2.6",
-    "jest": "^23.6.0"
+    "wordfilter": "^0.2.6" 
+  
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^23.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/howdyai/botkit-starter-slack.git"
