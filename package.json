@@ -5,7 +5,8 @@
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js",
-    "testthing": "node coffee.js"
+    "testthing": "node coffee.js",
+    "test": "jest"
   },
   "dependencies": {
     "array-shuffle": "^1.0.1",
@@ -19,7 +20,8 @@
     "node-env-file": "^0.1.8",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
-    "wordfilter": "^0.2.6"
+    "wordfilter": "^0.2.6",
+    "jest": "^23.6.0"
   },
   "devDependencies": {},
   "repository": {
