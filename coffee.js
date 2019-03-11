@@ -6,7 +6,7 @@ const shuffle = require('array-shuffle');
 const baseUser = {
   slackId: null,
   managerSlackId: null,
-  interests: ''
+  interests: '',
 };
 
 // This function formats the pair generated and outputs a string with the pair
@@ -17,20 +17,24 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
+
+
 function pairUsers(users, pastMatches) {
+
+
   const pastMatchesSet = new Set([].concat(...pastMatches));
-  
+
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
   const matches = []; // this will become a new entry in pastMatches
-  
+
   const shuffledUsers = shuffle(users); // we are biased against the last user
-  
+
   // who has been added to a group and shouldn't be considered for new groups
   const matchedUsersSet = new Set();
-  
+
   for (const user of shuffledUsers) {
     if (matchedUsersSet.has(user)) continue;
-    
+
     // find the first person in the list that we can match with and isn't matched with anybody else
     let match = null;
     for (const potentialUser of shuffledUsers) {
@@ -44,7 +48,7 @@ function pairUsers(users, pastMatches) {
       match = potentialUser;
       break;
     }
-    
+
     if (match !== null) {
       // we did find a match
       // put the match we just made in matches
@@ -54,7 +58,6 @@ function pairUsers(users, pastMatches) {
       // we record that we matched the user and their match already so we don't match them again this cycle
       matchedUsersSet.add(user);
       matchedUsersSet.add(match);
-      
     } else if (matchedUsersSet.size === users.length - 1) {
       // we couldn't find anyone because we are the only unmatched person
       // pick a random group to stick them in
@@ -67,7 +70,6 @@ function pairUsers(users, pastMatches) {
       pair.push(user);
       // record that the sad solo user is now paired and not sad
       matchedUsersSet.add(user);
-      
     } else {
       // we couldn't find anyone, remove the oldest history entry and try again
       // if you already was paired with everyone in the company
@@ -75,9 +77,19 @@ function pairUsers(users, pastMatches) {
       return pairUsers(users, pastMatches.splice(1));
     }
   }
-  
-  return {pairs, pastMatches: [...pastMatches, matches]};
+
+  return { pairs, pastMatches: [...pastMatches, matches] };
 }
+
+function formatData(data){
+  const { userData } = data;
+  const userLIst = []
+  data.forEach(function(user) {
+    userLIst.push(user.id);
+  });
+
+}
+
 
 function loadData() {
   try {
@@ -93,11 +105,6 @@ function saveData(data) {
   fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
 }
 
-
-
-
-
 module.exports = {
-  pairUsers
-  
+  pairUsers,
 };
