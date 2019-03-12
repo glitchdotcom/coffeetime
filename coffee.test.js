@@ -89,15 +89,15 @@ test('coffee time should remove past pair if it has run out of possible new pair
   const users = [1,2,3,4,5,6]
   // I think this is all possibly matches???
   const past = ['1-2','1-3','1-4','1-5','1-6','2-3','2-4','2-5','2-6','3-4','3-5','3-6','4-5','4-6','5-6']
+  // create some new pairs
   const coffeepairs = coffee.pairUsers(users, past);
-  // ok our new pairs should also be the past ones
-  const convertedPast = numberArray(past);
-  console.log(convertedPast);
+  // convert our past pairs into an array of numbers
+ const pastArrays = past.map((x) => {
+    console.log(x)
+    return x.split('-').map(Number);
+  })
+  
   const pairs = coffeepairs.pairs;
-  pairs.forEach(function(pair) {
-    console.log(pair);
-    expect(convertedPast).toEqual(pair);
-  });
 
 });
 
