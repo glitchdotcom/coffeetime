@@ -4,15 +4,15 @@ const coffee = require('./coffee');
 const jsonData = fs.readFileSync('coffee.json').toString('utf8');
 const data = JSON.parse(jsonData);
 
-function 
+function createFakeUsers(){
+  const randomNumber = Math.floor(Math.random() * (54 - 4) ) + 4;
+  return Array.from({length: randomNumber}, (v, i) => i + 1);
+}
 
 
 test('coffee time should pair everyone', () => {
-  const users = [1, 2, 3, 4];
+  const users = createFakeUsers();
   const coffeepairs = coffee.pairUsers(users, '');
-  console.log(coffeepairs);
-  console.log(coffeepairs.pairs);
-
   const pairs = coffeepairs.pairs;
   var flattened = pairs.reduce(function(accumulator, currentValue) {
     return accumulator.concat(currentValue);
@@ -22,8 +22,13 @@ test('coffee time should pair everyone', () => {
 
 
 test('coffee time should not pair anyone with themseleves', () => {
-  const users = [1, 2, 3, 4];
-  const coffeepairs = coffee.pairUsers(users, '');
+  const users = createFakeUsers;
+    const coffeepairs = coffee.pairUsers(users, '');
+  const pairs = coffeepairs.pairs;
+  pairs.forEach(function(pair) {
+    
+});
 
+  
 
 });
