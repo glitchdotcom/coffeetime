@@ -67,7 +67,7 @@ test('coffee time should not pair people it has already paired unless it has to'
 
 
 test('createUserList should make a simple array of user IDs out of the data in the JSON', () => {
-  
-  expect(coffee.loadData).toEqual(0);
-
+  const jsonUsers = {"userData": [{"id": 1, "name": "Melissa", "slackid": 0}, {"id": 2, "name": "Lyzi", "slackid": 0}, {"id": 3, "name": "Sean", "slackid": 0}, {"id": 4, "name": "Potch", "slackid": 0}]};
+  const userList = [1, 2, 3, 4];
+  expect(coffee.createUserList(jsonUsers)).toEqual(userList);
 });
