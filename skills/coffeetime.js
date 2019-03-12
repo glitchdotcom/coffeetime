@@ -38,8 +38,10 @@ module.exports = function(controller) {
       // https://github.com/howdyai/botkit/issues/89
       // https://api.slack.com/methods/im.open
       convo.activate();
-
-      // sendAssignments(pairs)
+      
+      // @TODO generate and send the messages! Write copy (include triplets!), and iterate
+      // through people and send them messages.
+      // sendAssignments(bot, pairs).catch(...)
       
     });
   });
@@ -77,13 +79,4 @@ module.exports = function(controller) {
 };
 
 
-// let's throttle some requests
-//https://gist.github.com/daliborgogic/7ee40bcff586ae08b33bf929172d61e8
-const timeout = ms => new Promise(res => setTimeout(res, ms));
-const timeoutValue = 1000;
-function convinceMe(convince) {
-  let unixTime = Math.round(+new Date() / 1000);
-  console.log(`Delay ${convince} at ${unixTime}`);
-}
 
-//    await timeout(timeoutValue);
