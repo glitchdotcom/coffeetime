@@ -4,25 +4,25 @@
   "userData": [
     {
       "id": 1,
-      "slackid": 0,
+      "slackId": 0,
       "name": "Melissa"
     },
 
     {
       "id": 2,
-      "slackid": 0,
+      "slackId": 0,
       "name": "Lyzi"
     },
 
     {
       "id": 3,
-      "slackid": 0,
+      "slackId": 0,
       "name": "Sean"
     },
 
     {
       "id": 4,
-      "slackid": 0,
+      "slackId": 0,
       "name": "Potch"
     }
   ],

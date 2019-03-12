@@ -98,11 +98,9 @@ function createUserList(data){
 function loadData() {
   try {
     const data = fs.readFileSync('coffee.json').toString('utf8');
-    // hmm I wasn't sure what dataFormat was supposed to do
-    // commenting out for now
     // return { ...dataFormat, ...JSON.parse(data) };
+    // @TODO dataFormat will create a basic file with the right structure Backlog
     return { ...JSON.parse(data) };
-
   } catch (error) {
     console.warn(error);
   }
@@ -123,10 +121,27 @@ function runCoffeeTime(){
 }
 
 function addUser(user) {
-  let user
+  const data = loadData();
+  let userRecord = {
+    slackId: user.id,
+    id: data.largestId++,
+    name: user.real_name
+  };
+  console.log('adding', userRecord);
+  data.userData.push(userRecord);
+  saveData(data);
 }
 
-function removeUser(userId) {
+function removeUser(slackId) {
+  const data = loadData();
+  for (let i = 0; i < data.userData.length; i++) {
+    let user = data.userData[i];
+    if (user.slackId = slackId) {
+      data.userData.splice(i, 1);
+      break;
+    }
+  }
+  saveData(data);
 }
 
 module.exports = {
