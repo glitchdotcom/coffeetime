@@ -83,9 +83,9 @@ function pairUsers(users, pastMatches) {
 
 function dataFormat(data){
   const { userData } = data;
-  const userLIst = []
+  const userList = []
   data.forEach(function(user) {
-    userLIst.push(user.id);
+    userList.push(user.id);
   });
 
 }
@@ -107,4 +107,6 @@ function saveData(data) {
 
 module.exports = {
   pairUsers,
+  dataFormat,
+  loadData
 };

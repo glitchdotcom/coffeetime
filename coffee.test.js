@@ -1,9 +1,6 @@
 const fs = require('fs');
 const coffee = require('./coffee');
 
-const jsonData = fs.readFileSync('coffee.json').toString('utf8');
-const data = JSON.parse(jsonData);
-
 function createFakeUsers() {
   const randomNumber = Math.floor(Math.random() * (54 - 4)) + 4;
   return Array.from({ length: randomNumber }, (v, i) => i + 1);
@@ -52,19 +49,29 @@ function numberArray(stringArray) {
 }
 
 test('coffee time should not pair people it has already paired unless it has to', () => {
-  const users = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
-  const past = [ '6-14', '1-12', '5-10', '2-4', '8-11', '3-13', '7-9' ];
-  
-  //let's turn into an array of arrays
-  const converted = numberArray(converted);
+  const users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+  const past = ['6-14', '1-12', '5-10', '2-4', '8-11', '3-13', '7-9'];
+
+
   // let's pair again
   const coffeepairs = coffee.pairUsers(users, past);
-    const pairs = coffeepairs.pairs;
+  //let's turn our original past one into an array of arrays
+  const converted = numberArray(past);
+  const pairs = coffeepairs.pairs;
   pairs.forEach(function(pair) {
-    const uniques = pair.filter(function(value, index, self) {
-      return self.indexOf(value) === index;
+    let test = converted.filter((item) => {
+      return item.every((e) => pair.includes(e));
     });
-    expect(uniques).toEqual(pair);
+
+    expect(test.length).toEqual(0);
   });
+});
+
+
+test('coffee time should load data', () => {
+  const users = createFakeUsers();
+  const coffee = coffee.pairUsers(users, '');
+  const pairs = coffeepairs.pairs;
+  expect(test.length).toEqual(0);
 
 });
