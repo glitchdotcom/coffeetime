@@ -47,7 +47,7 @@ module.exports = function(controller) {
       //ok here is how to get user info
       // we'll need this to get everyone's name and slack ID
       bot.api.users.info({ user: message.event.user }, (error, response) => {
-        console.log(response.user);
+        // console.log(response.user);
         coffee.addUser(response.user);
       });
       //@TODO add them to coffeetime.json as subscribed BACKLOG
@@ -62,7 +62,7 @@ module.exports = function(controller) {
       //ok here is how to get user info
       // we'll need this to get everyone's name and slack ID
       bot.api.users.info({ user: message.event.user }, (error, response) => {
-        console.log(response.user);
+        // console.log(response.user);
         coffee.removeUser(response.user.id);
       });
       //@TODO add them to coffeetime.json as unsubscribed BACKLOG

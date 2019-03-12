@@ -93,7 +93,15 @@ function createUserList(data){
   return userList;
 
 }
-
+//@TODO handle errors backlog
+/*
+{
+  "pairs": [],
+  "userData": [],
+  "largestId": 0,
+  "pastMatches": []
+}
+*/
 
 function loadData() {
   try {
@@ -108,7 +116,11 @@ function loadData() {
 
 
 function saveData(data) {
-  fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
+  fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2), function (err) {
+    if (err) {
+      console.warn(err);
+    }
+  });
 }
 
 
@@ -116,12 +128,19 @@ function runCoffeeTime(){
   const data = loadData();
   const users = createUserList(data);
   const { pastMatches } = data;
-  const newData = pairUsers(users, pastMatches);
+  // copy overwrite new stuff to old one wow
+  const newData = Object.assign({}, data, pairUsers(users, pastMatches));
   saveData(newData);
 }
 
 function addUser(user) {
   const data = loadData();
+  for (let i = 0; i < data.userData.length; i++) {
+    let user = data.userData[i];
+    if (user.slackId = slackId) {
+      
+    }
+  }
   let userRecord = {
     slackId: user.id,
     id: data.largestId++,

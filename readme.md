@@ -12,6 +12,7 @@
  - MVP tasks in `skills/coffeetime.js`
  - test everything on our [test slack](https://glitchcoffeetime.slack.com/messages), making sure it is able to send messages to all the users - helping with this testing is a great task for newbies
  - install in the fog creek slack
+ - move json file to .data
  
 
 # Dev details
@@ -20,3 +21,4 @@
  - it has a lot of files from botkit we don't need and should clean up but right now all the actual code for the coffeetime bot conversations is in `skills/coffeetime.js`
  - the pairing code is in `coffee.js` (creates pairs)
  - there are some tests (needs improvement) you can run on the command line with `npm run test`
+ - when you save coffee `coffee.json` via the function in `coffee.js`  you need to run `refresh` to see the data
