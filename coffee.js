@@ -109,8 +109,6 @@ function loadData() {
 }
 
 
-
-
 function saveData(data) {
   fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
 }
@@ -124,10 +122,18 @@ function runCoffeeTime(){
   saveData(newData);
 }
 
+function addUser(user) {
+  let user
+}
+
+function removeUser(userId) {
+}
+
 module.exports = {
   pairUsers,
   createUserList,
   loadData,
-  runCoffeeTime
-
+  runCoffeeTime,
+  addUser,
+  removeUser
 };
