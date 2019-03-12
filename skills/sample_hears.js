@@ -31,7 +31,6 @@ module.exports = function(controller) {
     controller.hears(['^uptime','^debug'], 'direct_message,direct_mention', function(bot, message) {
 
         bot.createConversation(message, function(err, convo) {
-                  console.log(message);
 
             if (!err) {
                 convo.setVar('uptime', formatUptime(process.uptime()));
