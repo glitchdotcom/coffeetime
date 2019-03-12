@@ -92,12 +92,24 @@ test('coffee time should remove past pair if it has run out of possible new pair
   // create some new pairs
   const coffeepairs = coffee.pairUsers(users, past);
   // convert our past pairs into an array of numbers
- const pastArrays = past.map((x) => {
+ const  pastConverted = past.map((x) => {
     console.log(x)
     return x.split('-').map(Number);
   })
   
-  const pairs = coffeepairs.pairs;
+  const newPairs = coffeepairs.pairs;
+  
+    pastConverted.forEach(function(pastPair){
+    console.log(pastPair)
+    newPairs.forEach(function(newPair){
+      console.log("new pair start")
+      console.log(newPair.sort())
+            console.log("new pair end")
+
+      
+    })
+    
+  })
 
 });
 
