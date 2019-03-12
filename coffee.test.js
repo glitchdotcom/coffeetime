@@ -66,7 +66,8 @@ test('coffee time should not pair people it has already paired unless it has to'
 });
 
 
-test('coffee time should do stuff', () => {
-  expect(coffee.goCoffeeTime()).toEqual(0);
+test('createUserList should make a simple array of user IDs out of the data in the JSON', () => {
+  
+  expect(coffee.loadData).toEqual(0);
 
 });

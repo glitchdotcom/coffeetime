@@ -81,19 +81,16 @@ function pairUsers(users, pastMatches) {
   return { pairs, pastMatches: [...pastMatches, matches] };
 }
 
-function goCoffeeTime(){
-  const data = loadData();
+function createUserList(data){
+  // I did this so I could create users in json in the key-value format like BaseUser not have to also create a userList array with the Ids, we may not need this when subscribe is automated
   const { userData } = data;
-  const { pastMatches } = data;
 
   const userList = []
   userData.forEach(function(user) {
     userList.push(user.id);
   });
   
-  return pairUsers(userList, pastMatches)
-  
-  
+  return userList;
 
 }
 
@@ -111,11 +108,24 @@ function loadData() {
   }
 }
 
+
+
+
 function saveData(data) {
   fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2));
 }
 
+
+function runCoffeeTime(){
+  const data = loadData();
+  const users = createUserList(data);
+  const { pastMatches } = data;
+  return pairUsers(users, pastMatches)
+}
+
 module.exports = {
   pairUsers,
-  goCoffeeTime
+  createUserList,
+  loadData
+
 };
