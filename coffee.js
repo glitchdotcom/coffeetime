@@ -120,12 +120,14 @@ function runCoffeeTime(){
   const data = loadData();
   const users = createUserList(data);
   const { pastMatches } = data;
-  return pairUsers(users, pastMatches)
+  const newData = pairUsers(users, pastMatches);
+  saveData(newData);
 }
 
 module.exports = {
   pairUsers,
   createUserList,
-  loadData
+  loadData,
+  runCoffeeTime
 
 };

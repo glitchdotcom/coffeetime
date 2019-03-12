@@ -3,6 +3,7 @@
 The coffeetime bot code goes here
 
 */
+const coffee = require('../coffee');
 
 module.exports = function(controller) {
   
@@ -10,8 +11,11 @@ module.exports = function(controller) {
     bot.createConversation(message, function(err, convo) {
       //this is a temporary command to get a list of users from a slack 
       // @TODO run this and manually populate coffee.json MVP
+      // we'll test this on the coffeetime slack from this step to the coffeetime command before installing on the fogcreek one
       // @TODO remove this and automate subscribe process BACKLOG
-      convo.say('We just ran coffeetime');
+      
+      // @TODO return list of users via https://api.slack.com/methods/users.list bot.api.users.list
+      convo.say('Here is a user list');
       convo.activate();
 
     });
@@ -22,7 +26,17 @@ module.exports = function(controller) {
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
       //@TODO add them to coffeetime.json as subscribed
+      coffee.runCoffeeTime();
       convo.say('We just ran coffeetime');
+      //OK now we need to message all the users
+      const coffeeTimeData = coffee.loadData();
+      const { userData } = coffeeTimeData;
+      const { pairs } = coffeeTimeData;
+
+      // @TODO you'll need to go through the pairs and message each of the people with their pairing
+      // the message should tell them name of the person they are paired with
+      // I think bot.api.im.open will work
+      // https://github.com/howdyai/botkit/issues/89
       convo.activate();
 
     });
