@@ -10,8 +10,6 @@ test('coffee time should pair everyone', () => {
   const users = createFakeUsers();
   const coffeepairs = coffee.pairUsers(users, '');
   const pairs = coffeepairs.pairs;
-  console.log(users);
-  console.log(coffeepairs);
   var flattened = pairs.reduce(function(accumulator, currentValue) {
     return accumulator.concat(currentValue);
   }, []);
@@ -68,10 +66,7 @@ test('coffee time should not pair people it has already paired unless it has to'
 });
 
 
-test('coffee time should load data', () => {
-  const users = createFakeUsers();
-  const coffee = coffee.pairUsers(users, '');
-  const pairs = coffeepairs.pairs;
-  expect(test.length).toEqual(0);
+test('coffee time should do stuff', () => {
+  expect(coffee.goCoffeeTime()).toEqual(0);
 
 });

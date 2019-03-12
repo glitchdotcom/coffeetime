@@ -81,12 +81,19 @@ function pairUsers(users, pastMatches) {
   return { pairs, pastMatches: [...pastMatches, matches] };
 }
 
-function dataFormat(data){
+function goCoffeeTime(){
+  const data = loadData();
   const { userData } = data;
+  const { pastMatches } = data;
+
   const userList = []
-  data.forEach(function(user) {
+  userData.forEach(function(user) {
     userList.push(user.id);
   });
+  
+  return pairUsers(userList, pastMatches)
+  
+  
 
 }
 
@@ -94,10 +101,13 @@ function dataFormat(data){
 function loadData() {
   try {
     const data = fs.readFileSync('coffee.json').toString('utf8');
-    return { ...dataFormat, ...JSON.parse(data) };
+    // hmm I wasn't sure what dataFormat was supposed to do
+    // commenting out for now
+    // return { ...dataFormat, ...JSON.parse(data) };
+    return { ...JSON.parse(data) };
+
   } catch (error) {
     console.warn(error);
-    return dataFormat;
   }
 }
 
@@ -107,6 +117,5 @@ function saveData(data) {
 
 module.exports = {
   pairUsers,
-  dataFormat,
-  loadData
+  goCoffeeTime
 };
