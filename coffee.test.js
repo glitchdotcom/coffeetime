@@ -1,15 +1,22 @@
 const fs = require('fs');
 const coffee = require('./coffee');
 
-// 
-
+// @TODO refactor so they aren't slow, using mocking
+// some mocks
 function createFakeUsers() {
   const randomNumber = Math.floor(Math.random() * (54 - 4)) + 4;
   return Array.from({ length: randomNumber }, (v, i) => i + 1);
 }
 
-let fakeSlackUser = {
-  id: 'UGDNVTFDW',
+let blankStructure = {
+  "pairs": [],
+  "userData": [],
+  "largestId": 0,
+  "pastMatches": []
+};
+
+let mockSlackUser = {
+  id: 'slackuserID',
 
   team_id: 'TGEF6256E',
 
@@ -27,6 +34,25 @@ let fakeSlackUser = {
 
   tz_offset: -25200,
 };
+
+  const mockJsonUsers = {
+    userData: [
+      { id: 1, name: 'Melissa', slackId: 'something' },
+      { id: 2, name: 'Lyzi', slackId: 'dsafadsihew' },
+      { id: 3, name: 'Sean', slackId: 'meow33' },
+      { id: 4, name: 'Potch', slackId: 'slackuserID' },
+    ],
+  };
+
+  const mockJasonUsers2 = {
+    userData: [
+      { id: 1, name: 'Melissa', slackid: 'something' },
+      { id: 2, name: 'Lyzi', slackid: 'dsafadsihew' },
+      { id: 3, name: 'Sean', slackid: 'meow33' }
+    ],
+  };
+
+
 
 test('coffee time should pair everyone', () => {
   const users = createFakeUsers();
@@ -116,21 +142,29 @@ test('coffee time should use past pairings if it has run through every possible 
 /*test('coffee time should return full data structure', () => {
 });*/
 
-/*test('subscribe should add users', () => {
-});*/
+test('check for duplicates should return true is the user list already contains the user', () => {
+  
+    expect(coffee.checkForDuplicates(mockSlackUser, mockJsonUsers)).toBe(true);
+    expect(coffee.checkForDuplicates(mockSlackUser, mockJasonUsers2)).toBe(false);
+
+
+});
+
+test('add user to data should return the data with the new user', () => {
+  const newData = coffee.addUserToData(mockSlackUser, mockJasonUsers2);
+  
+  // now we can use check for duplicates to make sure it's in there :)
+  expect(coffee.checkForDuplicates(mockSlackUser, newData)).toBe(true);
+
+});
+
+
 
 /*test('subscribe should not add duplicate users', () => {
 });*/
 
 test('createUserList should make a simple array of user IDs out of the data in the JSON', () => {
-  const jsonUsers = {
-    userData: [
-      { id: 1, name: 'Melissa', slackid: 'something' },
-      { id: 2, name: 'Lyzi', slackid: 'dsafadsihew' },
-      { id: 3, name: 'Sean', slackid: 'meow33' },
-      { id: 4, name: 'Potch', slackid: '324234e' },
-    ],
-  };
+
   const userList = [1, 2, 3, 4];
-  expect(coffee.createUserList(jsonUsers)).toEqual(userList);
+  expect(coffee.createUserList(mockJsonUsers)).toEqual(userList);
 });

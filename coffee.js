@@ -151,6 +151,32 @@ function addUser(user) {
   saveData(data);
 }
 
+
+//@TODO use this in addUser since it's tested backlog
+function checkForDuplicates(user, data){
+  for (let i = 0; i < data.userData.length; i++) {
+    if (user.id === data.userData[i].slackId) {
+      console.warn(`not adding user ${user.id} twice!`);
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+//@TODO use this in addUser since it's tested backlog
+function addUserToData(user, data){
+  let userRecord = {
+    slackId: user.id,
+    id: data.largestId++,
+    name: user.real_name
+  };
+  console.log('adding', userRecord);
+  data.userData.push(userRecord);
+  return data;
+}
+
+
 function removeUser(slackId) {
   const data = loadData();
   for (let i = 0; i < data.userData.length; i++) {
@@ -169,5 +195,7 @@ module.exports = {
   loadData,
   runCoffeeTime,
   addUser,
-  removeUser
+  removeUser,
+  checkForDuplicates,
+  addUserToData
 };
