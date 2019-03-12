@@ -20,7 +20,7 @@ module.exports = function(controller) {
 
     });
   });
-  controller.hears(['^coffeetime'], 'direct_message,direct_mention', function(bot, message) {
+  controller.hears(['^coffeetimerun'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
       // @TODO limit to certain users MVP
