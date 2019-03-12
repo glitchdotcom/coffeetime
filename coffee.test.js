@@ -89,15 +89,15 @@ test('coffee time should use past pairings if it has run through every possible 
   const users = [1, 2, 3, 4, 5, 6];
   // I think this is all possibly matches???
   const past = ['1-2', '1-3', '1-4', '1-5', '1-6', '2-3', '2-4', '2-5', '2-6', '3-4', '3-5', '3-6', '4-5', '4-6', '5-6'];
-  console.log(past);  
   // convert our past pairs into an array of numbers
   const converted = past.map((x) => {
     return x.split('-').map(Number);
   });
   // create some new pairs
   const coffeepairs = coffee.pairUsers(users, past);
-  console.log(coffeepairs);
   const pairs = coffeepairs.pairs;
+  const pastMatchesNew = coffeepairs.pastMatches;
+
   pairs.forEach(function(pair) {
     let test = converted.filter((item) => {
       return item.every((e) => pair.includes(e));
@@ -105,6 +105,10 @@ test('coffee time should use past pairings if it has run through every possible 
 
     expect(test.length).toBeGreaterThan(0);
   });
+  //make sure past matches was also altered
+  const convertPastMatchesNew = numberArray(pastMatchesNew);
+  expect(convertPastMatchesNew.length).toBeLessThan(converted.length);
+
 });
 
 /*test('coffee time should return full data structure', () => {
