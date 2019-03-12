@@ -36,8 +36,11 @@ module.exports = function(controller) {
       // the message should tell them name of the person they are paired with
       // I think bot.api.im.open will work
       // https://github.com/howdyai/botkit/issues/89
+      // https://api.slack.com/methods/im.open
       convo.activate();
 
+      // sendAssignments(pairs)
+      
     });
   });
   
@@ -72,3 +75,15 @@ module.exports = function(controller) {
     });
   });
 };
+
+
+// let's throttle some requests
+//https://gist.github.com/daliborgogic/7ee40bcff586ae08b33bf929172d61e8
+const timeout = ms => new Promise(res => setTimeout(res, ms));
+const timeoutValue = 1000;
+function convinceMe(convince) {
+  let unixTime = Math.round(+new Date() / 1000);
+  console.log(`Delay ${convince} at ${unixTime}`);
+}
+
+//    await timeout(timeoutValue);

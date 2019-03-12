@@ -136,9 +136,9 @@ function runCoffeeTime(){
 function addUser(user) {
   const data = loadData();
   for (let i = 0; i < data.userData.length; i++) {
-    let user = data.userData[i];
-    if (user.slackId = slackId) {
-      
+    if (user.id === data.userData[i].slackId) {
+      console.warn(`not adding user ${user.id} twice!`);
+      return;
     }
   }
   let userRecord = {
@@ -155,7 +155,7 @@ function removeUser(slackId) {
   const data = loadData();
   for (let i = 0; i < data.userData.length; i++) {
     let user = data.userData[i];
-    if (user.slackId = slackId) {
+    if (user.slackId === slackId) {
       data.userData.splice(i, 1);
       break;
     }

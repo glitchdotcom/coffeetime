@@ -6,6 +6,26 @@ function createFakeUsers() {
   return Array.from({ length: randomNumber }, (v, i) => i + 1);
 }
 
+let fakeSlack = {
+  id: 'UGDNVTFDW',
+
+  team_id: 'TGEF6256E',
+
+  name: 'potch',
+
+  deleted: false,
+
+  color: '3c989f',
+
+  real_name: 'Potch',
+
+  tz: 'America/Los_Angeles',
+
+  tz_label: 'Pacific Daylight Time',
+
+  tz_offset: -25200,
+};
+
 test('coffee time should pair everyone', () => {
   const users = createFakeUsers();
   const coffeepairs = coffee.pairUsers(users, '');
@@ -50,7 +70,6 @@ test('coffee time should not pair people it has already paired unless it has to'
   const users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   const past = ['6-14', '1-12', '5-10', '2-4', '8-11', '3-13', '7-9'];
 
-
   // let's pair again
   const coffeepairs = coffee.pairUsers(users, past);
   //let's turn our original past one into an array of arrays
@@ -71,9 +90,21 @@ test('coffee time should not pair people it has already paired unless it has to'
 /*test('coffee time should return full data structure', () => {
 });*/
 
+/*test('subscribe should add users', () => {
+});*/
+
+/*test('subscribe should not add duplicate users', () => {
+});*/
 
 test('createUserList should make a simple array of user IDs out of the data in the JSON', () => {
-  const jsonUsers = {"userData": [{"id": 1, "name": "Melissa", "slackid": "something"}, {"id": 2, "name": "Lyzi", "slackid": "dsafadsihew"}, {"id": 3, "name": "Sean", "slackid": "meow33"}, {"id": 4, "name": "Potch", "slackid": "324234e"}]};
+  const jsonUsers = {
+    userData: [
+      { id: 1, name: 'Melissa', slackid: 'something' },
+      { id: 2, name: 'Lyzi', slackid: 'dsafadsihew' },
+      { id: 3, name: 'Sean', slackid: 'meow33' },
+      { id: 4, name: 'Potch', slackid: '324234e' },
+    ],
+  };
   const userList = [1, 2, 3, 4];
   expect(coffee.createUserList(jsonUsers)).toEqual(userList);
 });
