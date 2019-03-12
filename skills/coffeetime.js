@@ -50,7 +50,7 @@ module.exports = function(controller) {
         console.log(response.user);
       });
       //@TODO add them to coffeetime.json as subscribed BACKLOG
-      convo.say('Hi welcome to coffeetime');
+      convo.say('Hi! Welcome to coffeetime.');
       convo.activate();
 
     });
