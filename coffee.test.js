@@ -8,12 +8,6 @@ function createFakeUsers() {
   return Array.from({ length: randomNumber }, (v, i) => i + 1);
 }
 
-let blankStructure = {
-  "pairs": [],
-  "userData": [],
-  "largestId": 0,
-  "pastMatches": []
-};
 
 let mockSlackUser = {
   id: 'slackuserID',
