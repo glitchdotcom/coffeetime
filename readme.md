@@ -10,7 +10,7 @@
  
  Steps to release
  - MVP tasks in `skills/coffeetime.js`
- - test everything on our [test slack](https://glitchcoffeetime.slack.com/messages), making sure it is able to send messages to all the users
+ - test everything on our [test slack](https://glitchcoffeetime.slack.com/messages), making sure it is able to send messages to all the users - helping with this testing is a great task for newbies
  - install in the fog creek slack
  
 
