@@ -55,12 +55,13 @@ test('coffee time should not pair anyone with themseleves', () => {
   });
 });
 
-//this is a test function to see if the data from the stringy past pairs works the same
+//this is a test function to see if the data from the stringy past pairs works the same as an array of arrays
+// this turns an array of strings containing number hyphen number into an array of arrays containing the two numbers
 function numberArray(stringArray) {
   let flattened = stringArray.reduce(function(accumulator, currentValue) {
     return accumulator.concat(currentValue);
   }, []);
-
+  
   return flattened.map((x) => {
     return x.split('-').map(Number);
   });
@@ -91,11 +92,12 @@ test('coffee time should remove past pair if it has run out of possible new pair
   const coffeepairs = coffee.pairUsers(users, past);
   // ok our new pairs should also be the past ones
   const convertedPast = numberArray(past);
+  console.log(convertedPast);
   const pairs = coffeepairs.pairs;
-  var flattened = pairs.reduce(function(accumulator, currentValue) {
-    return accumulator.concat(currentValue);
-  }, []);
-  expect(convertedPast).toEqual(expect.arrayContaining(flattened));
+  pairs.forEach(function(pair) {
+    console.log(pair);
+    expect(convertedPast).toEqual(pair);
+  });
 
 });
 
