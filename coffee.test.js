@@ -61,7 +61,7 @@ function numberArray(stringArray) {
   let flattened = stringArray.reduce(function(accumulator, currentValue) {
     return accumulator.concat(currentValue);
   }, []);
-  
+
   return flattened.map((x) => {
     return x.split('-').map(Number);
   });
@@ -85,32 +85,26 @@ test('coffee time should not pair people it has already paired unless it has to'
   });
 });
 //@todo
-test('coffee time should remove past pair if it has run out of possible new pairs', () => {
-  const users = [1,2,3,4,5,6]
+test('coffee time should use past pairings if it has run through every possible pairing', () => {
+  const users = [1, 2, 3, 4, 5, 6];
   // I think this is all possibly matches???
-  const past = ['1-2','1-3','1-4','1-5','1-6','2-3','2-4','2-5','2-6','3-4','3-5','3-6','4-5','4-6','5-6']
+  const past = ['1-2', '1-3', '1-4', '1-5', '1-6', '2-3', '2-4', '2-5', '2-6', '3-4', '3-5', '3-6', '4-5', '4-6', '5-6'];
+  console.log(past);  
+  // convert our past pairs into an array of numbers
+  const converted = past.map((x) => {
+    return x.split('-').map(Number);
+  });
   // create some new pairs
   const coffeepairs = coffee.pairUsers(users, past);
-  // convert our past pairs into an array of numbers
- const  pastConverted = past.map((x) => {
-    console.log(x)
-    return x.split('-').map(Number);
-  })
-  
-  const newPairs = coffeepairs.pairs;
-  
-    pastConverted.forEach(function(pastPair){
-    console.log(pastPair)
-    newPairs.forEach(function(newPair){
-      console.log("new pair start")
-      console.log(newPair.sort())
-            console.log("new pair end")
+  console.log(coffeepairs);
+  const pairs = coffeepairs.pairs;
+  pairs.forEach(function(pair) {
+    let test = converted.filter((item) => {
+      return item.every((e) => pair.includes(e));
+    });
 
-      
-    })
-    
-  })
-
+    expect(test.length).toBeGreaterThan(0);
+  });
 });
 
 /*test('coffee time should return full data structure', () => {
