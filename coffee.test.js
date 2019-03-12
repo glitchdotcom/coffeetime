@@ -6,7 +6,7 @@ function createFakeUsers() {
   return Array.from({ length: randomNumber }, (v, i) => i + 1);
 }
 
-let fakeSlack = {
+let fakeSlackUser = {
   id: 'UGDNVTFDW',
 
   team_id: 'TGEF6256E',
@@ -84,8 +84,20 @@ test('coffee time should not pair people it has already paired unless it has to'
   });
 });
 //@todo
-/*test('coffee time should remove past pair if it has to repair people', () => {
-});*/
+test('coffee time should remove past pair if it has run out of possible new pairs', () => {
+  const users = [1,2,3,4,5,6]
+  // I think this is all possibly matches???
+  const past = ['1-2','1-3','1-4','1-5','1-6','2-3','2-4','2-5','2-6','3-4','3-5','3-6','4-5','4-6','5-6']
+  const coffeepairs = coffee.pairUsers(users, past);
+  // ok our new pairs should also be the past ones
+  const convertedPast = numberArray(past);
+  const pairs = coffeepairs.pairs;
+  var flattened = pairs.reduce(function(accumulator, currentValue) {
+    return accumulator.concat(currentValue);
+  }, []);
+  expect(convertedPast).toEqual(expect.arrayContaining(flattened));
+
+});
 
 /*test('coffee time should return full data structure', () => {
 });*/
