@@ -25,8 +25,8 @@ module.exports = function(controller) {
         let users = pair.map(userById);
         console.log(users);
         users.forEach(user => {
-          let others = users.filter(user => user.id !== user);
-          console.log(others);
+          let others = users.filter(u => u.id !== user.id);
+          console.log('others', others);
           let message;
           if (others.length === 1) {
             message = `Hey ${user.name}, this week your coffee time is with ${others[0].name}.`;
@@ -40,6 +40,8 @@ module.exports = function(controller) {
           }
         })
       });
+      
+      console.log('messages', message);
 
       // @TODO you'll need to go through the pairs and message each of the people with their pairing
       // the message should tell them name of the person they are paired with

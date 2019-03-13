@@ -21,7 +21,6 @@ function userPairKey(userA, userB) {
 
 function pairUsers(users, pastMatches) {
 
-
   const pastMatchesSet = new Set([].concat(...pastMatches));
 
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
