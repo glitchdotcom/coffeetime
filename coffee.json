@@ -16,9 +16,14 @@
       "slackId": "UGDNVTFDW",
       "id": 4,
       "name": "Potch"
+    },
+    {
+      "slackId": "UGSMK7XCZ",
+      "id": 5,
+      "name": "Angelo"
     }
   ],
-  "largestId": 5,
+  "largestId": 6,
   "pastMatches": [
     [
       "1-2",

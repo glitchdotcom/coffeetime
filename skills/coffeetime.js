@@ -6,31 +6,17 @@ The coffeetime bot code goes here
 const coffee = require('../coffee');
 
 module.exports = function(controller) {
-  
-  controller.hears(['^userList'], 'direct_message,direct_mention', function(bot, message) {
-    bot.createConversation(message, function(err, convo) {
-      //this is a temporary command to get a list of users from a slack 
-      // @TODO run this and manually populate coffee.json MVP
-      // we'll test this on the coffeetime slack from this step to the coffeetime command before installing on the fogcreek one
-      // @TODO remove this and automate subscribe process BACKLOG
-      
-      // @TODO return list of users via https://api.slack.com/methods/users.list bot.api.users.list
-      convo.say('Here is a user list');
-      convo.activate();
-
-    });
-  });
   controller.hears(['^coffeetimerun'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
-      coffee.runCoffeeTime();
+      //coffee.runCoffeeTime();
       convo.say('We just ran coffeetime and generated a pair of users, lets message them all');
       //OK now we need to message all the users
-      const coffeeTimeData = coffee.loadData();
-      const { userData } = coffeeTimeData;
-      const { pairs } = coffeeTimeData;
+      //const coffeeTimeData = coffee.loadData();
+      //const { userData } = coffeeTimeData;
+      // const { pairs } = coffeeTimeData;
 
       // @TODO you'll need to go through the pairs and message each of the people with their pairing
       // the message should tell them name of the person they are paired with
@@ -38,15 +24,27 @@ module.exports = function(controller) {
       // https://github.com/howdyai/botkit/issues/89
       // https://api.slack.com/methods/im.open
       convo.activate();
-      
+      bot.api.im.open(
+        {
+          user: 'UGSMK7XCZ',
+        },
+        (error, response) => {
+          console.log(response);
+              bot.startConversation({
+            user: 'UGSMK7XCZ',
+            channel: response.channel.id
+        }, (err, convo) => {
+            convo.say('This is the coffetime')
+        });
+          
+        },
+      );
       // @TODO generate and send the messages! Write copy (include triplets!), and iterate
       // through people and send them messages.
       // sendAssignments(bot, pairs).catch(...)
-      
     });
   });
-  
-  
+
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       //ok here is how to get user info
@@ -58,10 +56,9 @@ module.exports = function(controller) {
       //@TODO add them to coffeetime.json as subscribed BACKLOG
       convo.say('Hi! Welcome to coffeetime.');
       convo.activate();
-
     });
   });
-  
+
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       //ok here is how to get user info
@@ -73,10 +70,6 @@ module.exports = function(controller) {
       //@TODO add them to coffeetime.json as unsubscribed BACKLOG
       convo.say('enjoy your break from coffeetime');
       convo.activate();
-
     });
   });
 };
-
-
-
