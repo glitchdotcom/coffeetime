@@ -10,9 +10,10 @@
  
  Steps to release
  - MVP tasks in `skills/coffeetime.js` DONE
- - remove excess skills
- - test everything on our [test slack](https://glitchcoffeetime.slack.com/messages), making sure it is able to send messages to all the users - helping with this testing is a great task for newbies
- - update app name + slack hooks
+ - test everything on our [test slack](https://glitchcoffeetime.slack.com/messages), making sure it is able to send messages to all the users - helping with this testing is a great task for newbies DONE
+- remove excess skills  DONE
+ - make sure only some people can run coffeetime
+ - update app ownership (probably to Sean), name + slack hooks
  - install in the fog creek slack
  - move json file to .data
  - test with limited number of users on fog creek slack
