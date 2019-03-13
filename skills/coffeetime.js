@@ -18,31 +18,53 @@ module.exports = function(controller) {
       //const { userData } = coffeeTimeData;
       // const { pairs } = coffeeTimeData;
       
+      const userById = id => userData.filter(user => user.id === id)[0];
       
+      let messages = [];
+      pairs.forEach(pair => {
+        let users = pair.map(userById);
+        console.log(users);
+        users.forEach(user => {
+          let others = users.filter(user => user.id !== user);
+          console.log(others);
+          let message;
+          if (others.length === 1) {
+            message = `Hey ${user.name}, this week your coffee time is with ${others[0].name}.`;
+          } else if (others.length === 2) {
+            message = `Hey ${user.name}, this week your coffee time is with ${others[0].name} *and* ${others[1].name}! Fancy.`;            
+          } else {
+            console.warn("oh no, this probably shouldn't have happened");
+          }
+          if (message) {
+            messages.push({ user: user.slackId, text: message });
+          }
+        })
+      });
 
       // @TODO you'll need to go through the pairs and message each of the people with their pairing
       // the message should tell them name of the person they are paired with
       // I think bot.api.im.open will work
       // https://github.com/howdyai/botkit/issues/89
       // https://api.slack.com/methods/im.open
-      convo.activate();
-      bot.api.im.open(
-        {
-          user: 'UGSMK7XCZ',
-        },
-        (error, response) => {
-          console.log(response);
-          bot.startConversation(
-            {
-              user: 'UGSMK7XCZ',
-              channel: response.channel.id,
-            },
-            (err, convo) => {
-              convo.say('This is the coffetime');
-            },
-          );
-        },
-      );
+      messages.forEach(message => {
+        bot.api.im.open(
+          {
+            user: message.user,
+          },
+          (error, response) => {
+            console.log(response);
+            bot.startConversation(
+              {
+                user: message.user,
+                channel: response.channel.id,
+              },
+              (err, convo) => {
+                convo.say(message.text);
+              },
+            );
+          },
+        );
+      });
       // @TODO generate and send the messages! Write copy (include triplets!), and iterate
       // through people and send them messages.
       // sendAssignments(bot, pairs).catch(...)

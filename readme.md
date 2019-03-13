@@ -14,6 +14,15 @@
  - install in the fog creek slack
  - move json file to .data
  
+# Code Backlog
+- use "@slackname" in response
+- use slack ids as ids
+- open channel
+- a function just to get userID from our "database"
+- refactor tests
+- use base json if there isn't a json file already
+- error logging
+
 
 # Dev details
  - bot is running for dev purposes on https://glitchcoffeetime.slack.com as `melissa_coffetime_bot`
