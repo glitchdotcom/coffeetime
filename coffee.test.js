@@ -162,3 +162,14 @@ test('createUserList should make a simple array of user IDs out of the data in t
   const userList = [1, 2, 3, 4];
   expect(coffee.createUserList(mockJsonUsers)).toEqual(userList);
 });
+
+
+/*test('User list should match user ids ', () => {
+
+ 
+});*/
+
+/*test('largestId should get updated when you add new users', () => {
+
+ 
+});*/

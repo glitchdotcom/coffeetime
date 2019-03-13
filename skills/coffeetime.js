@@ -11,12 +11,14 @@ module.exports = function(controller) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
-      //coffee.runCoffeeTime();
+      const { userData, pairs } = coffee.runCoffeeTime();
       convo.say('We just ran coffeetime and generated a pair of users, lets message them all');
       //OK now we need to message all the users
       //const coffeeTimeData = coffee.loadData();
       //const { userData } = coffeeTimeData;
       // const { pairs } = coffeeTimeData;
+      
+      
 
       // @TODO you'll need to go through the pairs and message each of the people with their pairing
       // the message should tell them name of the person they are paired with
@@ -30,13 +32,15 @@ module.exports = function(controller) {
         },
         (error, response) => {
           console.log(response);
-              bot.startConversation({
-            user: 'UGSMK7XCZ',
-            channel: response.channel.id
-        }, (err, convo) => {
-            convo.say('This is the coffetime')
-        });
-          
+          bot.startConversation(
+            {
+              user: 'UGSMK7XCZ',
+              channel: response.channel.id,
+            },
+            (err, convo) => {
+              convo.say('This is the coffetime');
+            },
+          );
         },
       );
       // @TODO generate and send the messages! Write copy (include triplets!), and iterate

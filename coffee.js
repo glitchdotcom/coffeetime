@@ -131,6 +131,7 @@ function runCoffeeTime(){
   // copy overwrite new stuff to old one wow
   const newData = Object.assign({}, data, pairUsers(users, pastMatches));
   saveData(newData);
+  return newData;
 }
 
 function addUser(user) {
