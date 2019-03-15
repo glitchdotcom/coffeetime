@@ -9,15 +9,15 @@ const baseUser = {
   interests: '',
 };
 
-//@TODO handle errors backlog
-/*
-{
+
+const dataFormat = {
   "pairs": [],
   "userData": [],
   "largestId": 0,
   "pastMatches": []
 }
-*/
+
+const DATA_PATH = './.data/coffee.json';
 
 // This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
@@ -104,18 +104,18 @@ function createUserList(data){
 
 function loadData() {
   try {
-    const data = fs.readFileSync('coffee.json').toString('utf8');
-    // return { ...dataFormat, ...JSON.parse(data) };
-    // @TODO dataFormat will create a basic file with the right structure Backlog
-    return { ...JSON.parse(data) };
+    const data = fs.readFileSync(DATA_PATH).toString('utf8');
+    return { ...dataFormat, ...JSON.parse(data) };
   } catch (error) {
+    console.warn("didn't load data file:");
     console.warn(error);
+    return { ...dataFormat }
   }
 }
 
 
 function saveData(data) {
-  fs.writeFileSync('coffee.json', JSON.stringify(data, null, 2), function (err) {
+  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
     if (err) {
       console.warn(err);
     }
