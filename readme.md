@@ -26,6 +26,9 @@
 - refactor tests
 - use base json if there isn't a json file already
 - error logging
+- add a help command
+
+
 
 
 # Dev details

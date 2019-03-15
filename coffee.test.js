@@ -31,10 +31,10 @@ let mockSlackUser = {
 
   const mockJsonUsers = {
     userData: [
-      { id: 1, name: 'Melissa', slackId: 'something' },
-      { id: 2, name: 'Lyzi', slackId: 'dsafadsihew' },
-      { id: 3, name: 'Sean', slackId: 'meow33' },
-      { id: 4, name: 'Potch', slackId: 'slackuserID' },
+      { id: 'something', name: 'Melissa', slackId: 'something' },
+      { id: 'dsafadsihew', name: 'Lyzi', slackId: 'dsafadsihew' },
+      { id: 'meow33', name: 'Sean', slackId: 'meow33' },
+      { id: 'slackuserID', name: 'Potch', slackId: 'slackuserID' },
     ],
   };
 
