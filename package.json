@@ -5,7 +5,6 @@
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js",
-    "testthing": "node coffee.js",
     "test": "jest"
   },
   "dependencies": {

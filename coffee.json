@@ -35,9 +35,14 @@
       "slackId": "UGDTR92SV",
       "id": 7,
       "name": "Hosanna"
+    },
+    {
+      "slackId": "UGEQW64GM",
+      "id": 8,
+      "name": "Sean OBrien"
     }
   ],
-  "largestId": 8,
+  "largestId": 9,
   "pastMatches": [
     [
       "5-7",

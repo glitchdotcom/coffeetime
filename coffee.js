@@ -9,6 +9,16 @@ const baseUser = {
   interests: '',
 };
 
+//@TODO handle errors backlog
+/*
+{
+  "pairs": [],
+  "userData": [],
+  "largestId": 0,
+  "pastMatches": []
+}
+*/
+
 // This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
   if (userB < userA) {
@@ -16,8 +26,6 @@ function userPairKey(userA, userB) {
   }
   return `${userA}-${userB}`;
 }
-
-
 
 function pairUsers(users, pastMatches) {
 
@@ -92,15 +100,7 @@ function createUserList(data){
   return userList;
 
 }
-//@TODO handle errors backlog
-/*
-{
-  "pairs": [],
-  "userData": [],
-  "largestId": 0,
-  "pastMatches": []
-}
-*/
+
 
 function loadData() {
   try {
