@@ -10,7 +10,7 @@ function createFakeUsers() {
 
 
 let mockSlackUser = {
-  id: 'slackuserID',
+  id: 'slackidwhatever',
 
   team_id: 'TGEF6256E',
 
@@ -31,18 +31,18 @@ let mockSlackUser = {
 
   const mockJsonUsers = {
     userData: [
-      { id: 'something', name: 'Melissa', slackId: 'something' },
-      { id: 'dsafadsihew', name: 'Lyzi', slackId: 'dsafadsihew' },
-      { id: 'meow33', name: 'Sean', slackId: 'meow33' },
-      { id: 'slackuserID', name: 'Potch', slackId: 'slackuserID' },
+      { name: 'Melissa', slackId: 'slackid123' },
+      { name: 'Lyzi', slackId: 'slackid1234' },
+      {  name: 'Sean', slackId: 'slackidmeow' },
+      { name: 'Potch', slackId: 'slackidwhatever' }
     ],
   };
 
   const mockJasonUsers2 = {
     userData: [
-      { id: 1, name: 'Melissa', slackid: 'something' },
-      { id: 2, name: 'Lyzi', slackid: 'dsafadsihew' },
-      { id: 3, name: 'Sean', slackid: 'meow33' }
+      { name: 'Melissa', slackId: 'slackid123' },
+      { name: 'Lyzi', slackId: 'slackid1234' },
+      {  name: 'Sean', slackId: 'slackidmeow' }
     ],
   };
 
@@ -136,7 +136,7 @@ test('coffee time should use past pairings if it has run through every possible 
 /*test('coffee time should return full data structure', () => {
 });*/
 
-test('check for duplicates should return true is the user list already contains the user', () => {
+test('check for duplicates should return true if the user list already contains the user', () => {
   
     expect(coffee.checkForDuplicates(mockSlackUser, mockJsonUsers)).toBe(true);
     expect(coffee.checkForDuplicates(mockSlackUser, mockJasonUsers2)).toBe(false);
@@ -159,7 +159,7 @@ test('add user to data should return the data with the new user', () => {
 
 test('createUserList should make a simple array of user IDs out of the data in the JSON', () => {
 
-  const userList = [1, 2, 3, 4];
+  const userList = ["slackid123", "slackid1234", "slackidmeow", "slackidwhatever"];
   expect(coffee.createUserList(mockJsonUsers)).toEqual(userList);
 });
 

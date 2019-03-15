@@ -13,7 +13,6 @@ const baseUser = {
 const dataFormat = {
   "pairs": [],
   "userData": [],
-  "largestId": 0,
   "pastMatches": []
 }
 
@@ -94,7 +93,7 @@ function createUserList(data){
 
   const userList = []
   userData.forEach(function(user) {
-    userList.push(user.id);
+    userList.push(user.slackId);
   });
   
   return userList;
@@ -133,30 +132,20 @@ function runCoffeeTime(){
   return newData;
 }
 
-function addUser(user) {
+function addUser(slackUser) {
   const data = loadData();
-  for (let i = 0; i < data.userData.length; i++) {
-    if (user.id === data.userData[i].slackId) {
-      console.warn(`not adding user ${user.id} twice!`);
-      return;
-    }
+  if (checkForDuplicates(slackUser, data)) {
+    console.warn(`not adding user ${slackUser.id} twice!`);
+    return;
   }
-  let userRecord = {
-    slackId: user.id,
-    id: data.largestId++,
-    name: user.real_name
-  };
-  console.log('adding', userRecord);
-  data.userData.push(userRecord);
+  console.log('adding', slackUser.id);
+  data = addUserToData(slackUser, data);
   saveData(data);
 }
 
-
-//@TODO use this in addUser since it's tested backlog
-function checkForDuplicates(user, data){
+function checkForDuplicates(slackUser, data) {
   for (let i = 0; i < data.userData.length; i++) {
-    if (user.id === data.userData[i].slackId) {
-      console.warn(`not adding user ${user.id} twice!`);
+    if (slackUser.id === data.userData[i].slackId) {
       return true;
     }
   }
@@ -164,14 +153,11 @@ function checkForDuplicates(user, data){
   return false;
 }
 
-//@TODO use this in addUser since it's tested backlog
-function addUserToData(user, data){
-  let userRecord = {
-    slackId: user.id,
-    id: data.largestId++,
-    name: user.real_name
+function addUserToData(slackUser, data) {
+  const userRecord = {
+    slackId: slackUser.id,
+    name: slackUser.real_name
   };
-  console.log('adding', userRecord);
   data.userData.push(userRecord);
   return data;
 }
