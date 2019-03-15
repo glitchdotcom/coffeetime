@@ -79,11 +79,16 @@ module.exports = function(controller) {
       // we'll need this to get everyone's name and slack ID
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         // console.log(response.user);
-        coffee.addUser(response.user);
+        let status = coffee.addUser(response.user);
+        if (status === true) {
+          //@TODO add them to coffeetime.json as subscribed BACKLOG
+          convo.say('Hi! Welcome to coffeetime.');
+          convo.activate();
+        } else {
+          convo.say('Hi! We tried to add you but looks like you were already subscribed. Contact the Coffeetime team if you are not getting paired.');
+          convo.activate();
+        }
       });
-      //@TODO add them to coffeetime.json as subscribed BACKLOG
-      convo.say('Hi! Welcome to coffeetime.');
-      convo.activate();
     });
   });
 

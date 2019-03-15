@@ -133,14 +133,15 @@ function runCoffeeTime(){
 }
 
 function addUser(slackUser) {
-  const data = loadData();
+  let data = loadData();
   if (checkForDuplicates(slackUser, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
-    return;
+    return false;
   }
   console.log('adding', slackUser.id);
   data = addUserToData(slackUser, data);
   saveData(data);
+  return true;
 }
 
 function checkForDuplicates(slackUser, data) {
