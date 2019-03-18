@@ -50,7 +50,8 @@ let mockSlackUser = {
     userData: [
       { name: 'Melissa', slackId: 'slackid123', managerSlackId: 'slackidmeow' },
       { name: 'Lyzi', slackId: 'slackid1234' },
-      { name: 'Sean', slackId: 'slackidmeow' }
+      { name: 'Sean', slackId: 'slackidmeow' },
+      { name: 'Potch', slackId: 'slackidwhatever' }
     ],
   };
 
@@ -148,8 +149,11 @@ test('coffee time should not ever pair someone with their manager', () => {
   let pastMatches = [];
   for (let i = 0; i < 10; ++i) {
     const result = coffee.pairUsers(users, pastMatches, blockedMatches);
-    result.pastMatches.forEach(matches => {
-      
+    blockedMatches.forEach(blockedMatch => {
+      result.pastMatches.forEach(matches => {
+        expect(matches).not.toContain(blockedMatch);
+      });
+    });
     pastMatches = result.pastMatches;
   }
 });
