@@ -56,7 +56,6 @@ let mockSlackUser = {
   };
 
 
-
 test('coffee time should pair everyone', () => {
   const users = createFakeUsers();
   const coffeepairs = coffee.pairUsers(users);
