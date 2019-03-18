@@ -46,11 +46,19 @@ let mockSlackUser = {
     ],
   };
 
+  const mockJsonUsersWithManager = {
+    userData: [
+      { name: 'Melissa', slackId: 'slackid123', managerSlackId: 'slackidmeow' },
+      { name: 'Lyzi', slackId: 'slackid1234' },
+      { name: 'Sean', slackId: 'slackidmeow' }
+    ],
+  };
+
 
 
 test('coffee time should pair everyone', () => {
   const users = createFakeUsers();
-  const coffeepairs = coffee.pairUsers(users, '');
+  const coffeepairs = coffee.pairUsers(users);
   const pairs = coffeepairs.pairs;
   var flattened = pairs.reduce(function(accumulator, currentValue) {
     return accumulator.concat(currentValue);
@@ -60,14 +68,14 @@ test('coffee time should pair everyone', () => {
 
 test('coffee time should not create a pair with only one person', () => {
   const users = createFakeUsers();
-  const coffeepairs = coffee.pairUsers(users, '');
+  const coffeepairs = coffee.pairUsers(users);
   const pairs = coffeepairs.pairs;
   expect(pairs.every((x) => x.length >= 2)).toBe(true);
 });
 
 test('coffee time should not pair anyone with themseleves', () => {
   const users = createFakeUsers();
-  const coffeepairs = coffee.pairUsers(users, '');
+  const coffeepairs = coffee.pairUsers(users);
   const pairs = coffeepairs.pairs;
   pairs.forEach(function(pair) {
     const uniques = pair.filter(function(value, index, self) {
@@ -173,3 +181,8 @@ test('createUserList should make a simple array of user IDs out of the data in t
 
  
 });*/
+
+test('createBlockedMatchesList should make a pastMatches style array of matches to avoid', () => {
+  const blockedMatches = ['slackidmeow-slackid1234'];
+  expect(coffee.createBlockedMatchesList(mockJsonUsersWithManager)).toEqual(blockedMatches);
+});

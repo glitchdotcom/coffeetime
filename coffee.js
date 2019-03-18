@@ -26,7 +26,7 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-function pairUsers(users, pastMatches, blockedMatches) {
+function pairUsers(users, pastMatches=[], blockedMatches=[]) {
 
   const blockedMatchesSet = new Set([].concat(blockedMatches, ...pastMatches));
 
