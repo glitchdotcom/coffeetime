@@ -30,7 +30,8 @@
 - document how to take ownership/administer
 - create homepage
 - use slash commands
-
+- remove unused id field
+- confirm unsubscribe works
 
 
 
