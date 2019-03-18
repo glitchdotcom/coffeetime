@@ -18,14 +18,14 @@ module.exports = function(controller) {
       //const { userData } = coffeeTimeData;
       // const { pairs } = coffeeTimeData;
       
-      const userById = id => userData.filter(user => user.id === id)[0];
+      const userById = id => userData.filter(user => user.slackId === id)[0];
       
       let messages = [];
       pairs.forEach(pair => {
         let users = pair.map(userById);
         console.log(users);
         users.forEach(user => {
-          let others = users.filter(u => u.id !== user.id);
+          let others = users.filter(u => u.slackId !== user.slackId);
           console.log('others', others);
           let message;
           if (others.length === 1) {
