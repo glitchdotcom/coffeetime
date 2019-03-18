@@ -100,7 +100,7 @@ function createUserList(data) {
 
 }
 
-function createBlockedMatchesList(data) {
+function createBlockedMatches(data) {
   const blockedMatchesSet = new Set();
   data.userData.forEach(user => {
     if (user.managerSlackId) {
@@ -135,7 +135,7 @@ function saveData(data) {
 function runCoffeeTime(){
   const data = loadData();
   const users = createUserList(data);
-  const blockedMatches = createBlockedMatchesList(data);
+  const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
   // copy overwrite new stuff to old one wow
   const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
@@ -190,7 +190,7 @@ function removeUser(slackId) {
 module.exports = {
   pairUsers,
   createUserList,
-  createBlockedMatchesList,
+  createBlockedMatches,
   loadData,
   runCoffeeTime,
   addUser,

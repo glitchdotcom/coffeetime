@@ -141,6 +141,152 @@ test('coffee time should use past pairings if it has run through every possible 
 
 });
 
+test('coffee time should not ever pair someone with their manager', () => {
+  const data = mockJsonUsersWithManager;
+  const users = coffee.createUserList(data);
+  const blockedMatches = coffee.createBlockedMatches(data);
+  let pastMatches = [];
+  for (let i = 0; i < 10; ++i) {
+    const result = coffee.pairUsers(users, pastMatches, blockedMatches);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  }
+});
+
 /*test('coffee time should return full data structure', () => {
 });*/
 
@@ -182,7 +328,7 @@ test('createUserList should make a simple array of user IDs out of the data in t
  
 });*/
 
-test('createBlockedMatchesList should make a pastMatches style array of matches to avoid', () => {
-  const blockedMatches = ['slackidmeow-slackid1234'];
-  expect(coffee.createBlockedMatchesList(mockJsonUsersWithManager)).toEqual(blockedMatches);
+test('createBlockedMatches should make a pastMatches style array of matches to avoid', () => {
+  const blockedMatches = ['slackid123-slackidmeow'];
+  expect(coffee.createBlockedMatches(mockJsonUsersWithManager)).toEqual(blockedMatches);
 });
