@@ -27,6 +27,9 @@
 - use base json if there isn't a json file already
 - error logging
 - add a help command
+- document how to take ownership/administer
+- create homepage
+- use slash commands
 
 
 
