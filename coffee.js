@@ -26,9 +26,9 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-function pairUsers(users, pastMatches) {
+function pairUsers(users, pastMatches, blockedMatches) {
 
-  const pastMatchesSet = new Set([].concat(...pastMatches));
+  const blockedMatchesSet = new Set([].concat(blockedMatches, ...pastMatches));
 
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
   const matches = []; // this will become a new entry in pastMatches
@@ -49,7 +49,7 @@ function pairUsers(users, pastMatches) {
       // if the matched users set already has this user, don't match
       if (matchedUsersSet.has(potentialUser)) continue;
       // if they were paired in the recorded past, don't match
-      if (pastMatchesSet.has(userPairKey(user, potentialUser))) continue;
+      if (blockedMatchesSet.has(userPairKey(user, potentialUser))) continue;
       // ok looks like we can make a match since we checked those things
       match = potentialUser;
       break;
@@ -78,16 +78,16 @@ function pairUsers(users, pastMatches) {
       matchedUsersSet.add(user);
     } else {
       // we couldn't find anyone, remove the oldest history entry and try again
-      // if you already was paired with everyone in the company
+      // if you already were paired with everyone in the company
       // allow you to start pairing with people you've paired with in the past
-      return pairUsers(users, pastMatches.splice(1));
+      return pairUsers(users, pastMatches.splice(1), blockedMatches);
     }
   }
 
   return { pairs, pastMatches: [...pastMatches, matches] };
 }
 
-function createUserList(data){
+function createUserList(data) {
   // I did this so I could create users in json in the key-value format like BaseUser not have to also create a userList array with the Ids, we may not need this when subscribe is automated
   const { userData } = data;
 
@@ -98,6 +98,16 @@ function createUserList(data){
   
   return userList;
 
+}
+
+function createBlockedMatchesList(data) {
+  const blockedMatchesSet = new Set();
+  data.userData.forEach(user => {
+    if (user.managerSlackId) {
+      blockedMatchesSet.add(userPairKey(user.slackId, user.managerSlackId));
+    }
+  });
+  return [...blockedMatchesSet];
 }
 
 
@@ -125,9 +135,10 @@ function saveData(data) {
 function runCoffeeTime(){
   const data = loadData();
   const users = createUserList(data);
+  const blockedMatches = createBlockedMatchesList(data);
   const { pastMatches } = data;
   // copy overwrite new stuff to old one wow
-  const newData = Object.assign({}, data, pairUsers(users, pastMatches));
+  const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
   saveData(newData);
   return newData;
 }
@@ -179,6 +190,7 @@ function removeUser(slackId) {
 module.exports = {
   pairUsers,
   createUserList,
+  createBlockedMatchesList,
   loadData,
   runCoffeeTime,
   addUser,
