@@ -8,24 +8,8 @@
  - populate the userlist by calling the API and adding it to coffee.json manually
  - run coffeetime manually using a command
  
- Steps to release
- - MVP tasks in `skills/coffeetime.js` DONE
- - test everything on our [test slack](https://glitchcoffeetime.slack.com/messages), making sure it is able to send messages to all the users - helping with this testing is a great task for newbies DONE
-- remove excess skills  DONE
- - make sure only some people can run coffeetime
- - update app ownership (probably to Sean), name + slack hooks
- - install in the fog creek slack
- - move json file to .data
- - test with limited number of users on fog creek slack
  
 # Code Backlog
-- use "@slackname" in response
-- use slack ids as ids
-- open channel
-- a function just to get userID from our "database"
-- refactor tests
-- use base json if there isn't a json file already
-- error logging
 - add a help command
 - document how to take ownership/administer
 - create homepage
