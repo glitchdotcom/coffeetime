@@ -145,7 +145,7 @@ function runCoffeeTime(){
 
 function addUser(slackUser) {
   let data = loadData();
-  if (checkForDuplicates(slackUser, data)) {
+  if (checkForUser(slackUser, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }
@@ -155,7 +155,7 @@ function addUser(slackUser) {
   return true;
 }
 
-function checkForDuplicates(slackUser, data) {
+function checkForUser(slackUser, data) {
   for (let i = 0; i < data.userData.length; i++) {
     if (slackUser.id === data.userData[i].slackId) {
       return true;
@@ -195,6 +195,6 @@ module.exports = {
   runCoffeeTime,
   addUser,
   removeUser,
-  checkForDuplicates,
+  checkForUser,
   addUserToData
 };

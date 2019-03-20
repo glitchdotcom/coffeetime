@@ -6,6 +6,12 @@ The coffeetime bot code goes here
 const coffee = require('../coffee');
 
 module.exports = function(controller) {
+  controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
+    bot.createConversation(message, function(err, convo) {
+      
+    });
+  });
+  
   controller.hears(['^coffeetimerun'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
