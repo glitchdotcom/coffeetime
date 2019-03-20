@@ -8,7 +8,15 @@ const coffee = require('../coffee');
 module.exports = function(controller) {
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
-      
+      bot.api.users.info({ user: message.event.user }, (error, response) => {
+        const data = coffee.loadData();
+        if (coffee.checkForUser(response.user, data)) {
+          convo.say('You are all set! Use `unsubscribe` to stop pairing.');
+        } else {
+          convo.say('You are not subscribed yet. Use `subscribe` change that.');
+        }
+        convo.activate();
+      });
     });
   });
   
