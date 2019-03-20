@@ -8,14 +8,7 @@
  - populate the userlist by calling the API and adding it to coffee.json manually
  - run coffeetime manually using a command
  
- 
-# Code Backlog
-- add a help command
-- document how to take ownership/administer
-- create homepage
-- use slash commands
-- remove unused id field
-- confirm unsubscribe works
+
 
 
 
