@@ -40,7 +40,7 @@ module.exports = function(controller) {
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         const data = coffee.loadData();
         
-        if (coffee.checkForUser(response.user, data)) {
+        if (coffee.checkForUser(message.user, data)) {
           convo.say('You are all set! Use `unsubscribe` to stop pairing.');
           const managerId = coffee.getManager(message.user);
           if (managerId) {
@@ -79,9 +79,9 @@ module.exports = function(controller) {
           console.log('others', others);
           let message;
           if (others.length === 1) {
-            message = `Hey ${user.name}, this week your coffee time is with ${others[0].name}.`;
+            message = `Hey <@${user.slackId}>, this week your coffee time is with <@${others[0].slackId}>.`;
           } else if (others.length === 2) {
-            message = `Hey ${user.name}, this week your coffee time is with ${others[0].name} *and* ${others[1].name}! Fancy.`;            
+            message = `Hey <@${user.slackId}>, this week your coffee time is with <@${others[0].slackId}> *and* <@${others[1].slackId}>! Fancy.`;            
           } else {
             console.warn("oh no, this probably shouldn't have happened");
           }
@@ -157,8 +157,8 @@ module.exports = function(controller) {
   });
   
   controller.on('slash_command', function(bot, message){
-    
-  }
+    // TODO - add slash commands via slack admin interface
+  });
 };
 
 

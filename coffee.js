@@ -145,7 +145,7 @@ function runCoffeeTime(){
 
 function addUser(slackUser) {
   let data = loadData();
-  if (checkForUser(slackUser, data)) {
+  if (checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }
@@ -155,9 +155,9 @@ function addUser(slackUser) {
   return true;
 }
 
-function checkForUser(slackUser, data) {
+function checkForUser(slackId, data) {
   for (let i = 0; i < data.userData.length; i++) {
-    if (slackUser.id === data.userData[i].slackId) {
+    if (slackId === data.userData[i].slackId) {
       return true;
     }
   }
