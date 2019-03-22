@@ -10,7 +10,9 @@ module.exports = function(controller) {
     bot.createConversation(message, function(err, convo) {
       const regex = /<@([^>]+)>/;
       const managerMatch = regex.exec(message.text);
-      if (managerMatch) {
+      if (!coffee.checkForUser(message.user, coffee.loadData())) {
+        convo.say('You are not subscribed yet. Use `subscribe` to change that.');
+      } else if (managerMatch) {
         const managerId = managerMatch[1];
         coffee.setManager(message.user, managerId);
         convo.say(`<@${managerId}> is your manager now`);
@@ -25,7 +27,7 @@ module.exports = function(controller) {
       } else {
         const managerId = coffee.getManager(message.user);
         if (managerId) {
-          convo.say(`<@${managerId}> is your manager`);
+          convo.say(`<@${managerId}> is your manager. Say \`manager none\` to have no manager`);
         } else {
           convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
         }
@@ -37,22 +39,20 @@ module.exports = function(controller) {
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
-      bot.api.users.info({ user: message.event.user }, (error, response) => {
-        const data = coffee.loadData();
-        
-        if (coffee.checkForUser(message.user, data)) {
-          convo.say('You are all set! Use `unsubscribe` to stop pairing.');
-          const managerId = coffee.getManager(message.user);
-          if (managerId) {
-            convo.say(`<@${managerId}> is your manager, you won't pair with them`);
-          } else {
-            convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
-          }
+      const data = coffee.loadData();
+
+      if (coffee.checkForUser(message.user, data)) {
+        convo.say('You are all set! Use `unsubscribe` to stop pairing.');
+        const managerId = coffee.getManager(message.user);
+        if (managerId) {
+          convo.say(`<@${managerId}> is your manager, you won't pair with them`);
         } else {
-          convo.say('You are not subscribed yet. Use `subscribe` change that.');
+          convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
         }
-        convo.activate();
-      });
+      } else {
+        convo.say('You are not subscribed yet. Use `subscribe` to change that.');
+      }
+      convo.activate();
     });
   });
   
