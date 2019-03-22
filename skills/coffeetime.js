@@ -6,6 +6,15 @@ The coffeetime bot code goes here
 const coffee = require('../coffee');
 
 module.exports = function(controller) {
+  controller.hears(['^test'], 'direct_message,direct_mention', function(bot, message) {
+    const regex = /<@([^>]+)>/;
+    const managerMatch = regex.match(message.text);
+    if (managerMatch) {
+    } else if (message.contains{
+      
+    }
+  });
+  
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       bot.api.users.info({ user: message.event.user }, (error, response) => {
