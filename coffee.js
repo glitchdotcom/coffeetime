@@ -187,6 +187,19 @@ function removeUser(slackId) {
   saveData(data);
 }
 
+function setManager(slackId, managerSlackId) {
+  const data = loadData();
+  const user = data.userData.find(u => u.slackId === slackId);
+  user.managerSlackId = managerSlackId;
+  saveData(data);
+}
+
+function getManager(slackId) {
+  const data = loadData();
+  const user = data.userData.find(u => u.slackId === slackId);
+  return user.managerSlackId;
+}
+
 module.exports = {
   pairUsers,
   createUserList,
@@ -195,6 +208,8 @@ module.exports = {
   runCoffeeTime,
   addUser,
   removeUser,
+  setManager,
+  getManager,
   checkForUser,
   addUserToData
 };

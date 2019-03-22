@@ -6,21 +6,48 @@ The coffeetime bot code goes here
 const coffee = require('../coffee');
 
 module.exports = function(controller) {
-  controller.hears(['^test'], 'direct_message,direct_mention', function(bot, message) {
-    const regex = /<@([^>]+)>/;
-    const managerMatch = regex.match(message.text);
-    if (managerMatch) {
-    } else if (message.contains{
-      
-    }
+  controller.hears(['^manager'], 'direct_message,direct_mention', function(bot, message) {
+    bot.createConversation(message, function(err, convo) {
+      const regex = /<@([^>]+)>/;
+      const managerMatch = regex.exec(message.text);
+      if (managerMatch) {
+        const managerId = managerMatch[1];
+        coffee.setManager(message.user, managerId);
+        convo.say(`<@${managerId}> is your manager now`);
+      } else if (message.text.includes('none')) {
+        const oldManagerId = coffee.getManager(message.user);
+        coffee.setManager(message.user, null);
+        if (oldManagerId) {
+          convo.say(`<@${oldManagerId}> is not your manager any more`);
+        } else {
+          convo.say(`You didn't have a manager set`);
+        }
+      } else {
+        const managerId = coffee.getManager(message.user);
+        if (managerId) {
+          convo.say(`<@${managerId}> is your manager`);
+        } else {
+          convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
+        }
+      }
+        
+      convo.activate();
+    });
   });
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         const data = coffee.loadData();
+        
         if (coffee.checkForUser(response.user, data)) {
           convo.say('You are all set! Use `unsubscribe` to stop pairing.');
+          const managerId = coffee.getManager(message.user);
+          if (managerId) {
+            convo.say(`<@${managerId}> is your manager, you won't pair with them`);
+          } else {
+            convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
+          }
         } else {
           convo.say('You are not subscribed yet. Use `subscribe` change that.');
         }
@@ -128,4 +155,10 @@ module.exports = function(controller) {
       convo.activate();
     });
   });
+  
+  controller.on('slash_command', function(bot, message){
+    
+  }
 };
+
+
