@@ -29,31 +29,31 @@ let mockSlackUser = {
   tz_offset: -25200,
 };
 
-  const mockJsonUsers = {
-    userData: [
-      { name: 'Melissa', slackId: 'slackid123' },
-      { name: 'Lyzi', slackId: 'slackid1234' },
-      {  name: 'Sean', slackId: 'slackidmeow' },
-      { name: 'Potch', slackId: 'slackidwhatever' }
-    ],
-  };
+const mockJsonUsers = {
+  userData: [
+    { name: 'Melissa', slackId: 'slackid123' },
+    { name: 'Lyzi', slackId: 'slackid1234' },
+    {  name: 'Sean', slackId: 'slackidmeow' },
+    { name: 'Potch', slackId: 'slackidwhatever' }
+  ],
+};
 
-  const mockJasonUsers2 = {
-    userData: [
-      { name: 'Melissa', slackId: 'slackid123' },
-      { name: 'Lyzi', slackId: 'slackid1234' },
-      {  name: 'Sean', slackId: 'slackidmeow' }
-    ],
-  };
+const mockJasonUsers2 = {
+  userData: [
+    { name: 'Melissa', slackId: 'slackid123' },
+    { name: 'Lyzi', slackId: 'slackid1234' },
+    {  name: 'Sean', slackId: 'slackidmeow' }
+  ],
+};
 
-  const mockJsonUsersWithManager = {
-    userData: [
-      { name: 'Melissa', slackId: 'slackid123', managerSlackId: 'slackidmeow' },
-      { name: 'Lyzi', slackId: 'slackid1234' },
-      { name: 'Sean', slackId: 'slackidmeow' },
-      { name: 'Potch', slackId: 'slackidwhatever' }
-    ],
-  };
+const mockJsonUsersWithManager = {
+  userData: [
+    { name: 'Melissa', slackId: 'slackid123', managerSlackId: 'slackidmeow' },
+    { name: 'Lyzi', slackId: 'slackid1234' },
+    { name: 'Sean', slackId: 'slackidmeow' },
+    { name: 'Potch', slackId: 'slackidwhatever' }
+  ],
+};
 
 
 test('coffee time should pair everyone', () => {
@@ -202,3 +202,5 @@ test('createBlockedMatches should make a pastMatches style array of matches to a
   const blockedMatches = ['slackid123-slackidmeow'];
   expect(coffee.createBlockedMatches(mockJsonUsersWithManager)).toEqual(blockedMatches);
 });
+
+// getManager("foo") should, if data is {userData: [{slackId: "foo"}]}find(u => u.slackId === slackId);
