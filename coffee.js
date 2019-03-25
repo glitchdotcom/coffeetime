@@ -195,9 +195,12 @@ function setManager(slackId, managerSlackId) {
 }
 
 function getManager(slackId) {
-  const data = loadData();
-  const user = data.userData.find(u => u.slackId === slackId);
-  return user.managerSlackId;
+  /* istanbul ignore next */
+  return getManagerHelper(loadData(), slackId);
+}
+
+function getManagerHelper(data, userSlackId) {
+  return data.userData.find(u => u.slackId === userSlackId).managerSlackId;
 }
 
 module.exports = {
@@ -210,6 +213,7 @@ module.exports = {
   removeUser,
   setManager,
   getManager,
+  getManagerHelper,
   checkForUser,
   addUserToData
 };

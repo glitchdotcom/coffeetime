@@ -203,4 +203,16 @@ test('createBlockedMatches should make a pastMatches style array of matches to a
   expect(coffee.createBlockedMatches(mockJsonUsersWithManager)).toEqual(blockedMatches);
 });
 
-// getManager("foo") should, if data is {userData: [{slackId: "foo"}]}find(u => u.slackId === slackId);
+// getManager("foo") should, if data is {userData: [{slackId: "foo", managerSlackId: "bar"}]}, return "bar"
+test("getManager finds the corresponding user in the data and returns their manager", () => {
+  // Given this data, where there is one user, Johnicholas, and their manager is Melissa
+  const data = {
+    userData: [
+      {slackId: "Johnicholas", managerSlackId: "Melissa"}
+    ]
+  };
+  // When getManagerHelper is called with data and "Johnicholas".
+  const manager = coffee.getManagerHelper(data, "Johnicholas");
+  // Then the return value should equal "Melissa".
+  expect(manager).toEqual("Melissa");  
+});
