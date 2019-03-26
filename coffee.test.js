@@ -203,20 +203,59 @@ test('createBlockedMatches should make a pastMatches style array of matches to a
   expect(coffee.createBlockedMatches(mockJsonUsersWithManager)).toEqual(blockedMatches);
 });
 
+test("coffeeTime does not set up any pairings, if there are no users", () => {
+  const data = {userData: []};
+
+  const changedData = coffee.runCoffeeTimeHelper(data);
+  
+  expect(changedData).toEqual({
+    pairs: [],
+    pastMatches: [[]],
+    userData: []
+  });
+});
+
+
+test("addUser returns true, and data including the user to add. if the user is not already in the data", () => {
+  const data = {userData: []};
+
+  const [wasNovel, changedData] = coffee.addUserHelper(data, {id: "Johnicholas"});
+  
+  expect(wasNovel).toEqual(true);
+  expect(changedData).toEqual({userData: [{slackId: "Johnicholas"}]});
+});
+
+test("addUser returns false, if the user to add is already in the data", () => {
+  const data = {userData: [{slackId: "Johnicholas"}]};
+
+  const [wasNovel] = coffee.addUserHelper(data, {id: "Johnicholas"});
+  
+  expect(wasNovel).toEqual(false);
+});
+
+test("removeUser returns the data minus the entry containing the specified user", () => {
+  const data = {
+    userData: [{slackId: "Johnicholas", managerSlackId: "Melissa"}]
+  };
+
+  const changedData = coffee.removeUserHelper(data, "Johnicholas");
+
+  expect(changedData).toEqual({userData: []});
+});
+
+// TODO: what should removeUser do, if the user is not present in the data? what if it is present more than once in the data?
+
 // setManager("foo", "bar") should, if data is
 //   {userData: [{slackId: "foo", managerSlackId: "baz"}]},
 // return
 //   {userData: [{slackId: "foo", managerSlackId: "baz"}]}
 test("setManager builds a similar set of data, but with one individual's manager replaced", () => {
-  // Given this data, where there is one user, Johnicholas, and their manager is Melissa
   const data = {
-    userData: [
-      {slackId: "Johnicholas", managerSlackId: "Melissa"}
-    ]
+    userData: [{slackId: "Johnicholas", managerSlackId: "Melissa"}]
   };
-  // When getManagerHelper is called with data and "Johnicholas".
+
   const changedData = coffee.setManagerHelper(data, "Johnicholas", "Victoria");
-  // Then the return value should equal "Victoria".
+
   expect(changedData).toEqual({
     userData: [
       {slackId: "Johnicholas", managerSlackId: "Victoria"}
@@ -224,16 +263,19 @@ test("setManager builds a similar set of data, but with one individual's manager
   });  
 });
 
+// TODO: what should setManager do, if the query cannot be found in the data?
+
 // getManager("foo") should, if data is {userData: [{slackId: "foo", managerSlackId: "bar"}]}, return "bar"
 test("getManager finds the corresponding user in the data and returns their manager", () => {
-  // Given this data, where there is one user, Johnicholas, and their manager is Melissa
   const data = {
     userData: [
       {slackId: "Johnicholas", managerSlackId: "Melissa"}
     ]
   };
-  // When getManagerHelper is called with data and "Johnicholas".
+
   const manager = coffee.getManagerHelper(data, "Johnicholas");
-  // Then the return value should equal "Melissa".
+
   expect(manager).toEqual("Melissa");  
 });
+
+// TODO: what should getManager do, if the query cannot be found in the data?

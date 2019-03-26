@@ -124,35 +124,38 @@ function loadData() {
 
 
 function saveData(data) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
-    if (err) {
-      console.warn(err);
-    }
-  });
+  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), console.warn);
 }
 
-
+/* istanbul ignore next */
 function runCoffeeTime(){
-  const data = loadData();
-  const users = createUserList(data);
-  const blockedMatches = createBlockedMatches(data);
-  const { pastMatches } = data;
   // copy overwrite new stuff to old one wow
-  const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
+  const newData = runCoffeeTimeHelper(loadData());
   saveData(newData);
   return newData;
 }
 
+function runCoffeeTimeHelper(data) {
+  const users = createUserList(data);
+  const blockedMatches = createBlockedMatches(data);
+  const { pastMatches } = data;
+  return Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
+}
+
+/* istanbul ignore next */
 function addUser(slackUser) {
-  let data = loadData();
+  let [wasNovel, changedData] = addUserHelper(loadData(), slackUser);
+  saveData(changedData);
+  return wasNovel;
+}
+
+function addUserHelper(data, slackUser) {
   if (checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
-    return false;
+    return [false];
   }
   console.log('adding', slackUser.id);
-  data = addUserToData(slackUser, data);
-  saveData(data);
-  return true;
+  return [true, addUserToData(slackUser, data)];
 }
 
 function checkForUser(slackId, data) {
@@ -176,7 +179,11 @@ function addUserToData(slackUser, data) {
 
 
 function removeUser(slackId) {
-  const data = loadData();
+  /* istanbul ignore next */
+  saveData(removeUserHelper(loadData(), slackId));
+}
+
+function removeUserHelper(data, slackId) {
   for (let i = 0; i < data.userData.length; i++) {
     let user = data.userData[i];
     if (user.slackId === slackId) {
@@ -184,7 +191,7 @@ function removeUser(slackId) {
       break;
     }
   }
-  saveData(data);
+  return data;
 }
 
 function setManager(slackId, managerSlackId) {
@@ -213,9 +220,13 @@ module.exports = {
   createBlockedMatches,
   loadData,
   runCoffeeTime,
+  runCoffeeTimeHelper,
   addUser,
+  addUserHelper,
   removeUser,
+  removeUserHelper,
   setManager,
+  setManagerHelper,
   getManager,
   getManagerHelper,
   checkForUser,
