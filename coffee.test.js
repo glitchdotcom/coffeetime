@@ -295,7 +295,7 @@ describe("coffee", () => {
 
     const manager = coffee.getManagerHelper(data, a);
 
-    expect(manager).toEqual(b);  
+    return manager === b;
   });
 
   // TODO: what should getManager do, if the query cannot be found in the data?
@@ -312,10 +312,8 @@ describe("coffee", () => {
   });
 
   jsc.property("setManager followed by getManager of the same user returns the newly set manager", jsc.string, jsc.string, (a, b) => {
-    return true;
-    /*
     if (a == "" && b == "") {
-      // known exception
+      // known exception?
       return true;
     }
     const initial = {
@@ -324,7 +322,6 @@ describe("coffee", () => {
     const dataWithManagerSet = coffee.setManagerHelper(initial, a, b);
     const foundManager = coffee.getManagerHelper(dataWithManagerSet, a);
     return foundManager === b;
-    */
   });
 });
 
