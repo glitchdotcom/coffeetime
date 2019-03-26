@@ -75,6 +75,7 @@ if (process.env.MONGO_URI) {
     var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
     bot_options.storage = mongoStorage;
 } else {
+  console.log('USING JSON FILESTORE');
     bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
 }
 
