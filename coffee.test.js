@@ -203,6 +203,27 @@ test('createBlockedMatches should make a pastMatches style array of matches to a
   expect(coffee.createBlockedMatches(mockJsonUsersWithManager)).toEqual(blockedMatches);
 });
 
+// setManager("foo", "bar") should, if data is
+//   {userData: [{slackId: "foo", managerSlackId: "baz"}]},
+// return
+//   {userData: [{slackId: "foo", managerSlackId: "baz"}]}
+test("setManager builds a similar set of data, but with one individual's manager replaced", () => {
+  // Given this data, where there is one user, Johnicholas, and their manager is Melissa
+  const data = {
+    userData: [
+      {slackId: "Johnicholas", managerSlackId: "Melissa"}
+    ]
+  };
+  // When getManagerHelper is called with data and "Johnicholas".
+  const changedData = coffee.setManagerHelper(data, "Johnicholas", "Victoria");
+  // Then the return value should equal "Victoria".
+  expect(changedData).toEqual({
+    userData: [
+      {slackId: "Johnicholas", managerSlackId: "Victoria"}
+    ]
+  });  
+});
+
 // getManager("foo") should, if data is {userData: [{slackId: "foo", managerSlackId: "bar"}]}, return "bar"
 test("getManager finds the corresponding user in the data and returns their manager", () => {
   // Given this data, where there is one user, Johnicholas, and their manager is Melissa

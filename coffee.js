@@ -188,10 +188,14 @@ function removeUser(slackId) {
 }
 
 function setManager(slackId, managerSlackId) {
-  const data = loadData();
+  /* istanbul ignore next */
+  saveData(setManagerHelper(loadData(), slackId, managerSlackId));
+}
+
+function setManagerHelper(data, slackId, managerSlackId) {
   const user = data.userData.find(u => u.slackId === slackId);
   user.managerSlackId = managerSlackId;
-  saveData(data);
+  return data;
 }
 
 function getManager(slackId) {
