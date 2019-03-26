@@ -4,9 +4,12 @@ module.exports = function(webserver, controller) {
 
     var handler = {
         login: function(req, res) {
+            console.log('loginnnnnnnnnnnnnn');
             res.redirect(controller.getAuthorizeURL());
         },
         oauth: function(req, res) {
+            console.log('oathhhhhhhhhhhhhh');
+
             var code = req.query.code;
             var state = req.query.state;
 
@@ -35,7 +38,7 @@ module.exports = function(webserver, controller) {
                 slackapi.api.auth.test({token: auth.access_token}, function(err, identity) {
 
                     if (err) {
-                        debug('Error fetching user identity', err);
+                        console.log('Error fetching user identity', err);
                         return res.redirect('/login_error.html');
                     }
 

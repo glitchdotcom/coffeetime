@@ -102,8 +102,7 @@ if (!process.env.clientId || !process.env.clientSecret) {
 
   var where_its_at = 'http://' + (process.env.PROJECT_DOMAIN ? process.env.PROJECT_DOMAIN+ '.glitch.me/' : 'localhost:' + process.env.PORT || 3000);
   console.log('WARNING: This application is not fully configured to work with Slack. Please see instructions at ' + where_its_at);
-}else {
-
+} else {
   webserver.get('/', function(req, res){
     res.render('index', {
       domain: req.get('host'),
@@ -176,10 +175,10 @@ if (!process.env.clientId || !process.env.clientSecret) {
 
 
 function usage_tip() {
-    console.log('~~~~~~~~~~');
+    console.log('----~~~~~~');
     console.log('Botkit Starter Kit');
     console.log('Execute your bot application like this:');
     console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 node bot.js');
     console.log('Get Slack app credentials here: https://api.slack.com/apps')
-    console.log('~~~~~~~~~~');
+    console.log('~~~+++++---');
 }

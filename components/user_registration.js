@@ -5,13 +5,13 @@ module.exports = function(controller) {
     /* Handle event caused by a user logging in with oauth */
     controller.on('oauth:success', function(payload) {
 
-        debug('Got a successful login!', payload);
+        console.log('Got a successful login!', payload);
         if (!payload.identity.team_id) {
-            debug('Error: received an oauth response without a team id', payload);
+            console.log('Error: received an oauth response without a team id', payload);
         }
         controller.storage.teams.get(payload.identity.team_id, function(err, team) {
             if (err) {
-                debug('Error: could not load team from storage system:', payload.identity.team_id, err);
+                console.log('Error: could not load team from storage system:', payload.identity.team_id, err);
             }
 
             var new_team = false;
@@ -36,7 +36,7 @@ module.exports = function(controller) {
 
             testbot.api.auth.test({}, function(err, bot_auth) {
                 if (err) {
-                    debug('Error: could not authenticate bot user', err);
+                    console.log('Error: could not authenticate bot user', err);
                 } else {
                     team.bot.name = bot_auth.user;
 
@@ -52,7 +52,7 @@ module.exports = function(controller) {
 
                     controller.storage.teams.save(team, function(err, id) {
                         if (err) {
-                            debug('Error: could not save team record:', err);
+                            console.log('Error: could not save team record:', err);
                         } else {
                             if (new_team) {
                                 controller.trigger('create_team', [testbot, team]);
@@ -69,7 +69,7 @@ module.exports = function(controller) {
 
     controller.on('create_team', function(bot, team) {
 
-        debug('Team created:', team);
+        console.log('Team created:', team);
 
         // Trigger an event that will establish an RTM connection for this bot
         controller.trigger('rtm:start', [bot.config]);
@@ -82,7 +82,7 @@ module.exports = function(controller) {
 
     controller.on('update_team', function(bot, team) {
 
-        debug('Team updated:', team);
+        console.log('Team updated:', team);
         // Trigger an event that will establish an RTM connection for this bot
         controller.trigger('rtm:start', [bot]);
 

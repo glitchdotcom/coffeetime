@@ -20,14 +20,14 @@ module.exports = function(controller) {
         start: function(bot) {
 
             if (managed_bots[bot.config.token]) {
-                debug('Start RTM: already online');
+                console.log('Start RTM: already online');
             } else {
                 bot.startRTM(function(err, bot) {
                     if (err) {
-                        debug('Error starting RTM:', err);
+                        console.log('Error starting RTM:', err);
                     } else {
                         managed_bots[bot.config.token] = bot.rtm;
-                        debug('Start RTM: Success');
+                        console.log('Start RTM: Success');
                     }
                 });
             }
@@ -35,18 +35,18 @@ module.exports = function(controller) {
         stop: function(bot) {
             if (managed_bots[bot.config.token]) {
                 if (managed_bots[bot.config.token].rtm) {
-                    debug('Stop RTM: Stopping bot');
+                    console.log('Stop RTM: Stopping bot');
                     managed_bots[bot.config.token].closeRTM()
                 }
             }
         },
         remove: function(bot) {
-            debug('Removing bot from manager');
+            console.log('Removing bot from manager');
             delete managed_bots[bot.config.token];
         },
         reconnect: function() {
 
-            debug('Reconnecting all existing bots...');
+            console.log('Reconnecting all existing bots...');
             controller.storage.teams.all(function(err, list) {
 
                 if (err) {
