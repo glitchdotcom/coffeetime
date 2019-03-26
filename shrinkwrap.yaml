@@ -7,6 +7,7 @@ dependencies:
   debug: 4.1.1
   express: 4.16.4
   express-hbs: 2.0.2
+  jsverify: 0.8.4
   node-env-file: 0.1.8
   querystring: 0.2.0
   request: 2.88.0
@@ -3141,6 +3142,17 @@ packages:
       '0': node >=0.6.0
     resolution:
       integrity: sha1-MT5mvB5cwG5Di8G3SZwuXFastqI=
+  /jsverify/0.8.4:
+    dependencies:
+      lazy-seq: 1.0.0
+      rc4: 0.1.5
+      trampa: 1.0.1
+      typify-parser: 1.1.0
+    dev: false
+    engines:
+      node: '>= 0.8.0'
+    resolution:
+      integrity: sha512-nUG73Sfi8L4eOkc7pv9sflgAm43v+z6XMuePGVdRoBUxBLJiVcMcf3Xgc4h19eHHF3JwsaagOkUu825UnPBLJw==
   /jwa/1.3.0:
     dependencies:
       buffer-equal-constant-time: 1.0.1
@@ -3197,6 +3209,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-3h7B2WRT5LNXOtQiAaWonilegHcPSf9nLVXlSTci8lu1dZUuui61+EsPEZqSVxY7rXYmB2DVKMQILxaO5WL61Q==
+  /lazy-seq/1.0.0:
+    dev: false
+    engines:
+      node: '>= 0.10.0'
+    resolution:
+      integrity: sha1-iAy4qrJWAmOC4C9T7AiWgqdMW2o=
   /lcid/1.0.0:
     dependencies:
       invert-kv: 1.0.0
@@ -4172,6 +4190,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-9esiElv1BrZoI3rCDuOuKCBRbuApGGaDPQfjSflGxdy4oyzqghxu6klEkkVIvBje+FF0BX9coEv8KqW6X/7njw==
+  /rc4/0.1.5:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-CMbgSgFo9utiHCKrbLEVG9n0pk0=
   /read-pkg-up/1.0.1:
     dependencies:
       find-up: 1.1.2
@@ -4961,6 +4985,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
+  /trampa/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-93WeyHNuRggPEsfCe+yHxCgM2s6H3Q8Wmlt6b6ObJL8qc7eZlRaFjQxwTrB+zbvGtlDRnAkMoYYo3+2uH/fEwA==
   /trim-right/1.0.1:
     dev: true
     engines:
@@ -5017,6 +5045,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-XAgOXWYcu+OCWdLnCjxyU+hziB0=
+  /typify-parser/1.1.0:
+    dev: false
+    engines:
+      node: '>= 0.10.0'
+    resolution:
+      integrity: sha1-rHO/pfJTQ0aOLQ8zRsYRe8A9PJk=
   /uglify-js/3.4.9:
     dependencies:
       commander: 2.17.1
@@ -5383,6 +5417,7 @@ specifiers:
   express: ^4.16.4
   express-hbs: ^2.0.1
   jest: ^23.2.0
+  jsverify: ^0.8.4
   node-env-file: ^0.1.8
   querystring: ^0.2.0
   request: ^2.88.0

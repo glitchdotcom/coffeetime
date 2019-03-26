@@ -110,7 +110,7 @@ function createBlockedMatches(data) {
   return [...blockedMatchesSet];
 }
 
-
+/* istanbul ignore next */
 function loadData() {
   try {
     const data = fs.readFileSync(DATA_PATH).toString('utf8');
@@ -124,6 +124,7 @@ function loadData() {
 
 
 function saveData(data) {
+  /* istanbul ignore next */
   fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), console.warn);
 }
 

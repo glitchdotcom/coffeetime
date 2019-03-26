@@ -243,6 +243,25 @@ test("removeUser returns the data minus the entry containing the specified user"
   expect(changedData).toEqual({userData: []});
 });
 
+test("removeUser returns the data minus the FIRST entry containing the specified user", () => {
+  const data = {
+    userData: [
+      {slackId: "Johnicholas", managerSlackId: "Melissa1"},
+      {slackId: "Johnicholas", managerSlackId: "Melissa2"},
+      {slackId: "Johnicholas", managerSlackId: "Melissa3"}     
+    ]
+  };
+
+  const changedData = coffee.removeUserHelper(data, "Johnicholas");
+
+  expect(changedData).toEqual({
+    userData: [
+      {slackId: "Johnicholas", managerSlackId: "Melissa2"},
+      {slackId: "Johnicholas", managerSlackId: "Melissa3"}     
+    ]
+  });
+});
+
 // TODO: what should removeUser do, if the user is not present in the data? what if it is present more than once in the data?
 
 // setManager("foo", "bar") should, if data is
