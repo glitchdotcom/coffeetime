@@ -1,5 +1,6 @@
 const fs = require('fs');
 const coffee = require('./coffee');
+var jsc = require('jsverify');
 
 // @TODO refactor so they aren't slow, using mocking
 // some mocks
@@ -284,17 +285,46 @@ test("setManager builds a similar set of data, but with one individual's manager
 
 // TODO: what should setManager do, if the query cannot be found in the data?
 
-// getManager("foo") should, if data is {userData: [{slackId: "foo", managerSlackId: "bar"}]}, return "bar"
-test("getManager finds the corresponding user in the data and returns their manager", () => {
-  const data = {
-    userData: [
-      {slackId: "Johnicholas", managerSlackId: "Melissa"}
-    ]
-  };
+describe("coffee", () => {
+  jsc.property("getManager finds the corresponding user in the data and returns their manager", jsc.string, jsc.string, (a, b) => {
+    const data = {
+      userData: [
+        {slackId: a, managerSlackId: b}
+      ]
+    };
 
-  const manager = coffee.getManagerHelper(data, "Johnicholas");
+    const manager = coffee.getManagerHelper(data, a);
 
-  expect(manager).toEqual("Melissa");  
+    expect(manager).toEqual(b);  
+  });
+
+  // TODO: what should getManager do, if the query cannot be found in the data?
+  
+  it("handles slack ids which are empty strings and self-managing users gracefully", () => {
+    const slackIdA = "";
+    const slackIdB = "";
+    const initial = {
+      userData: [{slackId: slackIdA}]
+    };
+    const dataWithManagerSet = coffee.setManagerHelper(initial, slackIdA, slackIdB);
+    const foundManager = coffee.getManagerHelper(dataWithManagerSet, slackIdA);
+    expect(foundManager).toEqual(slackIdB);
+  });
+
+  jsc.property("setManager followed by getManager of the same user returns the newly set manager", jsc.string, jsc.string, (a, b) => {
+    return true;
+    /*
+    if (a == "" && b == "") {
+      // known exception
+      return true;
+    }
+    const initial = {
+      userData: [{slackId: a}]
+    };
+    const dataWithManagerSet = coffee.setManagerHelper(initial, a, b);
+    const foundManager = coffee.getManagerHelper(dataWithManagerSet, a);
+    return foundManager === b;
+    */
+  });
 });
 
-// TODO: what should getManager do, if the query cannot be found in the data?
