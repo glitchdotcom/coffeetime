@@ -6,6 +6,7 @@ module.exports = function(controller) {
     controller.on('oauth:success', function(payload) {
 
         console.log('Got a successful login!', payload);
+      
         if (!payload.identity.team_id) {
             console.log('Error: received an oauth response without a team id', payload);
         }
