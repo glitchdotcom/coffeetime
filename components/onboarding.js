@@ -8,8 +8,8 @@ module.exports = function(controller) {
             if (err) {
               console.log(err);
             } else {
-              convo.say('I am a bot that has just joined your team');
-              convo.say('You must now /invite me to a channel so that I can be of use!');
+              convo.say('Thanks for installing CoffeeTime! ☕️');
+              convo.say('There are a few things I need to know so that I can perform at my best ✨');
             }
         });
     });
