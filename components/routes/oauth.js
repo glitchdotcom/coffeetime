@@ -68,10 +68,10 @@ function onOAuthSuccess(payload, controller) {
   let new_team = false;
   if (!team) {
     team = {
-        id: payload.identity.team_id,
-        createdBy: payload.identity.user_id,
-        url: payload.identity.url,
-        name: payload.identity.team,
+      id: payload.identity.team_id,
+      createdBy: payload.identity.user_id,
+      url: payload.identity.url,
+      name: payload.identity.team
     };
     new_team = true;
   } else if (err) {
@@ -84,17 +84,15 @@ function onOAuthSuccess(payload, controller) {
     createdBy: payload.identity.user_id,
     app_token: payload.access_token
   };
-
+    
   const testbot = controller.spawn(team.bot);
 
+  // Gets the identity/name of the bot.
   testbot.api.auth.test({}, function(err, bot_auth) {
     if (err) {
       console.log('Error: could not authenticate bot user', err);
     } else {
       team.bot.name = bot_auth.user;
-
-      console.log('team.bot', team.bot);
-      console.log('testbot', testbot);
       
       // add in info that is expected by Botkit
       testbot.identity = bot_auth;
