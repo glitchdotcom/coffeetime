@@ -19,11 +19,10 @@ const bot_options = {
 const controller = Botkit.slackbot(bot_options);
 controller.startTicking();
 
-// Set up an Express-powered webserver to expose oauth and webhook endpoints
-var webserver = require(__dirname + '/components/express_webserver.js')(controller);
+// Set up an Express-powered webserver to expose oauth and webhook endpoints.
+const webserver = require(__dirname + '/components/express_webserver.js')(controller);
 
 if (!process.env.clientId || !process.env.clientSecret) {
-
   // Load in some helpers that make running Botkit on Glitch.com better
   require(__dirname + '/components/plugin_glitch.js')(controller);
 
@@ -69,7 +68,8 @@ if (!process.env.clientId || !process.env.clientSecret) {
   // Load in some helpers that make running Botkit on Glitch.com better
   require(__dirname + '/components/plugin_glitch.js')(controller);
 
-  var normalizedPath = require("path").join(__dirname, "skills");
+  // Load skills.
+  const normalizedPath = require("path").join(__dirname, "skills");
   require("fs").readdirSync(normalizedPath).forEach(function(file) {
     require("./skills/" + file)(controller);
   });

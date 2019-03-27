@@ -2,6 +2,9 @@ const debug = require('debug')('botkit:oauth');
 const express = require('express');
 const router = express.Router();
 
+function getSlackApi() {
+}
+
 function onGetOath(req, res) {
   console.log('oathhhhhhhhhhhhhh');
   const code = req.query.code;
@@ -59,7 +62,15 @@ function onLogin(req, res) {
   res.redirect(req.controller.getAuthorizeURL());
 };
 
+function help(req, res) {
+  console.log('help has been called');
+  //console.log(req.controller);
+  res.status(200);
+}
+
 router.get('/oauth', onGetOath);
 router.get('/login', onLogin);
+router.get('/help', help);
+
 
 module.exports = router;
