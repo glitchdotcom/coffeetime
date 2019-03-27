@@ -1,7 +1,7 @@
 // data management around coffeetime users
 
 const shuffle = require('array-shuffle');
-const storage = require('./coffee_data_storage.js');
+const storage = require('./coffee_data_storage');
 
 const baseUser = {
   slackId: null,
