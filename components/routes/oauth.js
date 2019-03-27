@@ -48,7 +48,7 @@ function onGetOath(req, res) {
       // by the developer without meddling with the actual oauth route.
 
       auth.identity = identity;
-      controller.trigger('oauth:success', [auth]);
+      onOAuthSuccess(auth, req.controller);
 
       res.cookie('team_id', auth.team_id);
       res.cookie('bot_user_id', auth.bot.bot_user_id);
@@ -57,7 +57,70 @@ function onGetOath(req, res) {
   });
 }
 
-function onO
+function onOAuthSuccess(payload, controller) {
+  console.log('Got a successful login!');
+      
+  if (!payload.identity.team_id) {
+      console.log('Error: received an oauth response without a team id', payload);
+  }
+  controller.storage.teams.get(payload.identity.team_id, function(err, team) {
+
+  let new_team = false;
+  if (!team) {
+    team = {
+        id: payload.identity.team_id,
+        createdBy: payload.identity.user_id,
+        url: payload.identity.url,
+        name: payload.identity.team,
+    };
+    new_team = true;
+  } else if (err) {
+    console.log('Error: could not load team from storage system:', payload.identity.team_id, err);
+  }
+
+  team.bot = {
+    token: payload.bot.bot_access_token,
+    user_id: payload.bot.bot_user_id,
+    createdBy: payload.identity.user_id,
+    app_token: payload.access_token
+  };
+
+  const testbot = controller.spawn(team.bot);
+
+  testbot.api.auth.test({}, function(err, bot_auth) {
+    if (err) {
+      console.log('Error: could not authenticate bot user', err);
+    } else {
+      team.bot.name = bot_auth.user;
+
+      console.log('team.bot', team.bot);
+      console.log('testbot', testbot);
+      
+      // add in info that is expected by Botkit
+      testbot.identity = bot_auth;
+      testbot.identity.id = bot_auth.user_id;
+      testbot.identity.name = bot_auth.user;
+      testbot.team_info = team;
+
+      // Replace this with your own database!
+
+      controller.storage.teams.save(team, function(err, id) {
+        if (err) {
+            console.log('Error: could not save team record:', err);
+        } else {
+          if (new_team) {
+            console.log('Team created:', team);
+            // Trigger an event that will cause this team to receive onboarding messages
+            controller.trigger('onboard', [testbot, team]);
+          } else {
+            console.log('Team updated:', team);
+          }
+        }
+      });
+    }
+  });
+});
+}
 
 function onLogin(req, res) {
   console.log('loginnnnnnnnnnnnnn');
