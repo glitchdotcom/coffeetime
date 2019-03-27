@@ -9,6 +9,11 @@ function onSlackRecieve(req, res) {
   // respond to Slack that the webhook has been received.
   res.status(200);
 
+  console.log('~~~~~~~~~ slack receive ~~~~~~~~~');
+  const routeParams = req.params;
+  console.log(routeParams);
+  console.log('~~~~~~~~~ * ~~~~~~~~~')
+
   // Now, pass the webhook into be processed.
   req.controller.handleWebhookPayload(req, res);
 }
