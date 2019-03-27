@@ -9,13 +9,17 @@ const dataFormat = {
 }
 
 module.exports.loadData = function() {
-  try {
-    const data = fs.readFileSync(DATA_PATH).toString('utf8');
-    return { ...dataFormat, ...JSON.parse(data) };
-  } catch (error) {
-    console.warn("didn't load data file:");
-    console.warn(error);
-    return { ...dataFormat }
+  if (fs.existsSync(DATA_PATH)) {
+    try {
+      const data = fs.readFileSync(DATA_PATH).toString('utf8');
+      return { ...dataFormat, ...JSON.parse(data) };
+    } catch (error) {
+      console.warn("didn't load data file:");
+      console.warn(error);
+      return { ...dataFormat }
+    }
+  } else {
+    return { ...dataFormat };
   }
 };
 
@@ -26,3 +30,7 @@ module.exports.saveData = function(data) {
     }
   });
 };
+
+module.exports.deleteAllData = function() {
+  module.exports.saveData(dataFormat);
+}
