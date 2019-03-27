@@ -57,6 +57,8 @@ function onGetOath(req, res) {
   });
 }
 
+function onO
+
 function onLogin(req, res) {
   console.log('loginnnnnnnnnnnnnn');
   res.redirect(req.controller.getAuthorizeURL());
@@ -74,14 +76,13 @@ function help(req, res) {
     if (err) {
       console.log(err);
     } else {
-      convo.say('Thanks for installing CoffeeTime! ☕️');
-      convo.say('There are a few things I need to know so that I can perform at my best ✨');
+      convo.say('Send a message on cue');
     }
-    
   });
   //console.log(req.controller);
-  res.json(JSON.stringify(authedBot));
+  res.json('hello');
 }
+
 
 router.get('/oauth', onGetOath);
 router.get('/login', onLogin);
