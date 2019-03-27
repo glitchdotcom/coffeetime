@@ -8,16 +8,7 @@ var hbs = require('express-hbs');
 
 module.exports = function(controller) {
 
-    var webserver = express();
-    webserver.use(function(req, res, next) {
-        req.rawBody = '';
-
-        req.on('data', function(chunk) {
-            req.rawBody += chunk;
-        });
-
-        next();
-    });
+    const webserver = express();
     webserver.use(cookieParser());
     webserver.use(bodyParser.json());
     webserver.use(bodyParser.urlencoded({ extended: true }));
@@ -29,7 +20,7 @@ module.exports = function(controller) {
 
     webserver.use(express.static('public'));
 
-    var server = http.createServer(webserver);
+    const server = http.createServer(webserver);
 
     server.listen(process.env.PORT || 3000, null, function() {
 
