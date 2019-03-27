@@ -14,6 +14,8 @@ function onSlackRecieve(req, res) {
   // Respond to an uninstall event, since AFAICT it's not handled by Botkit.
   if (req.body.event.type === 'app_uninstalled') {
     onAppUninstalled(req.body, req.controller);
+    res.end();
+    return;
   }
 
   // Now, pass the webhook into be processed.
@@ -29,6 +31,8 @@ function onAppUninstalled(payload, controller) {
   // TODO: Once we support multiple teams, we should only delete the team 
   // whose app was uninstalled.
   storage.deleteAllData();
+  
+  // TODO: Delete cron when here
 }
 
 debug('Configured /slack/receive url');

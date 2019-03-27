@@ -112,7 +112,7 @@ function runCoffeeTime(){
   const { pastMatches } = data;
   // copy overwrite new stuff to old one wow
   const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
-  saveData(newData);
+  storage.saveData(newData);
   return newData;
 }
 
