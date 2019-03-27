@@ -1,7 +1,7 @@
 // data management around coffeetime users
 
-const fs = require('fs');
 const shuffle = require('array-shuffle');
+const storage = require('./coffee_data_storage.js');
 
 const baseUser = {
   slackId: null,
@@ -10,13 +10,6 @@ const baseUser = {
 };
 
 
-const dataFormat = {
-  "pairs": [],
-  "userData": [],
-  "pastMatches": []
-}
-
-const DATA_PATH = './.data/coffee.json';
 
 // This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
@@ -111,29 +104,9 @@ function createBlockedMatches(data) {
 }
 
 
-function loadData() {
-  try {
-    const data = fs.readFileSync(DATA_PATH).toString('utf8');
-    return { ...dataFormat, ...JSON.parse(data) };
-  } catch (error) {
-    console.warn("didn't load data file:");
-    console.warn(error);
-    return { ...dataFormat }
-  }
-}
-
-
-function saveData(data) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
-    if (err) {
-      console.warn(err);
-    }
-  });
-}
-
 
 function runCoffeeTime(){
-  const data = loadData();
+  const data = storage.loadData();
   const users = createUserList(data);
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
@@ -144,14 +117,14 @@ function runCoffeeTime(){
 }
 
 function addUser(slackUser) {
-  let data = loadData();
+  let data = storage.loadData();
   if (checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }
   console.log('adding', slackUser.id);
   data = addUserToData(slackUser, data);
-  saveData(data);
+  storage.saveData(data);
   return true;
 }
 
@@ -176,7 +149,7 @@ function addUserToData(slackUser, data) {
 
 
 function removeUser(slackId) {
-  const data = loadData();
+  const data = storage.loadData();
   for (let i = 0; i < data.userData.length; i++) {
     let user = data.userData[i];
     if (user.slackId === slackId) {
@@ -184,19 +157,19 @@ function removeUser(slackId) {
       break;
     }
   }
-  saveData(data);
+  storage.saveData(data);
 }
 
 function setManager(slackId, managerSlackId) {
-  const data = loadData();
+  const data = storage.loadData();
   const user = data.userData.find(u => u.slackId === slackId);
   user.managerSlackId = managerSlackId;
-  saveData(data);
+  storage.saveData(data);
 }
 
 function getManager(slackId) {
   /* istanbul ignore next */
-  return getManagerHelper(loadData(), slackId);
+  return getManagerHelper(storage.loadData(), slackId);
 }
 
 function getManagerHelper(data, userSlackId) {
@@ -207,7 +180,6 @@ module.exports = {
   pairUsers,
   createUserList,
   createBlockedMatches,
-  loadData,
   runCoffeeTime,
   addUser,
   removeUser,

@@ -57,10 +57,6 @@ if (!process.env.clientId || !process.env.clientSecret) {
       res.end('no coffee json found');
     }
   });
-  
-  // Set up a simple storage backend for keeping a record of customers
-  // who sign up for the app via the oauth
-  require(__dirname + '/components/user_registration.js')(controller);
 
   // Send an onboarding message when a new team joins
   require(__dirname + '/components/onboarding.js')(controller);

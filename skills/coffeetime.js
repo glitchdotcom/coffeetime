@@ -4,13 +4,14 @@ The coffeetime bot code goes here
 
 */
 const coffee = require('../coffee');
+const storage = require('../coffee_data_storage');
 
 module.exports = function(controller) {
   controller.hears(['^manager'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       const regex = /<@([^>]+)>/;
       const managerMatch = regex.exec(message.text);
-      if (!coffee.checkForUser(message.user, coffee.loadData())) {
+      if (!coffee.checkForUser(message.user, storage.loadData())) {
         convo.say('You are not subscribed yet. Use `subscribe` to change that.');
       } else if (managerMatch) {
         const managerId = managerMatch[1];
@@ -39,7 +40,7 @@ module.exports = function(controller) {
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
-      const data = coffee.loadData();
+      const data = storage.loadData();
 
       if (coffee.checkForUser(message.user, data)) {
         convo.say('You are all set! Use `unsubscribe` to stop pairing.');
@@ -64,9 +65,6 @@ module.exports = function(controller) {
       const { userData, pairs } = coffee.runCoffeeTime();
       convo.say('We just ran coffeetime and generated a pair of users, lets message them all');
       //OK now we need to message all the users
-      //const coffeeTimeData = coffee.loadData();
-      //const { userData } = coffeeTimeData;
-      // const { pairs } = coffeeTimeData;
       
       const userById = id => userData.filter(user => user.slackId === id)[0];
       

@@ -8,14 +8,22 @@ function onSlackRecieve(req, res) {
 
   // respond to Slack that the webhook has been received.
   res.status(200);
-
-  console.log('~~~~~~~~~ slack receive ~~~~~~~~~');
-  const routeParams = req.params;
-  console.log(routeParams);
-  console.log('~~~~~~~~~ * ~~~~~~~~~')
+  
+  // Respond to an uninstall event, since AFAICT it's not handled by Botkit.
+  if (req.body.event.type === 'app_uninstalled') {
+    onAppUninstalled(req.body, req.controller);
+  }
 
   // Now, pass the webhook into be processed.
   req.controller.handleWebhookPayload(req, res);
+}
+
+function onAppUninstalled(payload, controller) {
+  // Delete this from the team database.
+  controller.storage.teams.delete(payload.team_id);
+  
+  // Delete all users.
+  
 }
 
 debug('Configured /slack/receive url');
