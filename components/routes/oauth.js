@@ -64,8 +64,23 @@ function onLogin(req, res) {
 
 function help(req, res) {
   console.log('help has been called');
+  
+  const slackBotToken = process.env.SLACK_BOT_TOKEN;
+  const authedBot = req.controller.spawn({
+    token: slackBotToken
+  });
+
+  authedBot.startPrivateConversation({user: 'UH1HHBF41'},function(err,convo) {
+    if (err) {
+      console.log(err);
+    } else {
+      convo.say('Thanks for installing CoffeeTime! ☕️');
+      convo.say('There are a few things I need to know so that I can perform at my best ✨');
+    }
+    
+  });
   //console.log(req.controller);
-  res.status(200);
+  res.json(JSON.stringify(authedBot));
 }
 
 router.get('/oauth', onGetOath);
