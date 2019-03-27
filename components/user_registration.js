@@ -56,9 +56,11 @@ module.exports = function(controller) {
                             console.log('Error: could not save team record:', err);
                         } else {
                             if (new_team) {
-                                controller.trigger('create_team', [testbot, team]);
+                              console.log('Team created:', team);
+                              // Trigger an event that will cause this team to receive onboarding messages
+                              controller.trigger('onboard', [testbot, team]);
                             } else {
-                                controller.trigger('update_team', [testbot, team]);
+                              console.log('Team updated:', team);
                             }
                         }
                     });
@@ -66,27 +68,4 @@ module.exports = function(controller) {
             });
         });
     });
-
-
-    controller.on('create_team', function(bot, team) {
-
-        console.log('Team created:', team);
-
-        // Trigger an event that will establish an RTM connection for this bot
-        controller.trigger('rtm:start', [bot.config]);
-
-        // Trigger an event that will cause this team to receive onboarding messages
-        controller.trigger('onboard', [bot, team]);
-
-    });
-
-
-    controller.on('update_team', function(bot, team) {
-
-        console.log('Team updated:', team);
-        // Trigger an event that will establish an RTM connection for this bot
-        controller.trigger('rtm:start', [bot]);
-
-    });
-
 }
