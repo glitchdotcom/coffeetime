@@ -98,15 +98,17 @@ function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
 
 function sendMessageToUsers(bot, slackIds, message) {
   bot.api.conversations.open({ users: slackIds }, (error, response) => {
+    
     bot.startConversation({ channel: response.channel.id, }, (err, convo) => {
       convo.say(message);
+      convo.activate();
     });
   });
 }
 
 function broadcastCoffeeGroups(bot, pairs, message) {
   for (const slackIds of pairs) {
-    sendMessageToUsers(slackIds, message);
+    sendMessageToUsers(bot, slackIds, message);
   }
 }
 

@@ -39,6 +39,7 @@ module.exports = function(controller) {
   });
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
+    console.log(bot.bot_access_token);
     bot.createConversation(message, function(err, convo) {
       const data = storage.loadData();
 
@@ -58,17 +59,18 @@ module.exports = function(controller) {
   });
   
   controller.hears(['^coffeetimerun'], 'direct_message,direct_mention', function(bot, message) {
+    const { pairs, pastMatches } = coffee.runCoffeeTime();
+    coffee.saveNewPairings(pairs, pastMatches);
+    coffee.broadcastCoffeeGroups(bot, pairs, 'hello! this is your coffeepair this week!');
+
     bot.createConversation(message, function(err, convo) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
-      const { pairs, pastMatches } = coffee.runCoffeeTime();
-      convo.say('We just ran coffeetime and generated a pair of users, lets message them all!!');
       
-      coffee.saveNewPairings(pairs, pastMatches);
-      coffee.broadcastCoffeeGroups(bot, pairs, 'hello! this is your coffeepair this week!');
-      
+      convo.say('We just ran coffeetime and generated a pair of users, lets message them all!!');      
       convo.say('~Done~');
+      convo.activate();
     });
   });
 
