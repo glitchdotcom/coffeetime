@@ -69,9 +69,11 @@ module.exports = function(controller) {
       const slackUser = await user.getSlackUserInfo(bot, message.event.user);
       const status = user.subscribeUser(slackUser);
       if (status === true) {
-        convo.say("Yay!! You've subscribed to CoffeeTime! ✨ I'll message you with you coffee buddy on Monday");
+        convo.say("Yay!! You've subscribed to CoffeeTime! ✨ ");
+        convo.say("I'll message you with you coffee buddy on *Monday*.");
       } else {
-        convo.say('Hi! We tried to add you but looks like you were already subscribed. Contact the Coffeetime team if you are not getting paired.');
+        convo.say("You're already subscribed to CoffeeTime!");
+        convo.say("Your buddy this week is");
       }
       convo.activate();
     });
