@@ -68,7 +68,6 @@ function addUserToData(slackUser, data) {
   return data;
 }
 
-
 module.exports.setManager = function(slackId, managerSlackId) {
   const data = storage.loadData();
   const user = data.userData.find(u => u.slackId === slackId);
@@ -77,7 +76,6 @@ module.exports.setManager = function(slackId, managerSlackId) {
 }
 
 module.exports.getManager = function(slackId) {
-  /* istanbul ignore next */
   return getManagerHelper(storage.loadData(), slackId);
 }
 

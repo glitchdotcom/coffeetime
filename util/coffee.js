@@ -20,11 +20,11 @@ function runCoffeeTime(bot) {
   const { pastMatches } = data;
   
   // Generate coffeetime pairs.
-  const {newPairs, newPastMatches} = pairUsers(allUserSlackIds, pastMatches, blockedMatches);
+  const newPairs = pairUsers(allUserSlackIds, pastMatches, blockedMatches);
   // Save the updated pairings.
-  saveNewPairings(newPairs, newPastMatches);
+  saveNewPairings(newPairs.pairs, newPairs.pastMatches);
   // Inform everyone of the new groups.
-  broadcastCoffeeGroups(bot, newPairs,
+  broadcastCoffeeGroups(bot, newPairs.pairs,
       "Hi friends! You're getting coffee together this week! ☕️\n" +
       "I've put you in this chat together, so you can figure out the details here.\n" +
       "Schedule a time that works for the both of you, and have fun!");

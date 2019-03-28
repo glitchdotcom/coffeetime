@@ -2,8 +2,7 @@ const debug = require('debug')('botkit:oauth');
 const express = require('express');
 const router = express.Router();
 
-function getSlackApi() {
-}
+const coffeeCron = require('./../coffee_cron.js');
 
 function onGetOath(req, res) {
   console.log('oathhhhhhhhhhhhhh');
@@ -82,20 +81,20 @@ function onOAuthSuccess(payload, controller) {
     app_token: payload.access_token
   };
     
-  const testbot = controller.spawn(team.bot);
+  const botkitBot = controller.spawn(team.bot);
 
   // Gets the identity/name of the bot.
-  testbot.api.auth.test({}, function(err, bot_auth) {
+  botkitBot.api.auth.test({}, function(err, bot_auth) {
     if (err) {
       console.log('Error: could not authenticate bot user', err);
     } else {
       team.bot.name = bot_auth.user;
       
       // add in info that is expected by Botkit
-      testbot.identity = bot_auth;
-      testbot.identity.id = bot_auth.user_id;
-      testbot.identity.name = bot_auth.user;
-      testbot.team_info = team;
+      botkitBot.identity = bot_auth;
+      botkitBot.identity.id = bot_auth.user_id;
+      botkitBot.identity.name = bot_auth.user;
+      botkitBot.team_info = team;
 
       // Replace this with your own database!
 
@@ -105,8 +104,9 @@ function onOAuthSuccess(payload, controller) {
         } else {
           if (new_team) {
             console.log('Team created:', team);
-            // Trigger an event that will cause this team to receive onboarding messages
-            controller.trigger('onboard', [testbot, team]);
+            // Schedule cron for the new team.
+            coffeeCron.scheduleCoffeeCron(botkitBot);
+            controller.trigger('onboard', [botkitBot, team]);
           } else {
             console.log('Team updated:', team);
           }

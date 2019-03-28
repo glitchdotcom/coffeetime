@@ -1,8 +1,3 @@
-/*
-
-The coffeetime bot code goes here
-
-*/
 const coffee = require('../util/coffee');
 const user = require('../util/user');
 const storage = require('../util/storage');
@@ -74,7 +69,7 @@ module.exports = function(controller) {
       const slackUser = await user.getSlackUserInfo(bot, message.event.user);
       const status = user.subscribeUser(slackUser);
       if (status === true) {
-        convo.say('Hi! Welcome to coffeetime.');
+        convo.say("Yay!! You've subscribed to CoffeeTime! ✨ I'll message you with you coffee buddy on Monday");
       } else {
         convo.say('Hi! We tried to add you but looks like you were already subscribed. Contact the Coffeetime team if you are not getting paired.');
       }
@@ -86,7 +81,8 @@ module.exports = function(controller) {
     bot.createConversation(message, async function(err, convo) {
       const slackUser = await user.getSlackUserInfo(bot, message.event.user);
       user.unsubscribeUser(slackUser);
-      convo.say('enjoy your break from coffeetime');
+      convo.say("Enjoy your break from CoffeeTime!");
+      convo.say("You can always come back by sending a `subscribe` message.");
       convo.activate();
     });
   });
