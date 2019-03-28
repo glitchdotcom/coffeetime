@@ -6,6 +6,7 @@ const debug = require('debug')('botkit:webserver');
 const http = require('http');
 const hbs = require('express-hbs');
 
+const coffeeCron = require('./coffee_cron.js');
 const oath = require('./routes/oauth.js');
 const webhooks = require('./routes/incoming_webhooks.js');
 
@@ -33,6 +34,8 @@ module.exports = function(controller) {
   // Add routes.
   webserver.use(oath);
   webserver.use(webhooks);
+  
+  coffeeCron.scheduleAllCoffeeCrons(controller);
   
   const server = http.createServer(webserver);
   server.listen(process.env.PORT || 3000, null, () => {

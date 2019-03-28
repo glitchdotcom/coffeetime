@@ -58,13 +58,13 @@ module.exports = function(controller) {
     });
   });
   
-  controller.hears(['^coffeetimerun'], 'direct_message,direct_mention', function(bot, message) {
+  controller.hears(['^coffeetimerun'], 'direct_message', function(bot, message) {
     const { pairs, pastMatches } = coffee.runCoffeeTime();
     coffee.saveNewPairings(pairs, pastMatches);
     coffee.broadcastCoffeeGroups(bot, pairs,
         "Hi friends! You're getting coffee together this week! ☕️\n" +
-        "I've put you in this chat together so you can coordinate here." +
-        "Schedule a time that works for the both of you!");
+        "I've put you in this chat together, so you can figure out the details here.\n" +
+        "Schedule a time that works for the both of you, and have fun!");
 
     bot.createConversation(message, function(err, convo) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"      
@@ -80,11 +80,10 @@ module.exports = function(controller) {
       const status = user.subscribeUser(slackUser);
       if (status === true) {
         convo.say('Hi! Welcome to coffeetime.');
-        convo.activate();
       } else {
         convo.say('Hi! We tried to add you but looks like you were already subscribed. Contact the Coffeetime team if you are not getting paired.');
-        convo.activate();
       }
+      convo.activate();
     });
   });
 
