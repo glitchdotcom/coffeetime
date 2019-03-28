@@ -37,6 +37,20 @@ module.exports.unsubscribeUser = function(slackUser) {
   storage.saveData(data);
 }
 
+module.exports.getSlackIdsForAllUsers = function() {
+  const data = storage.loadData();
+  const { userData } = data;
+
+  const userList = [];
+  userData.forEach(function(user) {
+    userList.push(user.slackId);
+  });
+  
+  return userList;
+}
+
+
+
 function checkForUser(slackId, data) {
   for (let i = 0; i < data.userData.length; i++) {
     if (slackId === data.userData[i].slackId) {

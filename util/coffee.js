@@ -2,13 +2,7 @@
 
 const shuffle = require('array-shuffle');
 const storage = require('./storage');
-
-const baseUser = {
-  slackId: null,
-  managerSlackId: null,
-  interests: '',
-};
-
+const user = require('./user');
 
 // This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
@@ -18,29 +12,28 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-
-
 function runCoffeeTime() {
   const data = storage.loadData();
-  const users = createUserList(data);
+  const allUserSlackIds = user.getSlackIdsForAllUsers();
+  
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
+  
   // copy overwrite new stuff to old one wow
-  const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
+  const newData = Object.assign({}, data, pairUsers(allUserSlackIds, pastMatches, blockedMatches));
   storage.saveData(newData);
   return newData;
 }
 
-
 // 
-function pairUsers(users, pastMatches=[], blockedMatches=[]) {
+function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
 
   const blockedMatchesSet = new Set([].concat(blockedMatches, ...pastMatches));
 
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
   const matches = []; // this will become a new entry in pastMatches
 
-  const shuffledUsers = shuffle(users); // we are biased against the last user
+  const shuffledUsers = shuffle(allUserSlackIds); // we are biased against the last user
 
   // who has been added to a group and shouldn't be considered for new groups
   const matchedUsersSet = new Set();
@@ -71,7 +64,7 @@ function pairUsers(users, pastMatches=[], blockedMatches=[]) {
       // we record that we matched the user and their match already so we don't match them again this cycle
       matchedUsersSet.add(user);
       matchedUsersSet.add(match);
-    } else if (matchedUsersSet.size === users.length - 1) {
+    } else if (matchedUsersSet.size === allUserSlackIds.length - 1) {
       // we couldn't find anyone because we are the only unmatched person
       // pick a random group to stick them in
       const pair = pairs[Math.floor(Math.random() * pairs.length)];
@@ -87,25 +80,11 @@ function pairUsers(users, pastMatches=[], blockedMatches=[]) {
       // we couldn't find anyone, remove the oldest history entry and try again
       // if you already were paired with everyone in the company
       // allow you to start pairing with people you've paired with in the past
-      return pairUsers(users, pastMatches.splice(1), blockedMatches);
+      return pairUsers(allUserSlackIds, pastMatches.splice(1), blockedMatches);
     }
   }
 
   return { pairs, pastMatches: [...pastMatches, matches] };
-}
-
-function createUserList(data) {
-  // I did this so I could create users in json in the key-value format like BaseUser 
-  // not have to also create a userList array with the Ids, we may not need this
-  // when subscribe is automated
-  const { userData } = data;
-
-  const userList = []
-  userData.forEach(function(user) {
-    userList.push(user.slackId);
-  });
-  
-  return userList;
 }
 
 function createBlockedMatches(data) {
@@ -136,7 +115,6 @@ function getManagerHelper(data, userSlackId) {
 
 module.exports = {
   pairUsers,
-  createUserList,  // Exported for testing
   createBlockedMatches,  // Exported for testing
   runCoffeeTime,
   setManager,
