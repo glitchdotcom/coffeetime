@@ -94,30 +94,7 @@ module.exports = function(controller) {
   });
   
    controller.hears('interactive', 'direct_message', function(bot, message) {
-
-      bot.reply(message, {
-          attachments:[
-              {
-                  title: 'Do you want to interact with my buttons?',
-                  callback_id: '123',
-                  attachment_type: 'default',
-                  actions: [
-                      {
-                          "name":"yes",
-                          "text": "Yes",
-                          "value": "yes",
-                          "type": "button",
-                      },
-                      {
-                          "name":"no",
-                          "text": "No",
-                          "value": "no",
-                          "type": "button",
-                      }
-                  ]
-              }
-          ]
-      });
+      
   });
   
   // receive an interactive message, and reply with a message that will replace the original
@@ -129,7 +106,8 @@ module.exports = function(controller) {
   controller.on('interactive_message_callback', function(bot, message) {
     console.log('interactive_message_callback!!');
     // check message.actions and message.callback_id to see what action to take...
-
+    console.log(message);
+    
     bot.replyInteractive(message, {
         text: '...',
         attachments: [
@@ -161,3 +139,28 @@ module.exports = function(controller) {
 };
 
 
+function startMenu(bot) {
+  bot.reply(message, {
+          attachments:[
+              {
+                  title: 'Do you want to interact with my buttons?',
+                  callback_id: '123',
+                  attachment_type: 'default',
+                  actions: [
+                      {
+                          "name":"yes",
+                          "text": "Yes",
+                          "value": "yes",
+                          "type": "button",
+                      },
+                      {
+                          "name":"no",
+                          "text": "No",
+                          "value": "no",
+                          "type": "button",
+                      }
+                  ]
+              }
+          ]
+      });
+}
