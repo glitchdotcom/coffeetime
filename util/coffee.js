@@ -1,7 +1,7 @@
 // data management around coffeetime users
 
 const shuffle = require('array-shuffle');
-const storage = require('./coffee_data_storage');
+const storage = require('./storage');
 
 const baseUser = {
   slackId: null,
@@ -113,18 +113,6 @@ function runCoffeeTime() {
   return newData;
 }
 
-function removeUser(slackId) {
-  const data = storage.loadData();
-  for (let i = 0; i < data.userData.length; i++) {
-    let user = data.userData[i];
-    if (user.slackId === slackId) {
-      data.userData.splice(i, 1);
-      break;
-    }
-  }
-  storage.saveData(data);
-}
-
 function setManager(slackId, managerSlackId) {
   const data = storage.loadData();
   const user = data.userData.find(u => u.slackId === slackId);
@@ -146,9 +134,7 @@ module.exports = {
   createUserList,
   createBlockedMatches,
   runCoffeeTime,
-  removeUser,
   setManager,
   getManager,
-  getManagerHelper,
-  addUserToData
+  getManagerHelper
 };

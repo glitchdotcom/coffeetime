@@ -3,15 +3,16 @@
 The coffeetime bot code goes here
 
 */
-const coffee = require('../coffee');
-const storage = require('../coffee_data_storage');
+const coffee = require('../util/coffee');
+const user = require('../util/user');
+const storage = require('../util/storage');
 
 module.exports = function(controller) {
   controller.hears(['^manager'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
       const regex = /<@([^>]+)>/;
       const managerMatch = regex.exec(message.text);
-      if (!coffee.checkForUser(message.user, storage.loadData())) {
+      if (!user.checkForUser(message.user, storage.loadData())) {
         convo.say('You are not subscribed yet. Use `subscribe` to change that.');
       } else if (managerMatch) {
         const managerId = managerMatch[1];
@@ -42,7 +43,7 @@ module.exports = function(controller) {
     bot.createConversation(message, function(err, convo) {
       const data = storage.loadData();
 
-      if (coffee.checkForUser(message.user, data)) {
+      if (user.checkForUser(message.user, data)) {
         convo.say('You are all set! Use `unsubscribe` to stop pairing.');
         const managerId = coffee.getManager(message.user);
         if (managerId) {
@@ -127,7 +128,7 @@ module.exports = function(controller) {
       // we'll need this to get everyone's name and slack ID
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         // console.log(response.user);
-        let status = coffee.addUser(response.user);
+        let status = storage.addUser(response.user);
         if (status === true) {
           //@TODO add them to coffeetime.json as subscribed BACKLOG
           convo.say('Hi! Welcome to coffeetime.');
@@ -142,12 +143,11 @@ module.exports = function(controller) {
 
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, function(err, convo) {
-      //ok here is how to get user info
-      // we'll need this to get everyone's name and slack ID
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         // console.log(response.user);
-        coffee.removeUser(response.user.id);
+        user.removeUser(response.user.id);
       });
+
       //@TODO add them to coffeetime.json as unsubscribed BACKLOG
       convo.say('enjoy your break from coffeetime');
       convo.activate();

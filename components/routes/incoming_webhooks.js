@@ -2,7 +2,7 @@ const debug = require('debug')('botkit:incoming_webhooks');
 const express = require('express');
 const router = express.Router();
 
-const storage = require('./../../coffee_data_storage.js');
+const storage = require('./../../util/storage.js');
 
 function onSlackRecieve(req, res) {
 
