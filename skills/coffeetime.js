@@ -64,10 +64,7 @@ module.exports = function(controller) {
     coffee.broadcastCoffeeGroups(bot, pairs, 'hello! this is your coffeepair this week!');
 
     bot.createConversation(message, function(err, convo) {
-      //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
-      // @TODO limit to certain users MVP
-      // @TODO auto-schedule BACKLOG
-      
+      //Right now let's trigger the pairing by sending the bot a message with "coffeetime"      
       convo.say('We just ran coffeetime and generated a pair of users, lets message them all!!');      
       convo.say('~Done~');
       convo.activate();

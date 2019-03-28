@@ -97,11 +97,10 @@ function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
 }
 
 function sendMessageToUsers(bot, slackIds, message) {
-  bot.api.conversations.open({ users: slackIds }, (error, response) => {
-    
-    bot.startConversation({ channel: response.channel.id, }, (err, convo) => {
-      convo.say(message);
-      convo.activate();
+  bot.api.conversations.open({ users: slackIds.join(',') }, (error, response) => {
+    bot.api.chat.postMessage({
+      channel: response.channel.id,
+      text: message
     });
   });
 }
