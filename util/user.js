@@ -1,5 +1,17 @@
 const storage = require('./storage');
 
+module.exports.getSlackUserInfo = async function(bot, messageSender) {
+  return new Promise((resolve, reject) => {
+    bot.api.users.info({ user: messageSender }, (error, response) => {
+      if (!response || !response.user) {
+        reject(error);
+      } else {
+        resolve(response.user);
+      }
+    });
+  });
+}
+
 module.exports.subscribeUser = function(slackUser) {
   let data = storage.loadData();
   if (checkForUser(slackUser.id, data)) {

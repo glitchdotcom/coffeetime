@@ -128,7 +128,7 @@ module.exports = function(controller) {
       // we'll need this to get everyone's name and slack ID
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         // console.log(response.user);
-        let status = storage.subscribeUser(response.user);
+        let status = user.subscribeUser(response.user);
         if (status === true) {
           //@TODO add them to coffeetime.json as subscribed BACKLOG
           convo.say('Hi! Welcome to coffeetime.');
@@ -145,7 +145,7 @@ module.exports = function(controller) {
     bot.createConversation(message, function(err, convo) {
       bot.api.users.info({ user: message.event.user }, (error, response) => {
         // console.log(response.user);
-        user.removeUser(response.user.id);
+        user.unsubscribeUser(response.user.id);
       });
 
       //@TODO add them to coffeetime.json as unsubscribed BACKLOG
