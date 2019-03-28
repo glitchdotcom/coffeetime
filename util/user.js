@@ -1,6 +1,6 @@
 const storage = require('./storage');
 
-module.exports.addUser = function(slackUser) {
+module.exports.subscribeUser = function(slackUser) {
   let data = storage.loadData();
   if (checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
@@ -12,7 +12,7 @@ module.exports.addUser = function(slackUser) {
   return true;
 }
 
-module.exports.removeUser = function(slackId) {
+module.exports.unsubscribeUser = function(slackId) {
   const data = storage.loadData();
   for (let i = 0; i < data.userData.length; i++) {
     let user = data.userData[i];

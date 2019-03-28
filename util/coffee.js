@@ -18,6 +18,7 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
+// 
 function pairUsers(users, pastMatches=[], blockedMatches=[]) {
 
   const blockedMatchesSet = new Set([].concat(blockedMatches, ...pastMatches));
@@ -80,7 +81,9 @@ function pairUsers(users, pastMatches=[], blockedMatches=[]) {
 }
 
 function createUserList(data) {
-  // I did this so I could create users in json in the key-value format like BaseUser not have to also create a userList array with the Ids, we may not need this when subscribe is automated
+  // I did this so I could create users in json in the key-value format like BaseUser 
+  // not have to also create a userList array with the Ids, we may not need this
+  // when subscribe is automated
   const { userData } = data;
 
   const userList = []
@@ -89,7 +92,6 @@ function createUserList(data) {
   });
   
   return userList;
-
 }
 
 function createBlockedMatches(data) {
@@ -131,8 +133,8 @@ function getManagerHelper(data, userSlackId) {
 
 module.exports = {
   pairUsers,
-  createUserList,
-  createBlockedMatches,
+  createUserList,  // Exported for testing
+  createBlockedMatches,  // Exported for testing
   runCoffeeTime,
   setManager,
   getManager,
