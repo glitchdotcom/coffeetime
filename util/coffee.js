@@ -12,15 +12,21 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-// Runs coffeetime matchmaking and saves data to the database.
+// Runs coffeetime matchmaking and returns a new list of pairs, plus updated past matches
+// Does not save the pairings yet.
 function runCoffeeTime() {
   const data = storage.loadData();
   const allUserSlackIds = user.getSlackIdsForAllUsers();
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
+  
+  return pairUsers(allUserSlackIds, pastMatches, blockedMatches);
+}
 
-  // Update newest pairs, previous matches, and save to storage.
-  const newData = Object.assign({}, data, pairUsers(allUserSlackIds, pastMatches, blockedMatches));
+// Updates the database with new pairs and matches.
+function saveNewPairings(pairs, pastMatches) {
+  const data = storage.loadData();
+  const newData = Object.assign({}, data, { pairs, pastMatches });
   storage.saveData(newData);  
 }
 
@@ -90,10 +96,21 @@ function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
   return { pairs, pastMatches: [...pastMatches, matches] };
 }
 
-function broadcastCoffeeGroups() {
+function sendMessageToUsers(users, message) {
+  
+}
 
-      const messages = [];
-      pairs.forEach(pair => {
+function broadcastCoffeeGroups() {
+  const messages = [];
+  const { pairs, userData } = storage.loadData();
+
+  for (const pairOfSlackIds of pairs) {
+ // Get the user data for everyone in the "pair" (2-3 people).
+    const userById = id => userData.filter(user => user.slackId === id)[0];
+    const usersInPairing = pairOfSlackIds.map(userById);
+  }
+
+      allCoffeeGroups.forEach(group => {
         // Get the user data for everyone in the "pair" (2-3 people).
         const userById = id => userData.filter(user => user.slackId === id)[0];
         const users = pair.map(userById);
@@ -161,4 +178,6 @@ module.exports = {
   pairUsers,  // Exported for testing
   createBlockedMatches,  // Exported for testing
   runCoffeeTime,
+  saveNewPairings,
+  broadcastCoffeeGroups
 };
