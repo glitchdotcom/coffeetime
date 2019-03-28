@@ -94,6 +94,7 @@ module.exports = function(controller) {
   });
   
   controller.hears('interactive', 'direct_message', function(bot, message) {
+    console.log(message.user);
     const content = {
         blocks: [
         {
@@ -121,8 +122,14 @@ module.exports = function(controller) {
         }
       ]
     };
-
-    bot.reply(message, content);
+    bot.api.im.open({ user: message.user }, (error, response) => {
+      bot.api.chat.postMessage({
+        channel: response.channel.id,
+        text: 'hiiiii',
+        ...content
+      });
+    });
+  //  bot.reply(message, content);
      
   });
   
