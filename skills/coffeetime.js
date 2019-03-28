@@ -63,18 +63,18 @@ module.exports = function(controller) {
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
       const { pairs, pastMatches } = coffee.runCoffeeTime();
+      convo.say('We just ran coffeetime and generated a pair of users, lets message them all!!');
+      
       coffee.saveNewPairings(pairs, pastMatches);
+      coffee.broadcastCoffeeGroups(bot, pairs, 'hello! this is your coffeepair this week!');
       
-      convo.say('We just ran coffeetime and generated a pair of users, lets message them all');
-      //OK now we need to message all the users
-      
-      
+      convo.say('~Done~');
     });
   });
 
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, async function(err, convo) {
-      const slackUser = await user.getSlackUserInfo(message.event.user);
+      const slackUser = await user.getSlackUserInfo(bot, message.event.user);
       const status = user.subscribeUser(slackUser);
       if (status === true) {
         convo.say('Hi! Welcome to coffeetime.');
@@ -88,7 +88,7 @@ module.exports = function(controller) {
 
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, async function(err, convo) {
-      const slackUser = await user.getSlackUserInfo(message.event.user);
+      const slackUser = await user.getSlackUserInfo(bot, message.event.user);
       user.unsubscribeUser(slackUser);
       convo.say('enjoy your break from coffeetime');
       convo.activate();

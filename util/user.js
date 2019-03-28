@@ -14,7 +14,7 @@ module.exports.getSlackUserInfo = async function(bot, messageSender) {
 
 module.exports.subscribeUser = function(slackUser) {
   let data = storage.loadData();
-  if (checkForUser(slackUser.id, data)) {
+  if (module.exports.checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }
@@ -49,7 +49,7 @@ module.exports.getSlackIdsForAllUsers = function() {
   return userList;
 }
 
-function checkForUser(slackId, data) {
+module.exports.checkForUser = function(slackId, data) {
   for (let i = 0; i < data.userData.length; i++) {
     if (slackId === data.userData[i].slackId) {
       return true;
