@@ -90,7 +90,6 @@ function onOAuthSuccess(payload, controller) {
       console.log('Error: could not authenticate bot user', err);
     } else {
       team.bot.name = bot_auth.user;
-      console.log('test call with app_id:', payload);
       
       // add in info that is expected by Botkit
       testbot.identity = bot_auth;

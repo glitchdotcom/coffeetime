@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const DATA_PATH = '../.data/coffee.json';
+const DATA_PATH = './.data/coffee.json';
 
 const dataFormat = {
   "pairs": [],
@@ -24,11 +24,15 @@ module.exports.loadData = function() {
 };
 
 module.exports.saveData = function(data) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
-    if (err) {
-      console.warn(err);
-    }
-  });
+  try {
+    fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
+      if (err) {
+        console.warn(err);
+      }
+    });
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 module.exports.deleteAllData = function() {

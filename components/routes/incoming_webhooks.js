@@ -13,6 +13,7 @@ function onSlackRecieve(req, res) {
   
   // Respond to an uninstall event, since AFAICT it's not handled by Botkit.
   if (req.body.event.type === 'app_uninstalled') {
+    
     onAppUninstalled(req.body, req.controller);
     res.end();
     return;
@@ -26,7 +27,6 @@ function onAppUninstalled(payload, controller) {
   console.log('uninstalling!!!!');
   // Delete this from the team database.
   controller.storage.teams.delete(payload.team_id);
-  console.log(payload.api_app_id);
   
   // Delete all users.
   // TODO: Once we support multiple teams, we should only delete the team 
