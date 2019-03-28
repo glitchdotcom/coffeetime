@@ -96,20 +96,18 @@ function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
   return { pairs, pastMatches: [...pastMatches, matches] };
 }
 
-function sendMessageToUsers(users, message) {
+function sendMessageToUsers(bot, slackIds, message) {
   
 }
 
-function broadcastCoffeeGroups() {
+function broadcastCoffeeGroups(bot, message) {
   const messages = [];
-  const { pairs, userData } = storage.loadData();
+  const { pairs } = storage.loadData();
 
-  for (const pairOfSlackIds of pairs) {
- // Get the user data for everyone in the "pair" (2-3 people).
-    const userById = id => userData.filter(user => user.slackId === id)[0];
-    const usersInPairing = pairOfSlackIds.map(userById);
+  for (const slackIds of pairs) {
+      sendMessageToUsers(slackIds, message);
   }
-
+/*
       allCoffeeGroups.forEach(group => {
         // Get the user data for everyone in the "pair" (2-3 people).
         const userById = id => userData.filter(user => user.slackId === id)[0];
@@ -162,6 +160,8 @@ function broadcastCoffeeGroups() {
       // @TODO generate and send the messages! Write copy (include triplets!), and iterate
       // through people and send them messages.
       // sendAssignments(bot, pairs).catch(...)
+      
+      */
 }
 
 function createBlockedMatches(data) {
