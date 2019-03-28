@@ -25,10 +25,7 @@ function onGetOath(req, res) {
       debug('Error confirming oauth', err);
       return res.redirect('/login_error.html');
     }
-
-    // what scopes did we get approved for?
-    const scopes = auth.scope.split(/\,/);
-
+    
     // use the token we got from the oauth
     // to call auth.test to make sure the token is valid
     // but also so that we reliably have the team_id field!
@@ -93,6 +90,7 @@ function onOAuthSuccess(payload, controller) {
       console.log('Error: could not authenticate bot user', err);
     } else {
       team.bot.name = bot_auth.user;
+      console.log('test call with app_id:', payload);
       
       // add in info that is expected by Botkit
       testbot.identity = bot_auth;
