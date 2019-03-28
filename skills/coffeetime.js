@@ -123,32 +123,23 @@ module.exports = function(controller) {
   });
 
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
-    bot.createConversation(message, function(err, convo) {
-      //ok here is how to get user info
-      // we'll need this to get everyone's name and slack ID
-      bot.api.users.info({ user: message.event.user }, (error, response) => {
-        // console.log(response.user);
-        let status = user.subscribeUser(response.user);
-        if (status === true) {
-          //@TODO add them to coffeetime.json as subscribed BACKLOG
-          convo.say('Hi! Welcome to coffeetime.');
-          convo.activate();
-        } else {
-          convo.say('Hi! We tried to add you but looks like you were already subscribed. Contact the Coffeetime team if you are not getting paired.');
-          convo.activate();
-        }
-      });
+    bot.createConversation(message, async function(err, convo) {
+      const slackUser = await user.getSlackUserInfo(message.event.user);
+      const status = user.subscribeUser(slackUser);
+      if (status === true) {
+        convo.say('Hi! Welcome to coffeetime.');
+        convo.activate();
+      } else {
+        convo.say('Hi! We tried to add you but looks like you were already subscribed. Contact the Coffeetime team if you are not getting paired.');
+        convo.activate();
+      }
     });
   });
 
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
-    bot.createConversation(message, function(err, convo) {
-      bot.api.users.info({ user: message.event.user }, (error, response) => {
-        // console.log(response.user);
-        user.unsubscribeUser(response.user.id);
-      });
-
-      //@TODO add them to coffeetime.json as unsubscribed BACKLOG
+    bot.createConversation(message, async function(err, convo) {
+      const slackUser = await user.getSlackUserInfo(message.event.user);
+      user.unsubscribeUser(slackUser);
       convo.say('enjoy your break from coffeetime');
       convo.activate();
     });

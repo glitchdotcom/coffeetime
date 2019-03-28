@@ -18,6 +18,20 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
+
+
+function runCoffeeTime() {
+  const data = storage.loadData();
+  const users = createUserList(data);
+  const blockedMatches = createBlockedMatches(data);
+  const { pastMatches } = data;
+  // copy overwrite new stuff to old one wow
+  const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
+  storage.saveData(newData);
+  return newData;
+}
+
+
 // 
 function pairUsers(users, pastMatches=[], blockedMatches=[]) {
 
@@ -102,17 +116,6 @@ function createBlockedMatches(data) {
     }
   });
   return [...blockedMatchesSet];
-}
-
-function runCoffeeTime() {
-  const data = storage.loadData();
-  const users = createUserList(data);
-  const blockedMatches = createBlockedMatches(data);
-  const { pastMatches } = data;
-  // copy overwrite new stuff to old one wow
-  const newData = Object.assign({}, data, pairUsers(users, pastMatches, blockedMatches));
-  storage.saveData(newData);
-  return newData;
 }
 
 function setManager(slackId, managerSlackId) {

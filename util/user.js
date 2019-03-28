@@ -24,15 +24,16 @@ module.exports.subscribeUser = function(slackUser) {
   return true;
 }
 
-module.exports.unsubscribeUser = function(slackId) {
+module.exports.unsubscribeUser = function(slackUser) {
   const data = storage.loadData();
   for (let i = 0; i < data.userData.length; i++) {
     let user = data.userData[i];
-    if (user.slackId === slackId) {
+    if (user.slackId === slackUser.id) {
       data.userData.splice(i, 1);
       break;
     }
   }
+  //@TODO add them to coffeetime.json as unsubscribed BACKLOG
   storage.saveData(data);
 }
 
