@@ -49,8 +49,6 @@ module.exports.getSlackIdsForAllUsers = function() {
   return userList;
 }
 
-
-
 function checkForUser(slackId, data) {
   for (let i = 0; i < data.userData.length; i++) {
     if (slackId === data.userData[i].slackId) {
@@ -68,4 +66,21 @@ function addUserToData(slackUser, data) {
   };
   data.userData.push(userRecord);
   return data;
+}
+
+
+module.exports.setManager = function(slackId, managerSlackId) {
+  const data = storage.loadData();
+  const user = data.userData.find(u => u.slackId === slackId);
+  user.managerSlackId = managerSlackId;
+  storage.saveData(data);
+}
+
+module.exports.getManager = function(slackId) {
+  /* istanbul ignore next */
+  return getManagerHelper(storage.loadData(), slackId);
+}
+
+function getManagerHelper(data, userSlackId) {
+  return data.userData.find(u => u.slackId === userSlackId).managerSlackId;
 }

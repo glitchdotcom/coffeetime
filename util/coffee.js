@@ -12,10 +12,10 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
+// Returns a copy of the data stored in the database, after matchmaking has happened.
 function runCoffeeTime() {
   const data = storage.loadData();
   const allUserSlackIds = user.getSlackIdsForAllUsers();
-  
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
   
@@ -97,27 +97,8 @@ function createBlockedMatches(data) {
   return [...blockedMatchesSet];
 }
 
-function setManager(slackId, managerSlackId) {
-  const data = storage.loadData();
-  const user = data.userData.find(u => u.slackId === slackId);
-  user.managerSlackId = managerSlackId;
-  storage.saveData(data);
-}
-
-function getManager(slackId) {
-  /* istanbul ignore next */
-  return getManagerHelper(storage.loadData(), slackId);
-}
-
-function getManagerHelper(data, userSlackId) {
-  return data.userData.find(u => u.slackId === userSlackId).managerSlackId;
-}
-
 module.exports = {
-  pairUsers,
+  pairUsers,  // Exported for testing
   createBlockedMatches,  // Exported for testing
   runCoffeeTime,
-  setManager,
-  getManager,
-  getManagerHelper
 };

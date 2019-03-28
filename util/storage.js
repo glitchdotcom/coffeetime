@@ -3,6 +3,7 @@ const fs = require('fs');
 const DATA_PATH = './.data/coffee.json';
 
 const dataFormat = {
+  // Note that "pairs" is sometimes a misnomer, as there can be groups of 3.
   "pairs": [],
   "userData": [],
   "pastMatches": []

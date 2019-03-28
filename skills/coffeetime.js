@@ -63,15 +63,15 @@ module.exports = function(controller) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
-      const { userData, pairs } = coffee.runCoffeeTime();
+      const { userData, allGroups } = coffee.runCoffeeTime();
       convo.say('We just ran coffeetime and generated a pair of users, lets message them all');
       //OK now we need to message all the users
       
       const userById = id => userData.filter(user => user.slackId === id)[0];
       
-      let messages = [];
-      pairs.forEach(pair => {
-        let users = pair.map(userById);
+      const messages = [];
+      allGroups.forEach(pair => {
+        const users = pair.map(userById);
         console.log(users);
         users.forEach(user => {
           let others = users.filter(u => u.slackId !== user.slackId);
