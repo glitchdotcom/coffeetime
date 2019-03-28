@@ -93,8 +93,37 @@ module.exports = function(controller) {
     // TODO - add slash commands via slack admin interface
   });
   
-   controller.hears('interactive', 'direct_message', function(bot, message) {
-      
+  controller.hears('interactive', 'direct_message', function(bot, message) {
+    const content = {
+        blocks: [
+        {
+          "type": "actions",
+          "elements": [
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Join CoffeeTime! 💫",
+                "emoji": true
+              },
+              "value": "subscribe"
+            },
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Meh, not right now",
+                "emoji": true
+              },
+              "value": "click_me_123"
+            }
+          ]
+        }
+      ]
+    };
+
+    bot.reply(message, content);
+     
   });
   
   // receive an interactive message, and reply with a message that will replace the original
@@ -140,6 +169,8 @@ module.exports = function(controller) {
 
 
 function startMenu(bot) {
+
+
   bot.reply(message, {
           attachments:[
               {
