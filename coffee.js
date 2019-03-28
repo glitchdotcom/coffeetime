@@ -10,7 +10,6 @@ const baseUser = {
 };
 
 
-
 // This function formats the pair generated and outputs a string with the pair
 function userPairKey(userA, userB) {
   if (userB < userA) {
@@ -103,9 +102,7 @@ function createBlockedMatches(data) {
   return [...blockedMatchesSet];
 }
 
-
-
-function runCoffeeTime(){
+function runCoffeeTime() {
   const data = storage.loadData();
   const users = createUserList(data);
   const blockedMatches = createBlockedMatches(data);
@@ -115,38 +112,6 @@ function runCoffeeTime(){
   storage.saveData(newData);
   return newData;
 }
-
-function addUser(slackUser) {
-  let data = storage.loadData();
-  if (checkForUser(slackUser.id, data)) {
-    console.warn(`not adding user ${slackUser.id} twice!`);
-    return false;
-  }
-  console.log('adding', slackUser.id);
-  data = addUserToData(slackUser, data);
-  storage.saveData(data);
-  return true;
-}
-
-function checkForUser(slackId, data) {
-  for (let i = 0; i < data.userData.length; i++) {
-    if (slackId === data.userData[i].slackId) {
-      return true;
-    }
-  }
-  
-  return false;
-}
-
-function addUserToData(slackUser, data) {
-  const userRecord = {
-    slackId: slackUser.id,
-    name: slackUser.real_name
-  };
-  data.userData.push(userRecord);
-  return data;
-}
-
 
 function removeUser(slackId) {
   const data = storage.loadData();
@@ -181,11 +146,9 @@ module.exports = {
   createUserList,
   createBlockedMatches,
   runCoffeeTime,
-  addUser,
   removeUser,
   setManager,
   getManager,
   getManagerHelper,
-  checkForUser,
   addUserToData
 };

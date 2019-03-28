@@ -23,6 +23,18 @@ module.exports.loadData = function() {
   }
 };
 
+module.exports.addUser = function(slackUser) {
+  let data = module.exports.loadData();
+  if (checkForUser(slackUser.id, data)) {
+    console.warn(`not adding user ${slackUser.id} twice!`);
+    return false;
+  }
+  console.log('adding', slackUser.id);
+  data = addUserToData(slackUser, data);
+  module.exports.saveData(data);
+  return true;
+}
+
 module.exports.saveData = function(data) {
   fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
     if (err) {
@@ -33,4 +45,23 @@ module.exports.saveData = function(data) {
 
 module.exports.deleteAllData = function() {
   module.exports.saveData(dataFormat);
+}
+
+function checkForUser(slackId, data) {
+  for (let i = 0; i < data.userData.length; i++) {
+    if (slackId === data.userData[i].slackId) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+function addUserToData(slackUser, data) {
+  const userRecord = {
+    slackId: slackUser.id,
+    name: slackUser.real_name
+  };
+  data.userData.push(userRecord);
+  return data;
 }
