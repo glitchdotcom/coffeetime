@@ -16,25 +16,24 @@ module.exports = function(controller) {
         convo.say('You are not subscribed yet. Use `subscribe` to change that.');
       } else if (managerMatch) {
         const managerId = managerMatch[1];
-        coffee.setManager(message.user, managerId);
+        user.setManager(message.user, managerId);
         convo.say(`<@${managerId}> is your manager now`);
       } else if (message.text.includes('none')) {
-        const oldManagerId = coffee.getManager(message.user);
-        coffee.setManager(message.user, null);
+        const oldManagerId = user.getManager(message.user);
+        user.setManager(message.user, null);
         if (oldManagerId) {
           convo.say(`<@${oldManagerId}> is not your manager any more`);
         } else {
           convo.say(`You didn't have a manager set`);
         }
       } else {
-        const managerId = coffee.getManager(message.user);
+        const managerId = user.getManager(message.user);
         if (managerId) {
           convo.say(`<@${managerId}> is your manager. Say \`manager none\` to have no manager`);
         } else {
           convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
         }
       }
-        
       convo.activate();
     });
   });
@@ -45,7 +44,7 @@ module.exports = function(controller) {
 
       if (user.checkForUser(message.user, data)) {
         convo.say('You are all set! Use `unsubscribe` to stop pairing.');
-        const managerId = coffee.getManager(message.user);
+        const managerId = user.getManager(message.user);
         if (managerId) {
           convo.say(`<@${managerId}> is your manager, you won't pair with them`);
         } else {
@@ -63,62 +62,11 @@ module.exports = function(controller) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"
       // @TODO limit to certain users MVP
       // @TODO auto-schedule BACKLOG
-      const { userData, allGroups } = coffee.runCoffeeTime();
+      const latestGroupings = coffee.runCoffeeTime();
       convo.say('We just ran coffeetime and generated a pair of users, lets message them all');
       //OK now we need to message all the users
       
-      const userById = id => userData.filter(user => user.slackId === id)[0];
       
-      const messages = [];
-      allGroups.forEach(pair => {
-        const users = pair.map(userById);
-        console.log(users);
-        users.forEach(user => {
-          let others = users.filter(u => u.slackId !== user.slackId);
-          console.log('others', others);
-          let message;
-          if (others.length === 1) {
-            message = `Hey <@${user.slackId}>, this week your coffee time is with <@${others[0].slackId}>.`;
-          } else if (others.length === 2) {
-            message = `Hey <@${user.slackId}>, this week your coffee time is with <@${others[0].slackId}> *and* <@${others[1].slackId}>! Fancy.`;            
-          } else {
-            console.warn("oh no, this probably shouldn't have happened");
-          }
-          if (message) {
-            messages.push({ user: user.slackId, text: message });
-          }
-        })
-      });
-      
-      console.log('messages', message);
-
-      // @TODO you'll need to go through the pairs and message each of the people with their pairing
-      // the message should tell them name of the person they are paired with
-      // I think bot.api.im.open will work
-      // https://github.com/howdyai/botkit/issues/89
-      // https://api.slack.com/methods/im.open
-      messages.forEach(message => {
-        bot.api.im.open(
-          {
-            user: message.user,
-          },
-          (error, response) => {
-            console.log(response);
-            bot.startConversation(
-              {
-                user: message.user,
-                channel: response.channel.id,
-              },
-              (err, convo) => {
-                convo.say(message.text);
-              },
-            );
-          },
-        );
-      });
-      // @TODO generate and send the messages! Write copy (include triplets!), and iterate
-      // through people and send them messages.
-      // sendAssignments(bot, pairs).catch(...)
     });
   });
 

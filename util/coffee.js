@@ -12,20 +12,23 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-// Returns a copy of the data stored in the database, after matchmaking has happened.
+// Runs coffeetime matchmaking and saves data to the database.
 function runCoffeeTime() {
   const data = storage.loadData();
   const allUserSlackIds = user.getSlackIdsForAllUsers();
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
-  
-  // copy overwrite new stuff to old one wow
+
+  // Update newest pairs, previous matches, and save to storage.
   const newData = Object.assign({}, data, pairUsers(allUserSlackIds, pastMatches, blockedMatches));
-  storage.saveData(newData);
-  return newData;
+  storage.saveData(newData);  
 }
 
-// 
+// Returns an object with:
+// {
+//   pairs: updated newest pairings,
+//   pastMatches: updated past matches.
+// }
 function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
 
   const blockedMatchesSet = new Set([].concat(blockedMatches, ...pastMatches));
@@ -85,6 +88,63 @@ function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
   }
 
   return { pairs, pastMatches: [...pastMatches, matches] };
+}
+
+function broadcastCoffeeGroups() {
+
+      const messages = [];
+      pairs.forEach(pair => {
+        // Get the user data for everyone in the "pair" (2-3 people).
+        const userById = id => userData.filter(user => user.slackId === id)[0];
+        const users = pair.map(userById);
+        console.log(users);
+        
+        users.forEach(user => {
+          let others = users.filter(u => u.slackId !== user.slackId);
+          console.log('others', others);
+          let message;
+          if (others.length === 1) {
+            message = `Hey <@${user.slackId}>, this week your coffee time is with <@${others[0].slackId}>.`;
+          } else if (others.length === 2) {
+            message = `Hey <@${user.slackId}>, this week your coffee time is with <@${others[0].slackId}> *and* <@${others[1].slackId}>! Fancy.`;            
+          } else {
+            console.warn("oh no, this probably shouldn't have happened");
+          }
+          if (message) {
+            messages.push({ user: user.slackId, text: message });
+          }
+        })
+      });
+      
+      console.log('messages', message);
+
+      // @TODO you'll need to go through the pairs and message each of the people with their pairing
+      // the message should tell them name of the person they are paired with
+      // I think bot.api.im.open will work
+      // https://github.com/howdyai/botkit/issues/89
+      // https://api.slack.com/methods/im.open
+      messages.forEach(message => {
+        bot.api.im.open(
+          {
+            user: message.user,
+          },
+          (error, response) => {
+            console.log(response);
+            bot.startConversation(
+              {
+                user: message.user,
+                channel: response.channel.id,
+              },
+              (err, convo) => {
+                convo.say(message.text);
+              },
+            );
+          },
+        );
+      });
+      // @TODO generate and send the messages! Write copy (include triplets!), and iterate
+      // through people and send them messages.
+      // sendAssignments(bot, pairs).catch(...)
 }
 
 function createBlockedMatches(data) {
