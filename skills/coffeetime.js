@@ -59,12 +59,7 @@ module.exports = function(controller) {
   });
   
   controller.hears(['^coffeetimerun'], 'direct_message', function(bot, message) {
-    const { pairs, pastMatches } = coffee.runCoffeeTime();
-    coffee.saveNewPairings(pairs, pastMatches);
-    coffee.broadcastCoffeeGroups(bot, pairs,
-        "Hi friends! You're getting coffee together this week! ☕️\n" +
-        "I've put you in this chat together, so you can figure out the details here.\n" +
-        "Schedule a time that works for the both of you, and have fun!");
+    coffee.runCoffeeTime(bot);
 
     bot.createConversation(message, function(err, convo) {
       //Right now let's trigger the pairing by sending the bot a message with "coffeetime"      

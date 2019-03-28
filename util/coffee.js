@@ -12,15 +12,22 @@ function userPairKey(userA, userB) {
   return `${userA}-${userB}`;
 }
 
-// Runs coffeetime matchmaking and returns a new list of pairs, plus updated past matches
-// Does not save the pairings yet.
-function runCoffeeTime() {
+// Runs coffeetime matchmaking and messages groups with the new matches.
+function runCoffeeTime(bot) {
   const data = storage.loadData();
   const allUserSlackIds = user.getSlackIdsForAllUsers();
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
   
-  return pairUsers(allUserSlackIds, pastMatches, blockedMatches);
+  // Generate coffeetime pairs.
+  const {newPairs, newPastMatches} = pairUsers(allUserSlackIds, pastMatches, blockedMatches);
+  // Save the updated pairings.
+  saveNewPairings(newPairs, newPastMatches);
+  // Inform everyone of the new groups.
+  broadcastCoffeeGroups(bot, newPairs,
+      "Hi friends! You're getting coffee together this week! ☕️\n" +
+      "I've put you in this chat together, so you can figure out the details here.\n" +
+      "Schedule a time that works for the both of you, and have fun!");
 }
 
 // Updates the database with new pairs and matches.
