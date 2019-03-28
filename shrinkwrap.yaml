@@ -8,6 +8,7 @@ dependencies:
   express: 4.16.4
   express-hbs: 2.0.2
   node-env-file: 0.1.8
+  node-schedule: 1.3.2
   querystring: 0.2.0
   request: 2.88.0
   wordfilter: 0.2.6
@@ -1412,6 +1413,15 @@ packages:
   /core-util-is/1.0.2:
     resolution:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
+  /cron-parser/2.9.0:
+    dependencies:
+      is-nan: 1.2.1
+      moment-timezone: 0.5.23
+    dev: false
+    engines:
+      node: '>=0.8'
+    resolution:
+      integrity: sha512-WkHhWssz4OxEdepOIt3dXYQiKZgPwgeF1yzBMlLwnUCwv0ziNeINNbMs5haoG10ikM/j0LMrrhEsuK2Blt638w==
   /cross-spawn/5.1.0:
     dependencies:
       lru-cache: 4.1.5
@@ -2560,6 +2570,14 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-0Jb5JqPe1WAPP9/ZEZjLCIjC2GM=
+  /is-nan/1.2.1:
+    dependencies:
+      define-properties: 1.1.3
+    dev: false
+    engines:
+      node: '>= 0.4'
+    resolution:
+      integrity: sha1-n69ltvttskt/XAYoR16nH5iEAeI=
   /is-number/2.1.0:
     dependencies:
       kind-of: 3.2.2
@@ -3312,6 +3330,10 @@ packages:
   /lodash/4.17.11:
     resolution:
       integrity: sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
+  /long-timeout/0.1.1:
+    dev: false
+    resolution:
+      integrity: sha1-lyHXiLR+C8taJMLivuGg2lXatRQ=
   /loose-envify/1.4.0:
     dependencies:
       js-tokens: 4.0.0
@@ -3513,6 +3535,12 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
+  /moment-timezone/0.5.23:
+    dependencies:
+      moment: 2.24.0
+    dev: false
+    resolution:
+      integrity: sha512-WHFH85DkCfiNMDX5D3X7hpNH3/PUhjTGcD0U1SgfBGZxJ3qUmJh5FdvaFjcClxOvB3rzdfj4oRffbI38jEnC1w==
   /moment/2.19.3:
     dev: false
     resolution:
@@ -3521,6 +3549,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-TCZ36BjURTeFTM/CwRcViQlfkMvL1/vFISuNLO5GkcVm1+QHfbSiNqZuWeMFjj1/3+uAjXswgRk30j1kkLYJBQ==
+  /moment/2.24.0:
+    dev: false
+    resolution:
+      integrity: sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
   /mongodb-core/2.1.20:
     dependencies:
       bson: 1.0.9
@@ -3651,6 +3683,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-SUDEb+o71XR5lXSTyivXd9J7fCloE3SyP4lSgt3lU2oSANiox+SxlNRGPjDKrwU1YN3ix2KN/VGGCg0t01rttQ==
+  /node-schedule/1.3.2:
+    dependencies:
+      cron-parser: 2.9.0
+      long-timeout: 0.1.1
+      sorted-array-functions: 1.2.0
+    dev: false
+    resolution:
+      integrity: sha512-GIND2pHMHiReSZSvS6dpZcDH7pGPGFfWBIEud6S00Q8zEIzAs9ommdyRK1ZbQt8y1LyZsJYZgPnyi7gpU2lcdw==
   /node-xmpp-client/3.2.0:
     dependencies:
       browser-request: 0.3.3
@@ -4630,6 +4670,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==
+  /sorted-array-functions/1.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-sWpjPhIZJtqO77GN+LD8dDsDKcWZ9GCOJNqKzi1tvtjGIzwfoyuRH8S0psunmc6Z5P+qfDqztSbwYR5X/e1UTg==
   /source-map-resolve/0.5.2:
     dependencies:
       atob: 2.1.2
@@ -5384,6 +5428,7 @@ specifiers:
   express-hbs: ^2.0.1
   jest: ^23.2.0
   node-env-file: ^0.1.8
+  node-schedule: ^1.3.2
   querystring: ^0.2.0
   request: ^2.88.0
   wordfilter: ^0.2.6
