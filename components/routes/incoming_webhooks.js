@@ -12,7 +12,7 @@ function onSlackRecieve(req, res) {
   res.status(200);
   
   // Respond to an uninstall event, since AFAICT it's not handled by Botkit.
-  if (req.body.event.type === 'app_uninstalled') {
+  if (req.body.event && req.body.event.type === 'app_uninstalled') {
     
     onAppUninstalled(req.body, req.controller);
     res.end();
