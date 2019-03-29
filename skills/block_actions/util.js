@@ -3,7 +3,7 @@ const setup = {
   NO_INSTALL_VALUE: "no_dont_install",
 };
 
-function createButton(text, value) {
+function button(text, value) {
   return {
     "type": "button",
     "text": {
@@ -15,39 +15,30 @@ function createButton(text, value) {
   };
 }
 
-function createActions(...elements) {
+function actions(...elements) {
   return {
     "type": "actions",
     "elements": elements
   };
 }
 
-function createSection(text) {
+function section(...text) {
   return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": text
+      "text": text.join('\n')
     }
   };
 }
 
-function createBlocks(text) {
-  return {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": text
-    }
-  };
-}
-
-const blocks = {
-  createButton,
-  createActions
+const blocksBuilder = {
+  button,
+  actions,
+  section
 };
 
-module.export = {
+module.exports = {
   setup,
-  blocks
+  blocksBuilder
 }
