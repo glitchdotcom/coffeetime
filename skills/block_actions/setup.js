@@ -41,9 +41,13 @@ module.exports = function(controller) {
 
 function onYesInstallFlow(bot, message) {
     const blocks = [
-      blocksBuilder.section('Fantastic!'),
       blocksBuilder.section(
-        'First question, who should I enroll in CoffeeTime?')
+        '*Fantastic!*',
+        'First question, who should I enroll in CoffeeTime?'),
+      blocksBuilder.actions(
+        blocksBuilder.button('Everyone!', setup.SUBSCRIBE_ALL),
+        blocksBuilder.button('Not right now', setup.NO_INSTALL_VALUE)
+      )
     ];
   bot.replyInteractive(message, {
     blocks

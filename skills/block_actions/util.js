@@ -3,6 +3,12 @@ const setup = {
   NO_INSTALL_VALUE: "no_dont_install",
 };
 
+const subscribe = {
+  SUBSCRIBE_ALL: 'subscribe_all',
+  SUBSCRIBE_ME: 'subscribe_me',
+  SUBSCRIBE_NOBODY: 'subscribe_nobody'
+};
+
 function button(text, value) {
   return {
     "type": "button",
