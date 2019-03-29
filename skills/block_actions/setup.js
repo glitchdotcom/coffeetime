@@ -110,29 +110,44 @@ function onSubscribeHelp(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-function onSubscribeAll(bot, message) {
+async function onSubscribeAll(bot, message) {
+  const getFirstPageOfUsers = await getAllUsersInSlack(bot);
+  const allSlackIdsFormatted = 
+        getFirstPageOfUsers.allMembers
+            .map(m => m.id)
+            .map(m => `<@${m}>`);
+
+  console.log(getFirstPageOfUsers);
   const blocks = [
     blocksBuilder.section(
-      "Awesome! I'll add everyone to CoffeeTime.",
+      "Awesome! Here's who I'm planning to add to CoffeeTime:",
     ),
     blocksBuilder.section(
-      'So if you click...',
-      "- *Everyone*: I'll add all full users in the Slack to CoffeeTime. That means I won't add guests or bots.",
-      "- *Just me*: I'll add you to CoffeeTime",
-      "- *No one for now*: I won't add anyone to CoffeeTime yet."
+      allSlackIdsFormatted.join(', ')
     ),
     blocksBuilder.section(
-      "Does this look right?"
+      "Does that look right?"
     ),
-    subscribeActions()
+    blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
+    blocksBuilder.button('Just me', subscribe.ME_VALUE),
+    blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
   ];
   bot.replyInteractive(message, { blocks });
 }
 
-async function getAllUsersInSlack(bot) {
+function isFullUser(m) {
+  return !m.deleted && !m.is_restricted && m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
+}
+
+async function getAllUsersInSlack(bot, cursor) {
+  const args = cursor ? {cursor} : {};
   return new Promise((resolve, reject) => {
     bot.api.users.list(args, (error, response) => {
-      response.members
+      const allMembers = response.members.filter(isFullUser);
+      resolve({
+        allMembers,
+        nextCursor: response.response_metadata.next_cursor
+      });
     });
   });
 }
