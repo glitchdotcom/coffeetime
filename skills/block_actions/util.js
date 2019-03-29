@@ -4,9 +4,10 @@ const setup = {
 };
 
 const subscribe = {
-  SUBSCRIBE_ALL: 'subscribe_all',
-  SUBSCRIBE_ME: 'subscribe_me',
-  SUBSCRIBE_NOBODY: 'subscribe_nobody'
+  ALL: 'subscribe_all',
+  ME: 'subscribe_me',
+  NOBODY: 'subscribe_nobody',
+  HELP: 'subscribe_help'
 };
 
 function button(text, value) {
@@ -46,5 +47,6 @@ const blocksBuilder = {
 
 module.exports = {
   setup,
-  blocksBuilder
+  blocksBuilder,
+  subscribe
 }
