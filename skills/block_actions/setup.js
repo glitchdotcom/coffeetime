@@ -31,7 +31,13 @@ module.exports = function(controller) {
     }
   });
   
-  controller.hears('interactive', 'direct_message', function(bot, message) {
+  controller.hears('interactive', 'direct_message', async function(bot, message) {
+    // This is some shenanigans!
+    if (!bot.getFirstPageOfUsers) {
+      const getFirstPageOfUsers = await getAllUsersInSlack(bot);
+      bot.getFirstPageOfUsers = getFirstPageOfUsers;
+    }
+    
     const blocks = [
       blocksBuilder.section('Welcome to CoffeeTime!'),
       blocksBuilder.section(...defineCoffeeTimeDialogue()),
@@ -108,12 +114,11 @@ function onSubscribeHelp(bot, message) {
 }
 
 async function onSubscribeAll(bot, message) {
-  const getFirstPageOfUsers = await getAllUsersInSlack(bot);
+  console.log(bot.getFirstPageOfUsers);
   const allSlackIdsFormatted = 
-        getFirstPageOfUsers.allMembers
+        bot.getFirstPageOfUsers.allMembers
             .map(m => m.id)
             .map(m => `<@${m}>`);
-
   console.log(allSlackIdsFormatted);
   const blocks = [
     blocksBuilder.section(
@@ -139,6 +144,18 @@ function isFullUser(m) {
   if (m.id === 'USLACKBOT') {
     return false;
   }
-  
   return !m.deleted && !m.is_restricted && !m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
+}
+
+async function getAllUsersInSlack(bot, cursor) {
+  const args = cursor ? {cursor} : {};
+  return new Promise((resolve, reject) => {
+    bot.api.users.list(args, (error, response) => {
+      const allMembers = response.members.filter(isFullUser);
+      resolve({
+        allMembers,
+        nextCursor: response.response_metadata.next_cursor
+      });
+    });
+  });
 }

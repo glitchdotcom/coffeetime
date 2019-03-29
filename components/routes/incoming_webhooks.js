@@ -10,6 +10,7 @@ function onSlackRecieve(req, res) {
 
   // respond to Slack that the webhook has been received.
   res.status(200);
+
   
   // Respond to an uninstall event, since AFAICT it's not handled by Botkit.
   if (req.body.event && req.body.event.type === 'app_uninstalled') {
