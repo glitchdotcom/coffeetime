@@ -35,14 +35,8 @@ module.exports = function(controller) {
     }
   });
   
-  controller.hears('interactive', 'direct_message', async function(bot, message) {
-    // This is some shenanigans!
-    if (!bot.getFirstPageOfUsers) {
-      const getFirstPageOfUsers = await getAllUsersInSlack(bot);
-      userListShenanigans[message.team_id] = getFirstPageOfUsers;
-    }
-    
-    const blocks = [
+  controller.hears('interactive', 'direct_message', function(bot, message) {
+     const blocks = [
       blocksBuilder.section('Welcome to CoffeeTime!'),
       blocksBuilder.section(...defineCoffeeTimeDialogue()),
       blocksBuilder.section(
@@ -118,25 +112,36 @@ function onSubscribeHelp(bot, message) {
 }
 
 async function onSubscribeAll(bot, message) {
+  /*
   console.log(userListShenanigans, message);
   const allSlackIdsFormatted = 
         userListShenanigans[message.team.id].allMembers
             .map(m => m.id)
             .map(m => `<@${m}>`);
   console.log(allSlackIdsFormatted);
+  */
+  
+   const firstPageOfUsers = await getAllUsersInSlack(bot);
+  const allSlackIdsFormatted = firstPageOfUsers.allMembers
+            .map(m => m.id)
+            .map(m => `<@${m}>`);
+    
+    
   const blocks = [
     blocksBuilder.section(
       "Awesome! Here's who I'm planning to add to CoffeeTime:",
     ),
     blocksBuilder.section(
-      allSlackIdsFormatted.join(', ')
+      '> ' + allSlackIdsFormatted.join(', ')
     ),
     blocksBuilder.section(
       "Does that look right?"
     ),
-    blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
-    blocksBuilder.button('Oh hmm, not quite', subscribe.ME_VALUE),
-    blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
+    blocksBuilder.actions(
+      blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
+      blocksBuilder.button('Oh hmm, not quite', subscribe.ME_VALUE),
+      blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
+    )
   ];
   console.log('can reply?');
   
