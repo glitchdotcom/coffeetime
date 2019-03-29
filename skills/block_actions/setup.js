@@ -4,6 +4,10 @@ const storage = require('../../util/storage');
 const { setup, subscribe, blocksBuilder } = require('./util');
 
 
+// This is a weird in-memory cache of users ....
+// Cached bc async calls don't seem to work in the middle of an interactive interaction.
+const userListShenanigans = {};
+
 module.exports = function(controller) {
   
   // receive an interactive message, and reply with a message that will replace the original
@@ -35,7 +39,7 @@ module.exports = function(controller) {
     // This is some shenanigans!
     if (!bot.getFirstPageOfUsers) {
       const getFirstPageOfUsers = await getAllUsersInSlack(bot);
-      bot.getFirstPageOfUsers = getFirstPageOfUsers;
+      userListShenanigans[message.team_id] = getFirstPageOfUsers;
     }
     
     const blocks = [
@@ -114,9 +118,9 @@ function onSubscribeHelp(bot, message) {
 }
 
 async function onSubscribeAll(bot, message) {
-  console.log(bot.getFirstPageOfUsers);
+  console.log(userListShenanigans, message);
   const allSlackIdsFormatted = 
-        bot.getFirstPageOfUsers.allMembers
+        userListShenanigans[message.team.id].allMembers
             .map(m => m.id)
             .map(m => `<@${m}>`);
   console.log(allSlackIdsFormatted);
