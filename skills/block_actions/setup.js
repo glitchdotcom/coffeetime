@@ -27,9 +27,6 @@ module.exports = function(controller) {
           onSubscribeAll(bot, message);
           break;
           
-        case subscribe.ALL_VALUE:
-          onSubscribeAll(bot, message);
-          break;
       }
     }
   });
@@ -117,7 +114,7 @@ async function onSubscribeAll(bot, message) {
             .map(m => m.id)
             .map(m => `<@${m}>`);
 
-  console.log(getFirstPageOfUsers);
+  console.log(allSlackIdsFormatted);
   const blocks = [
     blocksBuilder.section(
       "Awesome! Here's who I'm planning to add to CoffeeTime:",
@@ -129,25 +126,19 @@ async function onSubscribeAll(bot, message) {
       "Does that look right?"
     ),
     blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
-    blocksBuilder.button('Just me', subscribe.ME_VALUE),
+    blocksBuilder.button('Oh hmm, not quite', subscribe.ME_VALUE),
     blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
   ];
+  console.log('can reply?');
+  
   bot.replyInteractive(message, { blocks });
 }
 
 function isFullUser(m) {
-  return !m.deleted && !m.is_restricted && m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
-}
-
-async function getAllUsersInSlack(bot, cursor) {
-  const args = cursor ? {cursor} : {};
-  return new Promise((resolve, reject) => {
-    bot.api.users.list(args, (error, response) => {
-      const allMembers = response.members.filter(isFullUser);
-      resolve({
-        allMembers,
-        nextCursor: response.response_metadata.next_cursor
-      });
-    });
-  });
+  // For some reasons, SlackBot is not considered a bot.... so hardcode its exclusion.
+  if (m.id === 'USLACKBOT') {
+    return false;
+  }
+  
+  return !m.deleted && !m.is_restricted && !m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
 }
