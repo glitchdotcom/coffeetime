@@ -65,10 +65,7 @@ if (!process.env.clientId || !process.env.clientSecret) {
   require(__dirname + '/components/plugin_glitch.js')(controller);
 
   // Load skills.
-  const normalizedPath = require("path").join(__dirname, "skills");
-  require("fs").readdirSync(normalizedPath).forEach(function(file) {
-    require("./skills/" + file)(controller);
-  });
+  require('./skills/coffeetime.js')(controller);
 }
 
 
