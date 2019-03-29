@@ -8,17 +8,13 @@ module.exports = function(controller) {
   
   // receive an interactive message, and reply with a message that will replace the original
   controller.on('block_actions', function(bot, message) {
-    console.log(message.actions);
-    
-    for (const action of message.actions) {
-      console.log(action, setup);
-      
+    for (const action of message.actions) {     
       switch(action.value) {
         case setup.YES_INSTALL_VALUE:
-          onYesInstallFlow(bot);
+          onYesInstallFlow(bot, message);
           break;
-        case setup.NO_INSTALL_FLOW:
-          onNoInstallFlow(bot);
+        case setup.NO_INSTALL_VALUE:
+          onNoInstallFlow(bot, message);
           break;
       }
     }
@@ -43,10 +39,19 @@ module.exports = function(controller) {
   });
 };
 
-function onYesInstallFlow(bot) {
+function onYesInstallFlow(bot, message) {
+    const blocks = [
+      blocksBuilder.section('Fantastic!'),
+      blocksBuilder.section(
+        'First question, who should I enroll in CoffeeTime?')
+    ];
+  bot.replyInteractive(message, {
+    blocks
+  });
 }
 
-function onNoInstallFlow(bot) {
-  console.log('oh hiiii');
-  bot.replyInteractive('OK no problem! Summon me anytime with `/coffeebot`.');
+function onNoInstallFlow(bot, message) {
+  bot.replyInteractive(message, {
+    text: 'OK no problem! Summon me anytime with `/coffeebot`, or reply with `help` to learn more.'
+  });
 }
