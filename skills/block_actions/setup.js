@@ -8,7 +8,20 @@ module.exports = function(controller) {
   
   // receive an interactive message, and reply with a message that will replace the original
   controller.on('block_actions', function(bot, message) {
-    console.log(message);
+    console.log(message.actions);
+    
+    for (const action of message.actions) {
+      console.log(action, setup);
+      
+      switch(action.value) {
+        case setup.YES_INSTALL_VALUE:
+          onYesInstallFlow(bot);
+          break;
+        case setup.NO_INSTALL_FLOW:
+          onNoInstallFlow(bot);
+          break;
+      }
+    }
   });
   
   controller.hears('interactive', 'direct_message', function(bot, message) {
@@ -29,3 +42,11 @@ module.exports = function(controller) {
     });     
   });
 };
+
+function onYesInstallFlow(bot) {
+}
+
+function onNoInstallFlow(bot) {
+  console.log('oh hiiii');
+  bot.replyInteractive('OK no problem! Summon me anytime with `/coffeebot`.');
+}
