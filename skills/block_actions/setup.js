@@ -14,12 +14,14 @@ module.exports = function(controller) {
           onYesInstallFlow(bot, message);
           break;
         case setup.NO_INSTALL_VALUE:
-          onNoInstallFlow(bot, message);
+        case subscribe.CANCEL_VALUE:
+          onCancelSetup(bot, message);
           break;
           
         // Subscribing
         case subscribe.HELP_VALUE:
           onSubscribeHelp(bot, message);
+          break;
       }
     }
   });
@@ -28,6 +30,8 @@ module.exports = function(controller) {
     const blocks = [
       blocksBuilder.section(
         'Welcome to CoffeeTime!',
+        ...defineCoffeeTimeDialogue()),
+      blocksBuilder.section(
         'Would you like to set up CoffeeTime for your team?'),
       blocksBuilder.actions(
         blocksBuilder.button('Yes! 💫', setup.YES_INSTALL_VALUE),
@@ -48,7 +52,8 @@ function subscribeActions() {
         blocksBuilder.button('Everyone!', subscribe.ALL_VALUE),
         blocksBuilder.button('Just me!', subscribe.ME_VALUE),
         blocksBuilder.button('No one for now', subscribe.NOBODY),
-        blocksBuilder.button('Can you tell me more?', subscribe.HELP_VALUE)
+        blocksBuilder.button('Can you tell me more?', subscribe.HELP_VALUE),
+        blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
       );
 }
 
@@ -62,24 +67,36 @@ function onYesInstallFlow(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-function onNoInstallFlow(bot, message) {
+function onCancelSetup(bot, message) {
   bot.replyInteractive(message, {
-    text: 'OK no problem! Summon me anytime with `/coffeebot`, or reply with `help` to learn more.'
+    text: 'OK, no problem! Summon me anytime with `/coffeetime`, or reply with `help` to learn more.'
   });
 }
 
 function defineCoffeeTimeDialogue() {
   return [
     '*CoffeeTime* is an app that lets you schedule coffee other people in your Slack.',
-    "Every week, I'll make pairs of CoffeeTimers",
+    "- Every week, I'll choose a coffee partner for you from the pool of CoffeeTime subscribers in your office.",
+    "- I'll send you and your partner a message, telling you to find time to get coffee together.",
+    "- You can change your participation in CoffeeTime with `/coffeetime subscribe` or `/coffeetime unsubscribe`."
   ];
 }
 
 function onSubscribeHelp(bot, message) {
   const blocks = [
     blocksBuilder.section(
-      '*Sure!*'
-      ,),
+      '*Sure!*',
+      ...defineCoffeeTimeDialogue()
+    ),
+    blocksBuilder.section(
+      'So if you click...',
+      "- *Everyone*: I'll add all full users in the Slack to CoffeeTime. That means I won't add guests or bots.",
+      "- *Just me*: I'll add you to CoffeeTime",
+      "- *No one for now*: I won't add anyone to CoffeeTime yet."
+    ),
+    blocksBuilder.section(
+      "Who should I enroll in CoffeeTime?"
+    ),
     subscribeActions()
   ];
   bot.replyInteractive(message, { blocks });

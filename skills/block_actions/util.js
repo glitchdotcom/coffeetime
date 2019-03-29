@@ -4,10 +4,11 @@ const setup = {
 };
 
 const subscribe = {
-  ALL: 'subscribe_all',
-  ME: 'subscribe_me',
-  NOBODY: 'subscribe_nobody',
-  HELP: 'subscribe_help'
+  ALL_VALUE: 'subscribe_all',
+  ME_VALUE: 'subscribe_me',
+  NOBODY_VALUE: 'subscribe_nobody',
+  HELP_VALUE: 'subscribe_help',
+  CANCEL_VALUE: 'subscribe_cancel'
 };
 
 function button(text, value) {
