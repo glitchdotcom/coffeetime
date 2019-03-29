@@ -101,7 +101,7 @@ module.exports = function(controller) {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"
+            "text": "Would you like to set up CoffeeTime for your team?"
           }
         },
         {
@@ -111,7 +111,7 @@ module.exports = function(controller) {
               "type": "button",
               "text": {
                 "type": "plain_text",
-                "text": "Join CoffeeTime! 💫",
+                "text": "Yes! 💫",
                 "emoji": true
               },
               "value": "subscribe"
@@ -120,7 +120,7 @@ module.exports = function(controller) {
               "type": "button",
               "text": {
                 "type": "plain_text",
-                "text": "Meh, not right now",
+                "text": "Not right now",
                 "emoji": true
               },
               "value": "click_me_123"
@@ -145,6 +145,12 @@ module.exports = function(controller) {
     console.log('block actions');
   });
 
+    // receive an interactive message, and reply with a message that will replace the original
+  controller.on('block_actions', function(bot, message) {
+    console.log('block actions2');
+  });
+
+  
   // receive an interactive message, and reply with a message that will replace the original
   controller.on('interactive_message_callback', function(bot, message) {
     console.log('interactive_message_callback!!');
@@ -180,32 +186,3 @@ module.exports = function(controller) {
 });
 
 };
-
-
-function startMenu(bot) {
-
-
-  bot.reply(message, {
-          attachments:[
-              {
-                  title: 'Do you want to interact with my buttons?',
-                  callback_id: '123',
-                  attachment_type: 'default',
-                  actions: [
-                      {
-                          "name":"yes",
-                          "text": "Yes",
-                          "value": "yes",
-                          "type": "button",
-                      },
-                      {
-                          "name":"no",
-                          "text": "No",
-                          "value": "no",
-                          "type": "button",
-                      }
-                  ]
-              }
-          ]
-      });
-}
