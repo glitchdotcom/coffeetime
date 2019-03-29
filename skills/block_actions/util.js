@@ -8,7 +8,9 @@ const subscribe = {
   ME_VALUE: 'subscribe_me',
   NOBODY_VALUE: 'subscribe_nobody',
   HELP_VALUE: 'subscribe_help',
-  CANCEL_VALUE: 'subscribe_cancel'
+  CANCEL_VALUE: 'subscribe_cancel',
+  PREVIEW_ALL_VALUE: 'subscribe_preview_all',
+  SUBSCRIBE_ALL_CONFIRM: ''
 };
 
 function button(text, value) {

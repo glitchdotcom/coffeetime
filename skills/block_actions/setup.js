@@ -26,6 +26,10 @@ module.exports = function(controller) {
         case subscribe.ALL_VALUE:
           onSubscribeAll(bot, message);
           break;
+          
+        case subscribe.ALL_VALUE:
+          onSubscribeAll(bot, message);
+          break;
       }
     }
   });
@@ -109,8 +113,7 @@ function onSubscribeHelp(bot, message) {
 function onSubscribeAll(bot, message) {
   const blocks = [
     blocksBuilder.section(
-      '*Sure!*',
-      ...defineCoffeeTimeDialogue()
+      "Awesome! I'll add everyone to CoffeeTime.",
     ),
     blocksBuilder.section(
       'So if you click...',
@@ -119,9 +122,17 @@ function onSubscribeAll(bot, message) {
       "- *No one for now*: I won't add anyone to CoffeeTime yet."
     ),
     blocksBuilder.section(
-      "Who should I enroll in CoffeeTime?"
+      "Does this look right?"
     ),
     subscribeActions()
   ];
   bot.replyInteractive(message, { blocks });
+}
+
+async function getAllUsersInSlack(bot) {
+  return new Promise((resolve, reject) => {
+    bot.api.users.list(args, (error, response) => {
+      response.members
+    });
+  });
 }
