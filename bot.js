@@ -66,6 +66,7 @@ if (!process.env.clientId || !process.env.clientSecret) {
 
   // Load skills.
   require('./skills/coffeetime.js')(controller);
+  require('./skills/block_actions/setup.js')(controller);
 }
 
 
