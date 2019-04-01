@@ -70,8 +70,10 @@ module.exports = function(controller) {
       const status = user.subscribeUser(slackUser);
       if (status === true) {
         convo.say("Yay!! You've subscribed to CoffeeTime! ✨ ");
+        // TODO: Update to be possibly not Monday. 
         convo.say("I'll message you with you coffee buddy on *Monday*.");
       } else {
+        // TODO: finish this
         convo.say("You're already subscribed to CoffeeTime!");
         convo.say("Your buddy this week is");
       }

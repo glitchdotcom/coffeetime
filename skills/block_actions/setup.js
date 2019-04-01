@@ -91,7 +91,7 @@ function onYesInstallMenuShortened(bot, message) {
 
 function onCancelSetup(bot, message) {
   bot.replyInteractive(message, {
-    text: 'OK, no problem! Summon me anytime with `/coffeetime`, or reply with `help` to learn more.'
+    text: 'OK, no problem! ' + getEndOfSetupDialogue()
   });
 }
 
@@ -102,6 +102,10 @@ function defineCoffeeTimeDialogue() {
     "> • I'll send you and your partner a message, telling you to find time to get coffee together.",
     "> • You can change your participation in CoffeeTime with `/coffeetime subscribe` or `/coffeetime unsubscribe`."
   ];
+}
+
+function getEndOfSetupDialogue() {
+  return 'Summon me anytime with `/coffeetime`, or reply with `help` to learn more.'
 }
 
 function onSubscribeHelp(bot, message) {
@@ -146,28 +150,42 @@ async function onSubscribeAll(bot, message) {
       blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
     )
   ];
-  
   bot.replyInteractive(message, { blocks });
 }
+
+
+async function onSubscribeJustMe(bot, message) {
+  // Add all users to CoffeeTime.
+  const slackUser = await user.getSlackUserInfo(bot, message.event.user);
+  const status = user.subscribeUser(slackUser);
+  const blocks = [
+    blocksBuilder.section(
+      "*Great!* I've signed you up for CoffeeTime.",
+      "Tell your teammates to sign up for CoffeeTime as well via `/coffeetime subscribe`!",
+    ),
+    blocksBuilder.section('Thanks for setting up CoffeeTime. ' + getEndOfSetupDialogue())
+  ];
+  bot.replyInteractive(message, { blocks });
+
+}
+
 
 async function onSubscribeAllConfirmed(bot, message) {
   // Add all users to CoffeeTime.
   const allMembers = await getAllUsersInSlack(bot, message.team.id);
+  console.log(allMembers);
   user.subscribeUsers(allMembers);
-
-  const blocks = [
-    blocksBuilder.section(
-      "You're all set! Thanks for setting up CoffeeTime.",
-      
-    )
-  ];
-  
-  bot.replyInteractive(message, {
-    text: "You're all set! Thanks for setting up CoffeeTime. "
-  });
+  finishInstallSuccess(bot, message);
 }
 
 function finishInstallSuccess(bot, message) {
+  const blocks = [
+    blocksBuilder.section(
+      "*You're all set!* Thanks for setting up CoffeeTime.", 
+    ),
+    blocksBuilder.section(getEndOfSetupDialogue())
+  ];
+  bot.replyInteractive(message, { blocks });
 }
 
 function isFullUser(m) {

@@ -21,7 +21,7 @@ module.exports.subscribeUser = function(slackUser) {
   return isSuccessful;
 }
 
-module.exports.subscribeUsers = function(...slackUsers) {
+module.exports.subscribeUsers = function(slackUsers) {
   const data = storage.loadData();
   for (const slackUser of slackUsers) {
     addUserToData(slackUser, data);
