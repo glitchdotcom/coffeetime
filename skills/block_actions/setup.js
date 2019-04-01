@@ -1,7 +1,7 @@
 const coffee = require('../../util/coffee');
 const user = require('../../util/user');
 const storage = require('../../util/storage');
-const { setup, subscribe, blocksBuilder } = require('./util');
+const { setup, blocksBuilder } = require('./util');
 
 
 // This is a weird in-memory cache of users ....
@@ -21,21 +21,26 @@ module.exports = function(controller) {
           onYesInstallMenuShortened(bot, message);
           break;
         case setup.NO_INSTALL_VALUE:
-        case subscribe.CANCEL_VALUE:
+        case setup.CANCEL_VALUE:
           onCancelSetup(bot, message);
           break;
           
         // Subscribing
-        case subscribe.HELP_VALUE:
+        case setup.HELP_VALUE:
           onSubscribeHelp(bot, message);
           break;
-        case subscribe.ALL_CONFIRMED_VALUE:          
+        case setup.ALL_CONFIRMED_VALUE:          
           onSubscribeAllConfirmed(bot, message);
           break;
-        case subscribe.ALL_VALUE:
+        case setup.ALL_VALUE:
           onSubscribeAll(bot, message);
           break;
-          
+        case setup.ME_VALUE:
+          onSubscribeJustMe(bot, message);
+          break;
+        case setup.NOBODY_VALUE:
+          onSubscribeNobodyForNow(bot, message);
+          break;
       }
     }
   });
@@ -62,20 +67,21 @@ module.exports = function(controller) {
 
 function subscribeActions() {
   return blocksBuilder.actions(
-        blocksBuilder.button('Everyone!', subscribe.ALL_VALUE),
-        blocksBuilder.button('Just me', subscribe.ME_VALUE),
-        blocksBuilder.button('No one for now', subscribe.NOBODY),
-        blocksBuilder.button('Can you tell me more?', subscribe.HELP_VALUE),
-        blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
+        blocksBuilder.button('Everyone!', setup.ALL_VALUE),
+        blocksBuilder.button('Just me', setup.ME_VALUE),
+        blocksBuilder.button('No one for now', setup.NOBODY_VALUE),
+        blocksBuilder.button('Can you tell me more?', setup.HELP_VALUE),
+        blocksBuilder.button('Exit', setup.CANCEL_VALUE),
       );
 }
 
 function onYesInstallFlow(bot, message) {
   const blocks = [
     blocksBuilder.section("*Fantastic!*"), 
-    blocksBuilder.section("I'll now ask you a series of questions to get your team set up."),
+    // TODO: Uncomment when we have more than one question.
+    // blocksBuilder.section("I'll now ask you a series of questions to get your team set up."),
     blocksBuilder.section(
-      'First, who should I enroll in CoffeeTime?'),
+      'Who should I enroll in CoffeeTime?'),
     subscribeActions()
   ];
   bot.replyInteractive(message, { blocks });
@@ -145,18 +151,30 @@ async function onSubscribeAll(bot, message) {
       "Does that look right?"
     ),
     blocksBuilder.actions(
-      blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
+      blocksBuilder.button('Looks good!', setup.ALL_CONFIRMED_VALUE),
       blocksBuilder.button('Oh hmm, not quite', setup.YES_INSTALL_MENU_VALUE),
-      blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
+      blocksBuilder.button('Exit', setup.CANCEL_VALUE),
     )
   ];
   bot.replyInteractive(message, { blocks });
 }
 
+function onSubscribeNobodyForNow(bot, message) {
+  const blocks = [
+    blocksBuilder.section(
+      "OK, you can sign up at any time via `/coffeetime subscribe`."),
+    blocksBuilder.section(
+      "Tell your teammates to sign up for CoffeeTime as well!",
+    ),
+    blocksBuilder.section('Thanks for setting up CoffeeTime. ' + getEndOfSetupDialogue())
+  ];
+  bot.replyInteractive(message, { blocks });
+
+}
 
 async function onSubscribeJustMe(bot, message) {
-  // Add all users to CoffeeTime.
-  const slackUser = await user.getSlackUserInfo(bot, message.event.user);
+  console.log(message);
+  const slackUser = await user.getSlackUserInfo(bot, message.user);
   const status = user.subscribeUser(slackUser);
   const blocks = [
     blocksBuilder.section(
@@ -166,9 +184,7 @@ async function onSubscribeJustMe(bot, message) {
     blocksBuilder.section('Thanks for setting up CoffeeTime. ' + getEndOfSetupDialogue())
   ];
   bot.replyInteractive(message, { blocks });
-
 }
-
 
 async function onSubscribeAllConfirmed(bot, message) {
   // Add all users to CoffeeTime.
