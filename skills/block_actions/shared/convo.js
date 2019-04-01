@@ -17,7 +17,7 @@ module.exports.startAdminSetupConversation = function(bot, user) {
         blocks
       });
     }); 
-}
+};
 
 module.exports.defineCoffeeTimeDialogue = function() {
   return [
@@ -26,4 +26,4 @@ module.exports.defineCoffeeTimeDialogue = function() {
     "> • I'll send you and your partner a message, telling you to find time to get coffee together.",
     "> • You can change your participation in CoffeeTime with `/coffeetime subscribe` or `/coffeetime unsubscribe`."
   ];
-}
+};

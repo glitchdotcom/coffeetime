@@ -52,12 +52,12 @@ module.exports = function(controller) {
 
 function subscribeActions() {
   return blocksBuilder.actions(
-        blocksBuilder.button('Everyone!', setup.ALL_VALUE),
-        blocksBuilder.button('Just me', setup.ME_VALUE),
-        blocksBuilder.button('No one for now', setup.NOBODY_VALUE),
-        blocksBuilder.button('Can you tell me more?', setup.HELP_VALUE),
-        blocksBuilder.button('Exit', setup.CANCEL_VALUE),
-      );
+    blocksBuilder.button('Everyone!', setup.ALL_VALUE),
+    blocksBuilder.button('Just me', setup.ME_VALUE),
+    blocksBuilder.button('No one for now', setup.NOBODY_VALUE),
+    blocksBuilder.button('Can you tell me more?', setup.HELP_VALUE),
+    blocksBuilder.button('Exit', setup.CANCEL_VALUE),
+  );
 }
 
 function onYesInstallFlow(bot, message) {

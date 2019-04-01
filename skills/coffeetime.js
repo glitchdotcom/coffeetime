@@ -33,25 +33,6 @@ module.exports = function(controller) {
     });
   });
   
-  controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
-    console.log(bot.bot_access_token);
-    bot.createConversation(message, function(err, convo) {
-      const data = storage.loadData();
-
-      if (user.checkForUser(message.user, data)) {
-        convo.say('You are all set! Use `unsubscribe` to stop pairing.');
-        const managerId = user.getManager(message.user);
-        if (managerId) {
-          convo.say(`<@${managerId}> is your manager, you won't pair with them`);
-        } else {
-          convo.say(`You don't have a manager set.  Set your manager with 'manager @<Your_Manager>'`);
-        }
-      } else {
-        convo.say('You are not subscribed yet. Use `subscribe` to change that.');
-      }
-      convo.activate();
-    });
-  });
   
   controller.hears(['^coffeetimerun'], 'direct_message', function(bot, message) {
     coffee.runCoffeeTime(bot);
