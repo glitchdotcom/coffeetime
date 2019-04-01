@@ -2,17 +2,17 @@ const setup = {
   YES_INSTALL_VALUE: "setup_yes_install",
   YES_INSTALL_MENU_VALUE: "setup_yes_install_menu",
   NO_INSTALL_VALUE: "setup_no_dont_install",
-  ALL_VALUE: 'subscribe_all',
-  ME_VALUE: 'subscribe_me',
-  NOBODY_VALUE: 'subscribe_nobody',
-  HELP_VALUE: 'subscribe_help',
-  CANCEL_VALUE: 'subscribe_cancel',
-  ALL_CONFIRMED_VALUE: 'subscribe_all_confirmed'
+  ALL_VALUE: 'setup_subscribe_all',
+  ME_VALUE: 'setup_subscribe_me',
+  NOBODY_VALUE: 'setup_subscribe_nobody',
+  HELP_VALUE: 'setup_subscribe_help',
+  CANCEL_VALUE: 'setup_subscribe_cancel',
+  ALL_CONFIRMED_VALUE: 'setup_subscribe_all_confirmed'
 };
 
 const help = {
-  SUBSCRIBE_VALUE: "yes_install",
-  UNSUBSCRIBE_VALUE: "yes_install_menu",
+  SUBSCRIBE_ME_VALUE: 'help_subscribe_me',
+  UNSUBSCRIBE_ME_VALUE: 'help_unsubscribe_me',
 };
 
 function button(text, value) {
