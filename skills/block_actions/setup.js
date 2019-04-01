@@ -111,9 +111,8 @@ function onSubscribeHelp(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-async function onSubscribeAll(bot, message) {
-  /*
-  console.log(userListShenanigans, message);
+async function onSubscribeAll(bot, message) {*
+  onsole.log(userListShenanigans, message);
   const allSlackIdsFormatted = 
         userListShenanigans[message.team.id].allMembers
             .map(m => m.id)
