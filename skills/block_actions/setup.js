@@ -151,10 +151,23 @@ async function onSubscribeAll(bot, message) {
 }
 
 async function onSubscribeAllConfirmed(bot, message) {
-  console.log('subscribe all conf!!');
+  // Add all users to CoffeeTime.
   const allMembers = await getAllUsersInSlack(bot, message.team.id);
-  const allSlackIds = allMembers.map(m => m.id);
+  user.subscribeUsers(allMembers);
+
+  const blocks = [
+    blocksBuilder.section(
+      "You're all set! Thanks for setting up CoffeeTime.",
+      
+    )
+  ];
   
+  bot.replyInteractive(message, {
+    text: "You're all set! Thanks for setting up CoffeeTime. "
+  });
+}
+
+function finishInstallSuccess(bot, message) {
 }
 
 function isFullUser(m) {

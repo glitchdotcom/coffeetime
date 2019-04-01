@@ -14,28 +14,20 @@ module.exports.getSlackUserInfo = async function(bot, messageSender) {
 
 module.exports.subscribeUser = function(slackUser) {
   const data = storage.loadData();
-  if (module.exports.checkForUser(slackUser.id, data)) {
-    console.warn(`not adding user ${slackUser.id} twice!`);
-    return false;
+  const isSuccessful = addUserToData(slackUser, data);
+  if (isSuccessful) {
+    storage.saveData(data);
   }
-  console.log('adding', slackUser.id);
-  addUserToData(slackUser, data);
-  storage.saveData(data);
-  return true;
+  return isSuccessful;
 }
 
-module.exports.subscribeUsers = function(...slackUser) {
+module.exports.subscribeUsers = function(...slackUsers) {
   const data = storage.loadData();
-  if (module.exports.checkForUser(slackUser.id, data)) {
-    console.warn(`not adding user ${slackUser.id} twice!`);
-    return false;
+  for (const slackUser of slackUsers) {
+    addUserToData(slackUser, data);
   }
-  console.log('adding', slackUser.id);
-  addUserToData(slackUser, data);
   storage.saveData(data);
-  return true;
 }
-
 
 module.exports.unsubscribeUser = function(slackUser) {
   const data = storage.loadData();
@@ -68,16 +60,21 @@ module.exports.checkForUser = function(slackId, data) {
       return true;
     }
   }
-  
   return false;
 }
 
 function addUserToData(slackUser, data) {
+  console.log('adding', slackUser.id);
+  if (module.exports.checkForUser(slackUser.id, data)) {
+    console.warn(`not adding user ${slackUser.id} twice!`);
+    return false;
+  }
   const userRecord = {
     slackId: slackUser.id,
     name: slackUser.real_name
   };
   data.userData.push(userRecord);
+  return true;
 }
 
 module.exports.setManager = function(slackId, managerSlackId) {
