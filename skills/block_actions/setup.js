@@ -65,8 +65,7 @@ function onYesInstallFlow(bot, message) {
     blocksBuilder.section("*Fantastic!*"), 
     // TODO: Uncomment when we have more than one question.
     // blocksBuilder.section("I'll now ask you a series of questions to get your team set up."),
-    blocksBuilder.section(
-      'Who should I enroll in CoffeeTime?'),
+    blocksBuilder.section('Who should I enroll in CoffeeTime?'),
     subscribeActions()
   ];
   bot.replyInteractive(message, { blocks });
