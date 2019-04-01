@@ -48,9 +48,16 @@ function section(...text) {
   };
 }
 
+function divider() {
+  return 	{
+		"type": "divider"
+	};
+}
+
 const blocksBuilder = {
   button,
   actions,
+  divider,
   section
 };
 
