@@ -1,5 +1,6 @@
 const setup = {
   YES_INSTALL_VALUE: "yes_install",
+  YES_INSTALL_MENU_VALUE: "yes_install_menu",
   NO_INSTALL_VALUE: "no_dont_install",
 };
 

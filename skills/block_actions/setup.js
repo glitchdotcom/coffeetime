@@ -17,6 +17,9 @@ module.exports = function(controller) {
         case setup.YES_INSTALL_VALUE:
           onYesInstallFlow(bot, message);
           break;
+        case setup.YES_INSTALL_MENU_VALUE:
+          onYesInstallMenuShortened(bot, message);
+          break;
         case setup.NO_INSTALL_VALUE:
         case subscribe.CANCEL_VALUE:
           onCancelSetup(bot, message);
@@ -76,6 +79,14 @@ function onYesInstallFlow(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
+function onYesInstallMenuShortened(bot, message) {
+  const blocks = [
+    blocksBuilder.section('Who should I enroll in CoffeeTime?'),
+    subscribeActions()
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
 function onCancelSetup(bot, message) {
   bot.replyInteractive(message, {
     text: 'OK, no problem! Summon me anytime with `/coffeetime`, or reply with `help` to learn more.'
@@ -111,20 +122,13 @@ function onSubscribeHelp(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-async function onSubscribeAll(bot, message) {*
-  onsole.log(userListShenanigans, message);
-  const allSlackIdsFormatted = 
-        userListShenanigans[message.team.id].allMembers
-            .map(m => m.id)
-            .map(m => `<@${m}>`);
-  console.log(allSlackIdsFormatted);
-  */
-  
-   const firstPageOfUsers = await getAllUsersInSlack(bot);
+async function onSubscribeAll(bot, message) {
+  console.log(message);
+  const firstPageOfUsers = await getAllUsersInSlack(bot);
   const allSlackIdsFormatted = firstPageOfUsers.allMembers
             .map(m => m.id)
             .map(m => `<@${m}>`);
-    
+
     
   const blocks = [
     blocksBuilder.section(
@@ -138,11 +142,10 @@ async function onSubscribeAll(bot, message) {*
     ),
     blocksBuilder.actions(
       blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
-      blocksBuilder.button('Oh hmm, not quite', subscribe.ME_VALUE),
+      blocksBuilder.button('Oh hmm, not quite', subscribe.YES_INSTALL_MENU_VALUE),
       blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
     )
   ];
-  console.log('can reply?');
   
   bot.replyInteractive(message, { blocks });
 }
@@ -155,7 +158,17 @@ function isFullUser(m) {
   return !m.deleted && !m.is_restricted && !m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
 }
 
-async function getAllUsersInSlack(bot, cursor) {
+const cachedSubscribers = {};
+
+async function getAllUsersInSlack(bot, teamId) {
+  if (cachedSubscribers[teamId] !== undefined) {
+    return 
+  }
+}
+
+async function getAllUsersInSlackFromApi(bot, cursor) {
+  
+  
   const args = cursor ? {cursor} : {};
   return new Promise((resolve, reject) => {
     bot.api.users.list(args, (error, response) => {
