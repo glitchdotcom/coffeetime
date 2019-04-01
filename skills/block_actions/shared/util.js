@@ -1,13 +1,18 @@
 const setup = {
-  YES_INSTALL_VALUE: "yes_install",
-  YES_INSTALL_MENU_VALUE: "yes_install_menu",
-  NO_INSTALL_VALUE: "no_dont_install",
+  YES_INSTALL_VALUE: "setup_yes_install",
+  YES_INSTALL_MENU_VALUE: "setup_yes_install_menu",
+  NO_INSTALL_VALUE: "setup_no_dont_install",
   ALL_VALUE: 'subscribe_all',
   ME_VALUE: 'subscribe_me',
   NOBODY_VALUE: 'subscribe_nobody',
   HELP_VALUE: 'subscribe_help',
   CANCEL_VALUE: 'subscribe_cancel',
   ALL_CONFIRMED_VALUE: 'subscribe_all_confirmed'
+};
+
+const help = {
+  SUBSCRIBE_VALUE: "yes_install",
+  UNSUBSCRIBE_VALUE: "yes_install_menu",
 };
 
 function button(text, value) {
@@ -47,5 +52,6 @@ const blocksBuilder = {
 
 module.exports = {
   setup,
-  blocksBuilder
+  blocksBuilder,
+  help
 }
