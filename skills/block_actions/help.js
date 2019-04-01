@@ -21,7 +21,6 @@ module.exports = function(controller) {
   });
 
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
-    console.log(bot.bot_access_token);
     bot.createConversation(message, function(err, convo) {
       const data = storage.loadData();
 
