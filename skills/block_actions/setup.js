@@ -1,8 +1,8 @@
 const coffee = require('../../util/coffee');
 const user = require('../../util/user');
 const storage = require('../../util/storage');
-const { setup, blocksBuilder } = require('./util');
-
+const sharedConvo = require('./shared/convo');
+const { setup, blocksBuilder } = require('./shared/util');
 
 // This is a weird in-memory cache of users ....
 // Cached bc async calls don't seem to work in the middle of an interactive interaction.
@@ -45,23 +45,8 @@ module.exports = function(controller) {
     }
   });
   
-  controller.hears('interactive', 'direct_message', function(bot, message) {
-     const blocks = [
-      blocksBuilder.section('Welcome to CoffeeTime!'),
-      blocksBuilder.section(...defineCoffeeTimeDialogue()),
-      blocksBuilder.section(
-        'Would you like to set up CoffeeTime for your team?'),
-      blocksBuilder.actions(
-        blocksBuilder.button('Yes! 💫', setup.YES_INSTALL_VALUE),
-        blocksBuilder.button('Not right now', setup.NO_INSTALL_VALUE)
-      )
-    ];
-    bot.api.im.open({ user: message.user }, (error, response) => {
-      bot.api.chat.postMessage({
-        channel: response.channel.id,
-        blocks
-      });
-    });     
+  controller.hears('adminsetup', 'direct_message', function(bot, message) {
+     sharedConvo.startAdminSetupConversation(bot, message.user);
   });
 };
 
@@ -101,15 +86,6 @@ function onCancelSetup(bot, message) {
   });
 }
 
-function defineCoffeeTimeDialogue() {
-  return [
-    '> *CoffeeTime* is an app that lets you schedule coffee other people in your Slack.',
-    "> • Every week, I'll choose a coffee partner for you from the pool of CoffeeTime subscribers in your office.",
-    "> • I'll send you and your partner a message, telling you to find time to get coffee together.",
-    "> • You can change your participation in CoffeeTime with `/coffeetime subscribe` or `/coffeetime unsubscribe`."
-  ];
-}
-
 function getEndOfSetupDialogue() {
   return 'Summon me anytime with `/coffeetime`, or reply with `help` to learn more.'
 }
@@ -118,7 +94,7 @@ function onSubscribeHelp(bot, message) {
   const blocks = [
     blocksBuilder.section(
       '*Sure!*',
-      ...defineCoffeeTimeDialogue()
+      ...sharedConvo.defineCoffeeTimeDialogue()
     ),
     blocksBuilder.section(
       'So if you click...',
