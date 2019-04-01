@@ -13,16 +13,29 @@ module.exports.getSlackUserInfo = async function(bot, messageSender) {
 }
 
 module.exports.subscribeUser = function(slackUser) {
-  let data = storage.loadData();
+  const data = storage.loadData();
   if (module.exports.checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }
   console.log('adding', slackUser.id);
-  data = addUserToData(slackUser, data);
+  addUserToData(slackUser, data);
   storage.saveData(data);
   return true;
 }
+
+module.exports.subscribeUsers = function(...slackUser) {
+  const data = storage.loadData();
+  if (module.exports.checkForUser(slackUser.id, data)) {
+    console.warn(`not adding user ${slackUser.id} twice!`);
+    return false;
+  }
+  console.log('adding', slackUser.id);
+  addUserToData(slackUser, data);
+  storage.saveData(data);
+  return true;
+}
+
 
 module.exports.unsubscribeUser = function(slackUser) {
   const data = storage.loadData();
@@ -65,7 +78,6 @@ function addUserToData(slackUser, data) {
     name: slackUser.real_name
   };
   data.userData.push(userRecord);
-  return data;
 }
 
 module.exports.setManager = function(slackId, managerSlackId) {

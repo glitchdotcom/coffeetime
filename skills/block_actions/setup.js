@@ -29,7 +29,9 @@ module.exports = function(controller) {
         case subscribe.HELP_VALUE:
           onSubscribeHelp(bot, message);
           break;
-        
+        case subscribe.ALL_CONFIRMED_VALUE:          
+          onSubscribeAllConfirmed(bot, message);
+          break;
         case subscribe.ALL_VALUE:
           onSubscribeAll(bot, message);
           break;
@@ -123,12 +125,10 @@ function onSubscribeHelp(bot, message) {
 }
 
 async function onSubscribeAll(bot, message) {
-  console.log(message);
-  const firstPageOfUsers = await getAllUsersInSlack(bot);
-  const allSlackIdsFormatted = firstPageOfUsers.allMembers
+  const allMembers = await getAllUsersInSlack(bot, message.team.id);
+  const allSlackIdsFormatted = allMembers
             .map(m => m.id)
             .map(m => `<@${m}>`);
-
     
   const blocks = [
     blocksBuilder.section(
@@ -142,12 +142,19 @@ async function onSubscribeAll(bot, message) {
     ),
     blocksBuilder.actions(
       blocksBuilder.button('Looks good!', subscribe.ALL_CONFIRMED_VALUE),
-      blocksBuilder.button('Oh hmm, not quite', subscribe.YES_INSTALL_MENU_VALUE),
+      blocksBuilder.button('Oh hmm, not quite', setup.YES_INSTALL_MENU_VALUE),
       blocksBuilder.button('Exit', subscribe.CANCEL_VALUE),
     )
   ];
   
   bot.replyInteractive(message, { blocks });
+}
+
+async function onSubscribeAllConfirmed(bot, message) {
+  console.log('subscribe all conf!!');
+  const allMembers = await getAllUsersInSlack(bot, message.team.id);
+  const allSlackIds = allMembers.map(m => m.id);
+  
 }
 
 function isFullUser(m) {
@@ -158,17 +165,19 @@ function isFullUser(m) {
   return !m.deleted && !m.is_restricted && !m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
 }
 
+// TODO: Possibly move cached subscribers to a globally accessible level.
 const cachedSubscribers = {};
-
 async function getAllUsersInSlack(bot, teamId) {
   if (cachedSubscribers[teamId] !== undefined) {
-    return 
+    return cachedSubscribers[teamId];
   }
+  // TODO: Implement pagination
+  const firstPageOfUsers = await getAllUsersInSlackFromApi(bot);
+  cachedSubscribers[teamId] = firstPageOfUsers.allMembers;
+  return cachedSubscribers[teamId];
 }
 
 async function getAllUsersInSlackFromApi(bot, cursor) {
-  
-  
   const args = cursor ? {cursor} : {};
   return new Promise((resolve, reject) => {
     bot.api.users.list(args, (error, response) => {
