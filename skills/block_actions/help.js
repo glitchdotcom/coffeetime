@@ -14,14 +14,20 @@ module.exports = function(controller) {
   controller.on('block_actions', function(bot, message) {
     for (const action of message.actions) {     
       switch(action.value) {
-        case setup.YES_INSTALL_VALUE:
+        case help.YES_INSTALL_VALUE:
         break;
       }
     }
   });
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     const blocks = [
-      blocksBuilder.section("Hi there! Welcome to *CoffeeTime*!")
+      blocksBuilder.section("Hi there! Welcome to *CoffeeTime*!"),
+      blocksBuilder.section("*Basics*"),
+      blocksBuilder.actions(
+        blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
+        blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
+        blocksBuilder.button('My CoffeeTime status', help.AM_I_SIGNED_UP_VALUE),
+      )
     ];
     bot.reply(message, { blocks });
   });

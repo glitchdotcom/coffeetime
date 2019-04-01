@@ -13,6 +13,10 @@ const setup = {
 const help = {
   SUBSCRIBE_ME_VALUE: 'help_subscribe_me',
   UNSUBSCRIBE_ME_VALUE: 'help_unsubscribe_me',
+  BACK_TO_MAIN_VALUE: 'help_back_to_main',
+  WHAT_IS_THIS_VALUE: 'help_what_is_this',
+  WHO_IS_MY_BUDDY_VALUE: 'help_who_is_my_buddy',
+  AM_I_SIGNED_UP_VALUE: 'help_am_i_signed_up',
 };
 
 function button(text, value) {
