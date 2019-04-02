@@ -49,13 +49,14 @@ function section(...text) {
 }
 
 
-function sectionWithAccessory(...text) {
+function sectionWithAccessory(text, accessory) {
   return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": text.join('\n')
-    }
+      "text": text
+    },
+    accessory
   };
 }
 

@@ -24,7 +24,6 @@ module.exports = function(controller) {
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     const blocks = [
       blocksBuilder.section("Hello and welcome to CoffeeTime! ✨ How can I help you?"),
-      blocksBuilder.divider(),
       blocksBuilder.section("*Basics*"),
       blocksBuilder.actions(
         blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
