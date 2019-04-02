@@ -38,7 +38,7 @@ module.exports.unsubscribeUser = function(slackUser) {
       break;
     }
   }
-  //@TODO add them to coffeetime.json as unsubscribed BACKLOG
+  //@TODO maybe add them to coffeetime.json as unsubscribed BACKLOG
   storage.saveData(data);
 }
 

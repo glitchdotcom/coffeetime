@@ -4,10 +4,6 @@ const storage = require('../../util/storage');
 const sharedConvo = require('./shared/convo');
 const { setup, blocksBuilder } = require('./shared/util');
 
-// This is a weird in-memory cache of users ....
-// Cached bc async calls don't seem to work in the middle of an interactive interaction.
-const userListShenanigans = {};
-
 module.exports = function(controller) {
   
   // receive an interactive message, and reply with a message that will replace the original

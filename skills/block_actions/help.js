@@ -4,9 +4,6 @@ const storage = require('../../util/storage');
 const sharedConvo = require('./shared/convo');
 const { help, blocksBuilder } = require('./shared/util');
 
-// This is a weird in-memory cache of users ....
-// Cached bc async calls don't seem to work in the middle of an interactive interaction.
-const userListShenanigans = {};
 
 module.exports = function(controller) {
   
@@ -14,11 +11,16 @@ module.exports = function(controller) {
   controller.on('block_actions', function(bot, message) {
     for (const action of message.actions) {     
       switch(action.value) {
-        case help.YES_INSTALL_VALUE:
+        case help.WHAT_IS_THIS_VALUE:
+          onWhatIsCoffeeTime(bot, message);
+        break;
+        case help.WHO_IS_MY_BUDDY_VALUE:
+          onWhoIsMyCoffeeBuddy(bot, message);
         break;
       }
     }
   });
+  
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
     const blocks = [
       blocksBuilder.section("Hello and welcome to CoffeeTime! ✨ How can I help you?"),
@@ -52,3 +54,21 @@ module.exports = function(controller) {
     });
   });
 };
+
+function onWhatIsCoffeeTime(bot, message) {
+  const blocks = [
+    blocksBuilder.section(
+      ...sharedConvo.defineCoffeeTimeDialogue()
+    )
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
+function onWhoIsMyCoffeeBuddy(bot, message) {
+  const blocks = [
+    blocksBuilder.section(
+      'This week, you are paired with: '
+    )
+  ];
+  bot.replyInteractive(message, { blocks });
+}
