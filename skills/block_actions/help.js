@@ -68,7 +68,8 @@ function getHelpMenuBlocks() {
     blocksBuilder.actions(
       blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
       blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
-    )
+    ),
+    blocksBuilder.divider()
   ] }
 }
 
@@ -78,6 +79,8 @@ function showHelpMenu(bot, message) {
 
 function onWhatIsCoffeeTime(bot, message) {
   const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*What is CoffeeTime*'),
     blocksBuilder.section(
       ...sharedConvo.defineCoffeeTimeDialogue()
     ),
@@ -103,9 +106,9 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
   })(userInfo);
   
   const blocks = [
-    blocksBuilder.section(
-      textToSay
-    ),
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Your Coffee Buddy*'),
+    blocksBuilder.section(textToSay),
     backToMenuButton()
   ];
   bot.replyInteractive(message, { blocks });
@@ -116,16 +119,14 @@ function onMyProfile(bot, message) {
   const slackIdFormatted = coffee.idToString(message.user);
   
   const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Your Profile*'),
     blocksBuilder.section(`Hi ${slackIdFormatted}!`),
     blocksBuilder.section(
-      ' • You are currently *' + (userInfo.isSubscribed ? '' : 'not ') + 'subscribed* to CoffeeTime.'
-    ),
-    blocksBuilder.section(
-      ' • Your manager is set to ' +
-      (userInfo.managerSlackId ? coffee.idToString(userInfo.managerSlackId) : '*none*')
-    ),
-    blocksBuilder.section(
-      ' • This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners)
+      '> • You are currently *' + (userInfo.isSubscribed ? '' : 'not ') + 'subscribed* to CoffeeTime. \n' + 
+      '> • Your manager is set to ' +
+      (userInfo.managerSlackId ? coffee.idToString(userInfo.managerSlackId) : '*none*') + '\n' + 
+      '> • This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners)
     ),
     backToMenuButton()
   ];
