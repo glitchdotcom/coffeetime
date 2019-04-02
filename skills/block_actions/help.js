@@ -28,8 +28,12 @@ module.exports = function(controller) {
       blocksBuilder.section("*Basics*"),
       blocksBuilder.actions(
         blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
+      ),
+      blocksBuilder.divider(),
+      blocksBuilder.section("*Manage subscription*"),
+      blocksBuilder.actions(
         blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
-        blocksBuilder.button('My CoffeeTime status', help.AM_I_SIGNED_UP_VALUE),
+        blocksBuilder.button('My Profile', help.AM_I_SIGNED_UP_VALUE),
       )
     ];
     bot.reply(message, { blocks });
@@ -78,7 +82,7 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
       return "You haven't been matched with a partner yet. Check back Monday around 9am!";
     }
     // You have subscribed and you have a coffee partner
-    return 'This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '. \n'
+    return 'This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '. ' +
         'Find time this week to get coffee together!';
   })(userInfo);
   
