@@ -29,7 +29,6 @@ module.exports = function(controller) {
       blocksBuilder.actions(
         blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
       ),
-      blocksBuilder.divider(),
       blocksBuilder.section("*Manage subscription*"),
       blocksBuilder.actions(
         blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
