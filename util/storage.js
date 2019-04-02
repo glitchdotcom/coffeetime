@@ -5,6 +5,8 @@ const DATA_PATH = './.data/coffee.json';
 const dataFormat = {
   // Note that "pairs" is sometimes a misnomer, as there can be groups of 3.
   "pairs": [],
+  // TODO: userData is probably better as a map (via {}) instead of a list, though
+  // it  would take some refactoring to change.
   "userData": [],
   "pastMatches": []
 }

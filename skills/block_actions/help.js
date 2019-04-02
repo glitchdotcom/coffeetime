@@ -65,9 +65,10 @@ function onWhatIsCoffeeTime(bot, message) {
 }
 
 function onWhoIsMyCoffeeBuddy(bot, message) {
+  const userInfo = user.getUserInfo(message.user);
   const blocks = [
     blocksBuilder.section(
-      'This week, you are paired with: '
+      `This week, you are paired with: <@${pairId}>`
     )
   ];
   bot.replyInteractive(message, { blocks });

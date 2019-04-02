@@ -74,14 +74,14 @@ module.exports.getUserInfo = function(slackId) {
   const data = storage.loadData();
   
   const userInfo = { ...userInfoDataTemplate };  
-  const coffeeUserData = data.userData.filter(u => slackId === u.slackId);
-  
+  const [ coffeeUserData ] = data.userData.filter(u => slackId === u.slackId);
   if (!coffeeUserData) {
-    userInfo.isSubscribed = true;
+    userInfo.isSubscribed = false;
+    return userInfo;
+  }
+  userInfo.isSubscribed = true;
   userInfo.managerSlackId = coffeeUserData.managerSlackId || null;
   userInfo.coffeePartners = getCoffeePartners(slackId, data.pairs);
-  }
-
   return userInfo;
 }
 
