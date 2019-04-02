@@ -25,9 +25,12 @@ function runCoffeeTime(bot) {
   saveNewPairings(newPairs.pairs, newPairs.pastMatches);
   // Inform everyone of the new groups.
   broadcastCoffeeGroups(bot, newPairs.pairs,
-      "Hi friends! You're getting coffee together this week! ☕️\n" +
-      "I've put you in this chat together, so you can figure out the details here.\n" +
-      "Schedule a time that works for the both of you, and have fun!");
+        (pair) =>
+          "Hi " + slackPrintGroup(pair) + "!\n" +
+          "You're getting coffee together this week! ☕️\n" +
+          "I've put you in this chat together so you can figure out the details.\n" +
+          "Schedule a time that works for the both of you, and have fun!"
+      );
 }
 
 // Updates the database with new pairs and matches.
@@ -113,9 +116,13 @@ function sendMessageToUsers(bot, slackIds, message) {
   });
 }
 
-function broadcastCoffeeGroups(bot, pairs, message) {
+
+// `pairs`: A list of all pairs (each pair is a list, and a "pair" can be 3 people)
+// `messageFactory`: Function that takes a list of slackIds and returns a string message
+//     that will be sent to that group.
+function broadcastCoffeeGroups(bot, pairs, messageFactory) {
   for (const slackIds of pairs) {
-    sendMessageToUsers(bot, slackIds, message);
+    sendMessageToUsers(bot, slackIds, messageFactory(slackIds));
   }
 }
 
@@ -148,7 +155,7 @@ function slackPrintGroup(slackIdList) {
   const [ lastFormattedId ] = formattedNames.splice(deleteStartIndex);
   // Now `formattedNames` is an array that contains all names but the last, and 
   // `lastFormattedId` is the last element in the list.
-  return formattedNames.join(', ') + ' and ' + lastFormattedId;
+  return formattedNames.join(', ') + 'and ' + lastFormattedId;
 }
 
 module.exports = {
