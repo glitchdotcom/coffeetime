@@ -164,5 +164,6 @@ module.exports = {
   runCoffeeTime,
   saveNewPairings,
   broadcastCoffeeGroups,
-  slackPrintGroup
+  slackPrintGroup,
+  idToString
 };

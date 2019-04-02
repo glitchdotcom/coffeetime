@@ -100,6 +100,11 @@ function addUserToData(slackUser, data) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }
+  
+  // TODO(vrk): I think we don't want to save the real name of the user,
+  // since that can change and we don't want to keep the stale value or have
+  // to worry about updating it. We can just use Slack as the source of truth
+  // when that's necessary.
   const userRecord = {
     slackId: slackUser.id,
     name: slackUser.real_name

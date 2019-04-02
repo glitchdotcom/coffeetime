@@ -17,6 +17,7 @@ const help = {
   WHAT_IS_THIS_VALUE: 'help_what_is_this',
   WHO_IS_MY_BUDDY_VALUE: 'help_who_is_my_buddy',
   AM_I_SIGNED_UP_VALUE: 'help_am_i_signed_up',
+  MY_PROFILE_VALUE: 'help_my_profile',
 };
 
 function button(text, value) {

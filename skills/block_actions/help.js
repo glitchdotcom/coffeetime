@@ -17,6 +17,9 @@ module.exports = function(controller) {
         case help.WHO_IS_MY_BUDDY_VALUE:
           onWhoIsMyCoffeeBuddy(bot, message);
         break;
+          case help.MY_PROFILE_VALUE:
+          onWhoIsMyCoffeeBuddy(bot, message);
+        break;
       }
     }
   });
@@ -66,8 +69,6 @@ function onWhatIsCoffeeTime(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-
-
 function onWhoIsMyCoffeeBuddy(bot, message) {
   const userInfo = user.getUserInfo(message.user);
     
@@ -89,5 +90,36 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
       textToSay
     )
   ];
+  bot.replyInteractive(message, { blocks });
+}
+
+function onMyProfile(bot, message) {
+  const userInfo = user.getUserInfo(message.user);
+  const slackIdFormatted = coffee.idToString(message.user.id);
+    
+  const textToSay = ((userInfo) => {
+    if (!userInfo.isSubscribed) {
+      return 'You are not subscribed to CoffeeTime.';
+    }
+    if (!userInfo.coffeePartners || userInfo.coffeePartners.length === 0) {
+      // TODO: Change Monday to a variable
+      return "You haven't been matched with a partner yet. Check back Monday around 9am!";
+    }
+    // You have subscribed and you have a coffee partner
+    return 'This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '. ' +
+        'Find time this week to get coffee together!';
+  })(userInfo);
+  
+  const blocks = [
+    blocksBuilder.section(`Hi ${slackIdFormatted}!`),
+    blocksBuilder.section(
+      'You are currently ' + (userInfo.isSubscribed ? 'subscribed' : 'unsubscribed')
+    )
+  ];
+  if (userInfo.isSubscribed) {
+    blocks.push(
+      
+    )
+  }
   bot.replyInteractive(message, { blocks });
 }
