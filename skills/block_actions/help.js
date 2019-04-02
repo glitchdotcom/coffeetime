@@ -11,6 +11,9 @@ module.exports = function(controller) {
   controller.on('block_actions', function(bot, message) {
     for (const action of message.actions) {     
       switch(action.value) {
+        case help.SHOW_HELP_MENU:
+          showHelpMenu(bot, message);
+          break;
         case help.WHAT_IS_THIS_VALUE:
           onWhatIsCoffeeTime(bot, message);
         break;
@@ -18,26 +21,14 @@ module.exports = function(controller) {
           onWhoIsMyCoffeeBuddy(bot, message);
         break;
           case help.MY_PROFILE_VALUE:
-          onWhoIsMyCoffeeBuddy(bot, message);
+          onMyProfile(bot, message);
         break;
       }
     }
   });
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
-    const blocks = [
-      blocksBuilder.section("Hello and welcome to CoffeeTime! ✨ How can I help you?"),
-      blocksBuilder.section("*Basics*"),
-      blocksBuilder.actions(
-        blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
-      ),
-      blocksBuilder.section("*Manage subscription*"),
-      blocksBuilder.actions(
-        blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
-        blocksBuilder.button('My Profile', help.AM_I_SIGNED_UP_VALUE),
-      )
-    ];
-    bot.reply(message, { blocks });
+    bot.reply(message, getHelpMenuBlocks());
   });
   
   controller.hears(['^oldhelp'], 'direct_message,direct_mention', function(bot, message) {
@@ -60,11 +51,37 @@ module.exports = function(controller) {
   });
 };
 
+function backToMenuButton() {
+  return blocksBuilder.actions(
+      blocksBuilder.button("Back", help.SHOW_HELP_MENU),
+  );
+}
+
+function getHelpMenuBlocks() {
+  return { blocks: [
+    blocksBuilder.section("Hello and welcome to CoffeeTime! ✨ How can I help you?"),
+    blocksBuilder.section("*Basics*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
+    ),
+    blocksBuilder.section("*Manage subscription*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
+      blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
+    )
+  ] }
+}
+
+function showHelpMenu(bot, message) {
+  bot.replyInteractive(message, getHelpMenuBlocks());
+}
+
 function onWhatIsCoffeeTime(bot, message) {
   const blocks = [
     blocksBuilder.section(
       ...sharedConvo.defineCoffeeTimeDialogue()
-    )
+    ),
+    backToMenuButton() 
   ];
   bot.replyInteractive(message, { blocks });
 }
@@ -88,38 +105,29 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
   const blocks = [
     blocksBuilder.section(
       textToSay
-    )
+    ),
+    backToMenuButton()
   ];
   bot.replyInteractive(message, { blocks });
 }
 
 function onMyProfile(bot, message) {
   const userInfo = user.getUserInfo(message.user);
-  const slackIdFormatted = coffee.idToString(message.user.id);
-    
-  const textToSay = ((userInfo) => {
-    if (!userInfo.isSubscribed) {
-      return 'You are not subscribed to CoffeeTime.';
-    }
-    if (!userInfo.coffeePartners || userInfo.coffeePartners.length === 0) {
-      // TODO: Change Monday to a variable
-      return "You haven't been matched with a partner yet. Check back Monday around 9am!";
-    }
-    // You have subscribed and you have a coffee partner
-    return 'This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '. ' +
-        'Find time this week to get coffee together!';
-  })(userInfo);
+  const slackIdFormatted = coffee.idToString(message.user);
   
   const blocks = [
     blocksBuilder.section(`Hi ${slackIdFormatted}!`),
     blocksBuilder.section(
-      'You are currently ' + (userInfo.isSubscribed ? 'subscribed' : 'unsubscribed')
-    )
+      ' • You are currently *' + (userInfo.isSubscribed ? '' : 'not ') + 'subscribed* to CoffeeTime.'
+    ),
+    blocksBuilder.section(
+      ' • Your manager is set to ' +
+      (userInfo.managerSlackId ? coffee.idToString(userInfo.managerSlackId) : '*none*')
+    ),
+    blocksBuilder.section(
+      ' • This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners)
+    ),
+    backToMenuButton()
   ];
-  if (userInfo.isSubscribed) {
-    blocks.push(
-      
-    )
-  }
   bot.replyInteractive(message, { blocks });
 }
