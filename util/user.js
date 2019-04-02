@@ -69,20 +69,29 @@ const userInfoDataTemplate = {
   managerSlackId: null
 };
 
+// Returns information about the given `slackId` user.
 module.exports.getUserInfo = function(slackId) {
   const data = storage.loadData();
-  const coffeeUserData = data.userData.filter(u => slackId === u.slackId);
   
   const userInfo = { ...userInfoDataTemplate };  
+  const coffeeUserData = data.userData.filter(u => slackId === u.slackId);
+  
   if (!coffeeUserData) {
-    // Not subscribed by default.
-    return userInfo;
+    userInfo.isSubscribed = true;
+  userInfo.managerSlackId = coffeeUserData.managerSlackId || null;
+  userInfo.coffeePartners = getCoffeePartners(slackId, data.pairs);
   }
-  userInfo.isSubscribed = true;
-  userInfo.managerSlackId = userInfo.managerSlackId || null;
-  
-  
-  
+
+  return userInfo;
+}
+
+function getCoffeePartners(slackId, allPairs) {
+  for (const pair of allPairs) {
+    if (pair.includes(slackId)) {
+      return pair.filter(u => slackId !== u);
+    }
+  }
+  return [];
 }
 
 function addUserToData(slackUser, data) {
