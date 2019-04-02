@@ -129,10 +129,33 @@ function createBlockedMatches(data) {
   return [...blockedMatchesSet];
 }
 
+function idToString(slackId) {
+  return `<@${slackId}> `;
+}
+
+function slackPrintGroup(slackIdList) {
+  if (slackIdList.length === 0) {
+    return '';
+  }
+  if (slackIdList.length === 1) {
+    const [ slackId ] = slackIdList;
+    return idToString(slackId);
+  }
+  
+  const formattedNames = slackIdList.map(idToString);
+  // Get the index of the last element, which we won't delete.
+  const deleteStartIndex = formattedNames.length - 1;
+  const [ lastFormattedId ] = formattedNames.splice(deleteStartIndex);
+  // Now `formattedNames` is an array that contains all names but the last, and 
+  // `lastFormattedId` is the last element in the list.
+  return formattedNames.join(', ') + ' and ' + lastFormattedId;
+}
+
 module.exports = {
   pairUsers,  // Exported for testing
   createBlockedMatches,  // Exported for testing
   runCoffeeTime,
   saveNewPairings,
-  broadcastCoffeeGroups
+  broadcastCoffeeGroups,
+  slackPrintGroup
 };

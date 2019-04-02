@@ -68,7 +68,7 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
   const userInfo = user.getUserInfo(message.user);
   const blocks = [
     blocksBuilder.section(
-      `This week, you are paired with: <@${pairId}>`
+      'This week, you are paired with: ' + coffee.slackPrintGroup(userInfo.coffeePartners)
     )
   ];
   bot.replyInteractive(message, { blocks });
