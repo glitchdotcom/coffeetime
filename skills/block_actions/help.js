@@ -64,15 +64,25 @@ function onWhatIsCoffeeTime(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
+
+
 function onWhoIsMyCoffeeBuddy(bot, message) {
   const userInfo = user.getUserInfo(message.user);
   
-  let textToSay;
-  if (userInfo.isSubscribed) {
-    if () {
-}
-  } else {
-      }
+  const getTextToSay = (userInfo) => {
+    if (!userInfo.isSubscribed) {
+      return 'You are not subscribed to CoffeeTime.'
+    }
+    if (!userInfo.coffeePartners || user.coffeePartners.length === 0) {
+      // TODO: Change Monday to a variable
+      return "You haven't been matched with a partner yet. Check back Monday around 9am!";
+    }
+    // You have 
+    return 'This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '. \n'
+        'Find time this week to get coffee together!';
+  };
+  
+  const textToSay = getTextToSay(userInfo);
   
   const blocks = [
     blocksBuilder.section(
