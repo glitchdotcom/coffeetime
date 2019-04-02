@@ -64,7 +64,9 @@ module.exports.checkForUser = function(slackId, data) {
 }
 
 const userInfoDataTemplate = {
-  
+  isSubscribed: false,
+  coffeePartners: [],
+  managerSlackId: null
 };
 
 module.exports.getUserInfo = function(slackId) {
@@ -73,7 +75,14 @@ module.exports.getUserInfo = function(slackId) {
   
   const userInfo = { ...userInfoDataTemplate };  
   if (!coffeeUserData) {
+    // Not subscribed by default.
+    return userInfo;
   }
+  userInfo.isSubscribed = true;
+  userInfo.managerSlackId = userInfo.managerSlackId || null;
+  
+  
+  
 }
 
 function addUserToData(slackUser, data) {
@@ -85,6 +94,7 @@ function addUserToData(slackUser, data) {
   const userRecord = {
     slackId: slackUser.id,
     name: slackUser.real_name
+    // managerSlackId
   };
   data.userData.push(userRecord);
   return true;
