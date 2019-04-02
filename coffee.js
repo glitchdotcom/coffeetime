@@ -145,7 +145,7 @@ function runCoffeeTimeHelper(data) {
 
 /* istanbul ignore next */
 function addUser(slackUser) {
-  let [wasNovel, changedData] = addUserHelper(loadData(), slackUser);
+  const [wasNovel, changedData] = addUserHelper(loadData(), slackUser);
   saveData(changedData);
   return wasNovel;
 }
@@ -153,7 +153,7 @@ function addUser(slackUser) {
 function addUserHelper(data, slackUser) {
   if (checkForUser(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
-    return [false];
+    return [false, data];
   }
   console.log('adding', slackUser.id);
   return [true, addUserToData(slackUser, data)];
