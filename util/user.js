@@ -63,6 +63,17 @@ module.exports.checkForUser = function(slackId, data) {
   return false;
 }
 
+module.exports.getUserInfo = function(slackId) {
+  const data = storage.loadData();
+  const userData = data.userData
+  for (let i = 0; i < data.userData.length; i++) {
+    if (slackId === data.userData[i].slackId) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function addUserToData(slackUser, data) {
   console.log('adding', slackUser.id);
   if (module.exports.checkForUser(slackUser.id, data)) {

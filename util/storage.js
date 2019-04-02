@@ -9,6 +9,8 @@ const dataFormat = {
   "pastMatches": []
 }
 
+// Always loads data from disk and returns a copy of the data.
+// If data does not exist on disk, return an empty copy of `dataFormat`.
 module.exports.loadData = function() {
   if (fs.existsSync(DATA_PATH)) {
     try {
