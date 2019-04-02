@@ -48,6 +48,17 @@ function section(...text) {
   };
 }
 
+
+function sectionWithAccessory(...text) {
+  return {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": text.join('\n')
+    }
+  };
+}
+
 function divider() {
   return 	{
 		"type": "divider"
