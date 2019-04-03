@@ -75,6 +75,10 @@ module.exports = function(controller) {
         bot.replyPrivate(message, textToSay);
         break;
       }
+      case 'admin': {
+        bot.replyPrivate(message, sharedConvo.getAdminMenuBlocks());
+        break;
+      }
       default:
         bot.replyPrivate(message, sharedConvo.getHelpMenuBlocks(message.user_id));
         break;

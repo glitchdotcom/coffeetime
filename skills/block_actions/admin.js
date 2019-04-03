@@ -13,7 +13,9 @@ module.exports = function(controller) {
         case admin.SHOW_MENU_VALUE:
           showAdminMenu(bot, message);
           break;
-        
+        case admin.EXIT_MENU_VALUE:
+          onExitHelp(bot, message);
+          break;
       }
       
     }
@@ -33,7 +35,7 @@ function showAdminMenu(bot, message) {
 
 async function onExitHelp(bot, message) {
   const blocks = [
-    blocksBuilder.section('See you later! Summon me anytime with `/coffeetime`.'),
+    blocksBuilder.section('Bye! Open the admin console again via `/coffeetime admin`.'),
   ];
   bot.replyInteractive(message, { blocks });
 }

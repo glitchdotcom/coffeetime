@@ -97,7 +97,7 @@ function getSubscribeToggleButton(slackId) {
 }
 
 
-module.exports.getAdminMenuBlocks = function(slackId) {
+module.exports.getAdminMenuBlocks = function() {
   return { blocks: [
     blocksBuilder.section(
       'This is the admin menu for CoffeeTime',

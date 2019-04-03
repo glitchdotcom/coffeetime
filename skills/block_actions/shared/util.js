@@ -125,6 +125,7 @@ const blocksBuilder = {
 };
 
 module.exports = {
+  admin,
   setup,
   blocksBuilder,
   help
