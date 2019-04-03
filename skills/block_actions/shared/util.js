@@ -48,7 +48,8 @@ const admin = {
   SEE_SCHEDULE_VALUE: 'admin_see_schedule',
   SET_SCHEDULE_VALUE: 'admin_set_schedule',
   RUN_COFFFEETIME_NOW: 'admin_run_coffeetime_now',
-  RUN_COFFFEETIME_NOW_CONFIRM: 'admin_run_coffeetime_now_confirm'
+  RUN_COFFFEETIME_NOW_CONFIRM: 'admin_run_coffeetime_now_confirm',
+  RUN_COFFFEETIME_CANCEL: 'admin_run_coffeetime_cancel'
 };
 
 const DELIMITER = '|';

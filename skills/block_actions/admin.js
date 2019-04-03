@@ -46,13 +46,18 @@ module.exports = function(controller) {
             break;
           case admin.SEE_SCHEDULE_VALUE:
             onSeeSchedule(bot, message);
+            break;
           case admin.SET_SCHEDULE_VALUE:
             onSetSchedule(bot, message);
+            break;
           case admin.RUN_COFFFEETIME_NOW:
             onRunCoffeeTimeNow(bot, message);
             break;
           case admin.RUN_COFFFEETIME_NOW_CONFIRM:
             onRunCoffeeTimeNowConfirmed(bot, message);
+            break;
+          case admin.RUN_COFFFEETIME_CANCEL:
+            onRunCoffeeTimeCanceled(bot, message);
             break;
         }
       }
@@ -353,26 +358,25 @@ function onSetSchedule(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-
 function onRunCoffeeTimeNow(bot, message) {
+  bot.replyInteractive(
+      message, sharedConvo.getRunCoffeetimeBlocks(
+          admin.SHOW_MENU_VALUE, admin.EXIT_MENU_VALUE));
+}
+
+
+function onRunCoffeeTimeCanceled(bot, message) {
    const blocks = [
     blocksBuilder.divider(),
-     blocksBuilder.section('*Run CoffeeTime*'),
+     blocksBuilder.section('*CoffeeTime not run*'),
     blocksBuilder.section(
-      "CoffeeTime is currently set to run again next *Monday*, at *10am ET*."
-    ),
-    blocksBuilder.section(
-      "Are you sure you want to force it to run now? This will create and message all new pairings!"
-    ),
-    blocksBuilder.actions(
-      blocksBuilder.button('Yes!', admin.RUN_COFFFEETIME_NOW_CONFIRM),
-      blocksBuilder.button('Cancel', admin.SHOW_MENU_VALUE),
-      blocksBuilder.button('Exit', admin.EXIT_MENU_VALUE),
+      "OK cool, I didn't run CoffeeTime!"
     )
   ];
 
   bot.replyInteractive(message, { blocks });
 }
+
 
 function onRunCoffeeTimeNowConfirmed(bot, message) {
   bot.replyInteractive(message, sharedConvo.getRunCoffeetimeBlocks());

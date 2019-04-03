@@ -125,7 +125,9 @@ module.exports.getAdminMenuBlocks = function() {
   ] };
 }
 
-module.exports.getRunCoffeetimeBlocks = function() {
+module.exports.getRunCoffeetimeBlocks = function(
+    cancelValue=admin.RUN_COFFFEETIME_CANCEL,
+    exitValue=admin.RUN_COFFFEETIME_CANCEL) {
   return { blocks: [
     blocksBuilder.divider(),
      blocksBuilder.section('*Run CoffeeTime*'),
@@ -137,8 +139,8 @@ module.exports.getRunCoffeetimeBlocks = function() {
     ),
     blocksBuilder.actions(
       blocksBuilder.button('Yes!', admin.RUN_COFFFEETIME_NOW_CONFIRM),
-      blocksBuilder.button('Cancel', admin.SHOW_MENU_VALUE),
-      blocksBuilder.button('Exit', admin.EXIT_MENU_VALUE),
+      blocksBuilder.button('Cancel', cancelValue),
+      blocksBuilder.button('Exit', exitValue),
     )
   ] };
 }
