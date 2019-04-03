@@ -41,6 +41,9 @@ module.exports = function(controller) {
           case admin.SUBSCRIBE_EVERYONE:
             onSubscribeAll(bot, message);
             break;
+          case admin.SUBSCRIBE_EVERYONE_CONFIRM:
+            onSubscribeAllConfirmed(bot, message);
+            break;
         }
       }
       
@@ -274,13 +277,11 @@ function replyInteractiveUnsubscribeUser(bot, message, selectedUserId, selectUse
   bot.replyInteractive(message, { blocks });
 }
 
-
 async function onSubscribeAll(bot, message) {
   const allMembers = await user.getAllUsersInSlack(bot);
   const allSlackIdsFormatted = allMembers
             .map(m => m.id)
             .map(user.idToString);
-    
   const blocks = [
     blocksBuilder.divider(),
     blocksBuilder.section('*Subscribe everyone*'),

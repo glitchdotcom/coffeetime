@@ -5,9 +5,10 @@ const coffee = require('./../util/coffee.js');
 module.exports.scheduleCoffeeCron = function(bot) {
   // See usage: https://github.com/node-schedule/node-schedule#usage
   const rule = new schedule.RecurrenceRule();
-  rule.dayOfWeek = 2;  // Tuesday
-  rule.hour = 9;
-  rule.minute = 0;
+  rule.dayOfWeek = 3;  // Wednesday
+  rule.hour = 14;
+  rule.minute = 42;
+  console.log('hello!');
   
   schedule.scheduleJob(rule, () => {
     console.log('Running coffee time~~~');
