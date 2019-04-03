@@ -1,3 +1,4 @@
+const coffee = require('./../../../util/coffee');
 const { setup, blocksBuilder } = require('./util');
 
 module.exports.startAdminSetupConversation = function(bot, user) {
@@ -28,15 +29,22 @@ module.exports.defineCoffeeTimeDialogue = function() {
   ];
 };
 
-module.exports.userSubscribedDialogue = function(isSubscribed) {
-  if (isSubscribed) {
+module.exports.userSubscribedDialogue = function(userInfo) {
+  if (userInfo.isSubscribed) {
+    // TODO: Update to be possibly not Monday. 
     return ["Yay!! You've subscribed to CoffeeTime! ✨ ",
-        
-        convo.say("I'll message you with you coffee buddy on *Monday*.");
-      } else {
-        // TODO: finish this
-        convo.say("You're already subscribed to CoffeeTime!");
-        convo.say("Your buddy this week is");
-      }
+            "I'll message you with you coffee buddy on *Monday*."];
+  }
+  
+  const dialogue = [
+    "You're already subscribed to CoffeeTime!"
+  ];
+  if (!userInfo.coffeePartners || userInfo.coffeePartners.length === 0) {
+    // TODO: Change Monday to a variable
+    dialogue.push("You haven't been matched with a partner yet. Check back Monday around 9am!");
+  } else {
+    dialogue.push('This week you are getting coffee with ' + coffee.slackPrintGroup(userInfo.coffeePartners));
+  }
+  return dialogue;
 };
 

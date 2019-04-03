@@ -1,6 +1,7 @@
 const coffee = require('../util/coffee');
 const user = require('../util/user');
 const storage = require('../util/storage');
+const sharedConvo = require('./block_actions/shared/convo');
 
 module.exports = function(controller) {
   controller.hears(['^manager'], 'direct_message,direct_mention', function(bot, message) {
@@ -49,15 +50,10 @@ module.exports = function(controller) {
     bot.createConversation(message, async function(err, convo) {
       const slackUser = await user.getSlackUserInfo(bot, message.event.user);
       const status = user.subscribeUser(slackUser);
-      if (status === true) {
-        convo.say("Yay!! You've subscribed to CoffeeTime! ✨ ");
-        // TODO: Update to be possibly not Monday. 
-        convo.say("I'll message you with you coffee buddy on *Monday*.");
-      } else {
-        // TODO: finish this
-        convo.say("You're already subscribed to CoffeeTime!");
-        convo.say("Your buddy this week is");
-      }
+      const userInfo = user.getUserInfo(message.event.user);
+      const dialogue = sharedConvo.userSubscribedDialogue(isAlreadySubscribed, userInfo);
+      console.log(userInfo);
+      dialogue.forEach(line => convo.say(line));
       convo.activate();
     });
   });
