@@ -21,7 +21,9 @@ const help = {
   SHOW_HELP_MENU: 'help_show_help_menu',
   EXIT_MENU_VALUE: 'exit_menu_value',
   WHAT_ARE_COMMANDS_VALUE: 'what_are_commands_value',
-  SET_MANAGER_VALUE: 'set_manager_value'
+  SET_MANAGER_VALUE: 'set_manager_value',
+  SELECT_MANAGER_ACTION_ID: 'select_manager_action_id',
+  UNSELECT_MANAGER_VALUE: 'unselect_manager_value'
 };
 
 function button(text, value) {
@@ -64,7 +66,17 @@ function sectionWithAccessory(text, accessory) {
   };
 }
 
-function userSelect(placeholder, actionId, ) {
+function userSelect(placeholderText, actionId, initialUserId) {
+  return {
+    "type": "users_select",
+    "placeholder": {
+      "type": "plain_text",
+      "text": placeholderText,
+      "emoji": true
+    },
+    "action_id": actionId,
+    "initial_user": initialUserId
+  };
 }
 
 function divider() {
@@ -77,7 +89,8 @@ const blocksBuilder = {
   button,
   actions,
   divider,
-  section
+  section,
+  userSelect
 };
 
 module.exports = {

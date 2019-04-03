@@ -9,6 +9,7 @@ module.exports = function(controller) {
   
   // receive an interactive message, and reply with a message that will replace the original
   controller.on('block_actions', function(bot, message) {
+    console.log(message);
     for (const action of message.actions) {     
       switch(action.value) {
         case help.SHOW_HELP_MENU:
@@ -37,6 +38,12 @@ module.exports = function(controller) {
           break;
         case help.SET_MANAGER_VALUE:
           onSetManagerValue(bot, message);
+          break;
+      }
+      
+      switch(action.action_id) {
+        case help.SELECT_MANAGER_ACTION_ID:
+          onSetManagerSelected(bot, message, );
           break;
       }
     }
@@ -103,14 +110,22 @@ async function onSubscribeMe(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-
-
 function onSetManagerValue(bot, message) {
+  const userInfo = user.getUserInfo(message.user);
   const blocks = [
     blocksBuilder.divider(),
     blocksBuilder.section('*Set Manager*'),
-    blocksBuilder.section(...dialogue),
-    blocksBuilder.section('*Set Manager*'),
+    blocksBuilder.actions(
+      blocksBuilder.userSelect(
+        'Select your manager',
+        help.SELECT_MANAGER_ACTION_ID,
+        userInfo.managerSlackId || undefined)
+    ),
+    blocksBuilder.section('*Remove Manager*'),
+    blocksBuilder.actions(
+      blocksBuilder.button('Unset manager', help.UNSELECT_MANAGER_VALUE)
+    ),
+    blocksBuilder.divider(),
     backToMenuButton()
   ];
 
