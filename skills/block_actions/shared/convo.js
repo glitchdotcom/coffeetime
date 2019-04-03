@@ -79,8 +79,8 @@ module.exports.getHelpMenuBlocks = function(slackId) {
     ),
     blocksBuilder.section("*Your info*"),
     blocksBuilder.actions(
-      blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
-      blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
+      blocksBuilder.button("Your Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
+      blocksBuilder.button('Your Profile', help.MY_PROFILE_VALUE),
     ),
     blocksBuilder.divider(),
     blocksBuilder.actions(

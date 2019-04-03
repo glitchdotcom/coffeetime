@@ -1,3 +1,6 @@
+//////////////////////////////////////
+// Note: ALL string values in this section must be unique, as they are used by Slack
+// to distiniguish responses to interactive menus!
 const setup = {
   YES_INSTALL_VALUE: "setup_yes_install",
   YES_INSTALL_MENU_VALUE: "setup_yes_install_menu",
@@ -25,6 +28,17 @@ const help = {
   SELECT_MANAGER_ACTION_ID: 'select_manager_action_id',
   UNSELECT_MANAGER_VALUE: 'unselect_manager_value'
 };
+
+const admin = {
+  SHOW_MENU_VALUE: 'admin_show_menu_value',
+  SHOW_ALL_SUBSCRIBED: 'admin_show_all_subscribed',
+  SHOW_ALL_UNSUBSCRIBED: 'admin_show_all_unsubscribed',
+  
+  SUBSCRIBE_EVERYONE: 'admin_subscribe_everyone',
+  SUBSCRIBE_EVERYONE: 'admin_subscribe_everyone',
+};
+
+//////////////////////////////////////
 
 function button(text, value) {
   return {
