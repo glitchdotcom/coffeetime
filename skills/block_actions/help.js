@@ -109,12 +109,33 @@ async function onSubscribeMe(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-async function onSetManagerSelected(bot, message, slackUserId) {
-  module.exports.getSlackUserInfo()
-  console.log(slackUserId);
+const SetManagerErrorEnum = Object.freeze({
+    IS_A:   Symbol("red"),
+    BLUE:  Symbol("blue"),
+    GREEN: Symbol("green")
+});
+async function onSetManagerSelected(bot, message, managerSlackId) {
+  const userSlackId = message.user;
+  const managerSlackInfo = await user.getSlackUserInfo(bot, managerSlackId);
+  const isValidManager = user.isFullSlackUser(managerSlackInfo) && managerSlackId != userSlackId;
+  console.log(message.user, isValidManager);
+  
+  let setManagerErrorMsg;
+  if (isValidManager) {
+    user.setManager(userSlackId, managerSlackId);
+  } else {
+    const 
+    setManagerErrorMsg = coffee.idToString(userInfo.managerSlackId)
+  }
+  
+  replyInteractiveWithManagerMenu(bot, message);
 }
 
 function onSetManagerMenuValue(bot, message) {
+  replyInteractiveWithManagerMenu(bot, message);
+}
+
+function replyInteractiveWithManagerMenu(bot, message, setManagerErrorMsg) {
   const userInfo = user.getUserInfo(message.user);
   
   const managerMessage = userInfo.managerSlackId ?
@@ -131,6 +152,9 @@ function onSetManagerMenuValue(bot, message) {
         userInfo.managerSlackId || undefined)
     )
   ];
+  if (setManagerErrorMsg) {
+    setManagerBlocks.push(blocksBuilder.context(setManagerErrorMsg));
+  }
   
   const removeManagerBlocks = userInfo.managerSlackId ? [
     blocksBuilder.section('*Remove Manager*'),
