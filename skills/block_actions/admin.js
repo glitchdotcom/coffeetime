@@ -125,10 +125,10 @@ async function onSubscribeUserSelected(bot, message, selectedUserId) {
   if (!isValidUser) {
     errorMessage = getSubscribeUserErrorMessage(selectedUserId, selectedUserSlackInfo);
   } else {
-    validUserId = 
+    validUserId = selectedUserId;
   }
 
-  replyInteractiveSubscribeUser(bot, message, errorMessage);
+  replyInteractiveSubscribeUser(bot, message, selectedUserId, errorMessage);
 }
 
 function onSubscribeUserConfirmed(bot, message) {
@@ -139,18 +139,19 @@ function onSubscribeUserConfirmed(bot, message) {
 function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserErrorMsg) {
   const userInfo = user.getUserInfo(message.user);
   
+  console.log('here!');
   const subscribeUserActions = [
       blocksBuilder.userSelect(
         'Choose user to add',
         admin.SELECT_SUBSCRIBER_ACTION_ID, 
+        undefined,
+        blocksBuilder.userSelectConfirm('Confirm add user', 'Are you sure you want to subscribe this user?')
     )
   ];
   
   const errorMessageBlocks = [];
   
-  if (!selectUserErrorMsg) {
-    subscribeUserActions.push(blocksBuilder.button('Add', admin.ADD_USER_CONFIRM_VALUE));
-  } else {
+  if (selectUserErrorMsg) {
     errorMessageBlocks.push(blocksBuilder.context(selectUserErrorMsg));
   } 
   

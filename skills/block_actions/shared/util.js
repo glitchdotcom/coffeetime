@@ -91,7 +91,7 @@ function sectionWithAccessory(text, accessory) {
   };
 }
 
-function userSelect(placeholderText, actionId, initialUserId) {
+function userSelect(placeholderText, actionId, initialUserId, confirm) {
   return {
     "type": "users_select",
     "placeholder": {
@@ -100,7 +100,29 @@ function userSelect(placeholderText, actionId, initialUserId) {
       "emoji": true
     },
     "action_id": actionId,
-    "initial_user": initialUserId
+    "initial_user": initialUserId,
+    confirm
+  };
+}
+
+function userSelectConfirm(title, body) {
+  return {
+    "title": {
+        "type": "plain_text",
+        "text": title
+    },
+    "text": {
+        "type": "mrkdwn",
+        "text":  body
+    },
+    "confirm": {
+        "type": "plain_text",
+        "text": "Yes"
+    },
+    "deny": {
+        "type": "plain_text",
+        "text": "No"
+    }
   };
 }
 
@@ -128,6 +150,7 @@ const blocksBuilder = {
   divider,
   section,
   userSelect,
+  userSelectConfirm,
   context
 };
 
