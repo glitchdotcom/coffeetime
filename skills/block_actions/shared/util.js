@@ -33,9 +33,13 @@ const admin = {
   SHOW_MENU_VALUE: 'admin_show_menu_value',
   SHOW_ALL_SUBSCRIBED: 'admin_show_all_subscribed',
   SHOW_ALL_UNSUBSCRIBED: 'admin_show_all_unsubscribed',
+  EXIT_MENU_VALUE: 'admin_exit_menu_value',
   
   SUBSCRIBE_EVERYONE: 'admin_subscribe_everyone',
-  SUBSCRIBE_EVERYONE: 'admin_subscribe_everyone',
+  SUBSCRIBE_EVERYONE_CONFIRM: 'admin_subscribe_everyone_confirm',
+  
+  SUBSCRIBE_USER: 'admin_subscribe_user',
+  UNSUBSCRIBE_USER: 'admin_unsubscribe_user'
 };
 
 //////////////////////////////////////

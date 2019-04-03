@@ -1,7 +1,7 @@
 const coffee = require('./../../../util/coffee');
 const user = require('./../../../util/user');
 
-const { setup, help, blocksBuilder } = require('./util');
+const { admin, setup, help, blocksBuilder } = require('./util');
 
 module.exports.startAdminSetupConversation = function(bot, user) {
   const blocks = [
@@ -85,7 +85,6 @@ module.exports.getHelpMenuBlocks = function(slackId) {
     blocksBuilder.divider(),
     blocksBuilder.actions(
       blocksBuilder.button("Exit", help.EXIT_MENU_VALUE),
-      //blocksBuilder.button("Admin menu", help.EXIT_MENU_VALUE),
     )
   ] };
 }
@@ -96,3 +95,17 @@ function getSubscribeToggleButton(slackId) {
   const buttonValue = userInfo.isSubscribed ? help.UNSUBSCRIBE_ME_VALUE : help.SUBSCRIBE_ME_VALUE;
   return blocksBuilder.button(buttonText, buttonValue);
 }
+
+
+module.exports.getAdminMenuBlocks = function(slackId) {
+  return { blocks: [
+    blocksBuilder.section(
+      'This is the admin menu for CoffeeTime',
+      '_*Warning:* These changes can affect all CoffeeTime users!_'),
+    blocksBuilder.section("*Subscriber info*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("Exit", admin.EXIT_MENU_VALUE),
+    )
+  ] };
+}
+
