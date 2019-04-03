@@ -45,10 +45,24 @@ function onExitHelp(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-function onViewAllSubscribed(bot, message) {
+async function onViewAllSubscribed(bot, message) {
+  const allMembers = await user.getAllUsersFromSlack(bot);
+
+  const allSlackIdsInWorkspace = allMembers.map(m => m.id);
+  
+  const allSubscriberIdsFormatted = allSlackIdsInWorkspace.filter(m => checkForUser()
+
+      .map(user.idToString);
   const blocks = [
-    blocksBuilder.section('Bye! Open the admin console again via `/coffeetime admin`.'),
+    blocksBuilder.divider(),
+    blocksBuilder.section('*View Subscribers*'),
+    blocksBuilder.section('Here are all the users registered to CoffeeTime:'),
+    blocksBuilder.section(
+      '> ' + allSlackIdsFormatted.join(', ')
+    ),
+    backToMenuButton()
   ];
+  
   bot.replyInteractive(message, { blocks });
 }
 

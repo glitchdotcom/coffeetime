@@ -49,7 +49,7 @@ module.exports.userSubscribedDialogue = function(isNewlySubscribed, userInfo) {
     // TODO: Change Monday to a variable
     dialogue.push("You haven't been matched with a partner yet. Check back Monday around 9am!");
   } else {
-    dialogue.push('This week you are getting coffee with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '.');
+    dialogue.push('This week you are getting coffee with ' + user.slackPrintGroup(userInfo.coffeePartners) + '.');
     dialogue.push("Reach out to them if you haven't already!");
   }
   return dialogue;

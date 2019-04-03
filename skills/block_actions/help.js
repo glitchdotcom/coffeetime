@@ -113,7 +113,7 @@ async function onSubscribeMe(bot, message) {
 }
 
 function getManagerErrorMessage(userSlackId, managerSlackId, managerSlackInfo) {
-  const startMessage = coffee.idToString(managerSlackId) + 'is not a valid manager';
+  const startMessage = user.idToString(managerSlackId) + 'is not a valid manager';
   if (userSlackId === managerSlackId) {
     return startMessage + " because you can't be your own manager.";
   }
@@ -159,7 +159,7 @@ function replyInteractiveWithManagerMenu(bot, message, setManagerErrorMsg) {
   const userInfo = user.getUserInfo(message.user);
   
   const managerMessage = userInfo.managerSlackId ?
-        'Your manager is currently set to ' + coffee.idToString(userInfo.managerSlackId) :
+        'Your manager is currently set to ' + user.idToString(userInfo.managerSlackId) :
         "You don't currently have a manager set. Set one now:"
   
   const setManagerBlocks = [
@@ -242,7 +242,7 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
       return "You haven't been matched with a partner yet. Check back Monday around 9am!";
     }
     // You have subscribed and you have a coffee partner
-    return 'This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '. ' +
+    return 'This week, you are paired with ' + user.slackPrintGroup(userInfo.coffeePartners) + '. ' +
         'Find time this week to get coffee together!';
   })(userInfo);
   
@@ -257,10 +257,10 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
 
 function onMyProfile(bot, message) {
   const userInfo = user.getUserInfo(message.user);
-  const slackIdFormatted = coffee.idToString(message.user);
+  const slackIdFormatted = user.idToString(message.user);
   
   const pairingMessage = (userInfo.isSubscribed && userInfo.coffeePartners) ?
-    ('> • This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners)) : '';
+    ('> • This week, you are paired with ' + user.slackPrintGroup(userInfo.coffeePartners)) : '';
   const blocks = [
     blocksBuilder.divider(),
     blocksBuilder.section('*Your Profile*'),
@@ -268,7 +268,7 @@ function onMyProfile(bot, message) {
     blocksBuilder.section(
       '> • You are currently *' + (userInfo.isSubscribed ? '' : 'not ') + 'subscribed* to CoffeeTime. \n' + 
       '> • Your manager is set to ' +
-      (userInfo.managerSlackId ? coffee.idToString(userInfo.managerSlackId) : '*none*') + '\n' + 
+      (userInfo.managerSlackId ? user.idToString(userInfo.managerSlackId) : '*none*') + '\n' + 
       pairingMessage
     ),
     backToMenuButton()

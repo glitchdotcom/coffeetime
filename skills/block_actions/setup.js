@@ -106,10 +106,10 @@ function onSubscribeHelp(bot, message) {
 }
 
 async function onSubscribeAll(bot, message) {
-  const allMembers = await user.getAllUsersInSlack(bot, message.team.id);
+  const allMembers = await user.getAllUsersInSlack(bot);
   const allSlackIdsFormatted = allMembers
             .map(m => m.id)
-            .map(m => `<@${m}>`);
+            .map(user.idToString);
     
   const blocks = [
     blocksBuilder.section(
@@ -159,7 +159,7 @@ async function onSubscribeJustMe(bot, message) {
 
 async function onSubscribeAllConfirmed(bot, message) {
   // Add all users to CoffeeTime.
-  const allMembers = await user.getAllUsersInSlack(bot, message.team.id);
+  const allMembers = await user.getAllUsersInSlack(bot);
   console.log(allMembers);
   user.subscribeUsers(allMembers);
   finishInstallSuccess(bot, message);

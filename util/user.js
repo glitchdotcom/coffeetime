@@ -171,7 +171,7 @@ function getManagerHelper(data, userSlackId) {
   return data.userData.find(u => u.slackId === userSlackId).managerSlackId;
 }
 
-module.exports.getAllUsersInSlack = async function (bot, teamId) {
+module.exports.getAllUsersInSlack = async function (bot) {
   // TODO: Implement pagination
   // TODO: Possibly implement caching
   const firstPageOfUsers = await getAllUsersInSlackFromApi(bot);
@@ -189,4 +189,26 @@ async function getAllUsersInSlackFromApi(bot, cursor) {
       });
     });
   });
+}
+
+module.exports.idToString = function(slackId) {
+  return `<@${slackId}> `;
+}
+
+module.exports.slackPrintGroup = function(slackIdList) {
+  if (slackIdList.length === 0) {
+    return '';
+  }
+  if (slackIdList.length === 1) {
+    const [ slackId ] = slackIdList;
+    return module.exports.idToString(slackId);
+  }
+  
+  const formattedNames = slackIdList.map(module.exports.idToString);
+  // Get the index of the last element, which we won't delete.
+  const deleteStartIndex = formattedNames.length - 1;
+  const [ lastFormattedId ] = formattedNames.splice(deleteStartIndex);
+  // Now `formattedNames` is an array that contains all names but the last, and 
+  // `lastFormattedId` is the last element in the list.
+  return formattedNames.join(', ') + 'and ' + lastFormattedId;
 }
