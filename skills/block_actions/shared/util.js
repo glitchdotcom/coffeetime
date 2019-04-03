@@ -79,6 +79,18 @@ function userSelect(placeholderText, actionId, initialUserId) {
   };
 }
 
+function context(messageText) {
+  return {
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": messageText
+			}
+		]
+	}
+}
+
 function divider() {
   return 	{
 		"type": "divider"
@@ -90,7 +102,8 @@ const blocksBuilder = {
   actions,
   divider,
   section,
-  userSelect
+  userSelect,
+  context
 };
 
 module.exports = {

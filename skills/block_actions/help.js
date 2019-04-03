@@ -129,6 +129,7 @@ function onSetManagerMenuValue(bot, message) {
         help.SELECT_MANAGER_ACTION_ID,
         userInfo.managerSlackId || undefined)
     ),
+    blocksBuilder.context('test context message'),
     blocksBuilder.section('*Remove Manager*'),
     blocksBuilder.actions(
       blocksBuilder.button('Unset manager', help.UNSELECT_MANAGER_VALUE)
