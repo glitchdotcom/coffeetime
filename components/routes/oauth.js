@@ -103,7 +103,6 @@ function onOAuthSuccess(payload, controller) {
             console.log('Error: could not save team record:', err);
         } else {
           if (new_team) {
-            console.log('Team created:', team);
             // Schedule cron for the new team.
             coffeeCron.scheduleCoffeeCron(botkitBot);
             controller.trigger('onboard', [botkitBot, team]);
