@@ -82,7 +82,7 @@ function onCancelSetup(bot, message) {
 }
 
 function getEndOfSetupDialogue() {
-  return 'Summon me anytime with `/coffeetime`, or reply with `help` to learn more.'
+  return 'Summon me anytime with `/coffeetime`.'
 }
 
 function onSubscribeHelp(bot, message) {

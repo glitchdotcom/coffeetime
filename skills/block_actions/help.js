@@ -65,7 +65,8 @@ module.exports = function(controller) {
 
 function backToMenuButton() {
   return blocksBuilder.actions(
-      blocksBuilder.button("Back", help.SHOW_HELP_MENU),
+    blocksBuilder.button("Back", help.SHOW_HELP_MENU),
+    blocksBuilder.button("Exit", help.EXIT_MENU_VALUE),
   );
 }
 
@@ -176,7 +177,7 @@ function onMyProfile(bot, message) {
 
 async function onExitHelp(bot, message) {
   const blocks = [
-    blocksBuilder.section('See you later! Summon me anytime with `help`.'),
+    blocksBuilder.section('See you later! Summon me anytime with `/coffeetime`.'),
   ];
   bot.replyInteractive(message, { blocks });
 }

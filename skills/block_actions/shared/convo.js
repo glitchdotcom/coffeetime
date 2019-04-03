@@ -60,7 +60,7 @@ module.exports.userUnsubscribedDialogue = function(isAlreadyUnsubscribed) {
     return ["You are already unsubscribed from CoffeeTime."];
   }
   return ["Enjoy your break from CoffeeTime!",
-      "You can always come back by sending a `subscribe` message."];
+      "You can always come back via `/coffeetime subscribe`."];
 };
 
 
@@ -70,6 +70,7 @@ module.exports.getHelpMenuBlocks = function(slackId) {
     blocksBuilder.section("*Basics*"),
     blocksBuilder.actions(
       blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
+      blocksBuilder.button("Commands", help.WHAT_ARE_COMMANDS_VALUE),
     ),
     blocksBuilder.section("*Manage subscription*"),
     blocksBuilder.actions(
