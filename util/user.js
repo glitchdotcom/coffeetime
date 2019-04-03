@@ -29,11 +29,11 @@ module.exports.subscribeUsers = function(slackUsers) {
   storage.saveData(data);
 }
 
-module.exports.unsubscribeUser = function(slackUser) {
+module.exports.unsubscribeUser = function(slackId) {
   const data = storage.loadData();
   for (let i = 0; i < data.userData.length; i++) {
     let user = data.userData[i];
-    if (user.slackId === slackUser.id) {
+    if (user.slackId === slackId) {
       data.userData.splice(i, 1);
       break;
     }

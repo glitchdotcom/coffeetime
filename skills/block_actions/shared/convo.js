@@ -53,3 +53,29 @@ module.exports.userSubscribedDialogue = function(isNewlySubscribed, userInfo) {
   return dialogue;
 };
 
+
+
+
+module.exports.userUnsubscribedDialogue = function(isNewlyUnsubscribed) {
+  if (isNewlyUnsubscribed) {
+    return ["Enjoy your break from CoffeeTime!",
+      "You can always come back by sending a `subscribe` message."];
+  }
+  if (isNewlySubscribed) {
+    // TODO: Update to be possibly not Monday. 
+    return ["Yay!! You've subscribed to CoffeeTime! ✨ ",
+            "I'll message you with you coffee buddy on *Monday*."];
+  }
+  
+  const dialogue = [
+    "You're already subscribed to CoffeeTime!"
+  ];
+  if (!userInfo.coffeePartners || userInfo.coffeePartners.length === 0) {
+    // TODO: Change Monday to a variable
+    dialogue.push("You haven't been matched with a partner yet. Check back Monday around 9am!");
+  } else {
+    dialogue.push('This week you are getting coffee with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '.');
+    dialogue.push("Reach out to them if you haven't already!");
+  }
+  return dialogue;
+};

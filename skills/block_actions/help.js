@@ -16,19 +16,25 @@ module.exports = function(controller) {
           break;
         case help.WHAT_IS_THIS_VALUE:
           onWhatIsCoffeeTime(bot, message);
-        break;
+          break;
         case help.WHO_IS_MY_BUDDY_VALUE:
           onWhoIsMyCoffeeBuddy(bot, message);
-        break;
-          case help.MY_PROFILE_VALUE:
+          break;
+        case help.MY_PROFILE_VALUE:
           onMyProfile(bot, message);
-        break;
+          break;
+        case help.SUBSCRIBE_ME_VALUE:
+          onSubscribeMe(bot, message);
+          break;
+        case help.UNSUBSCRIBE_ME_VALUE:
+          onUnsubscribeMe(bot, message);
+          break;
       }
     }
   });
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
-    bot.reply(message, getHelpMenuBlocks());
+    bot.reply(message, getHelpMenuBlocks(message.event.user));
   });
   
   controller.hears(['^oldhelp'], 'direct_message,direct_mention', function(bot, message) {
@@ -57,7 +63,7 @@ function backToMenuButton() {
   );
 }
 
-function getHelpMenuBlocks() {
+function getHelpMenuBlocks(slackId) {
   return { blocks: [
     blocksBuilder.section("Hello and welcome to CoffeeTime! ✨ How can I help you?"),
     blocksBuilder.section("*Basics*"),
@@ -66,6 +72,7 @@ function getHelpMenuBlocks() {
     ),
     blocksBuilder.section("*Manage subscription*"),
     blocksBuilder.actions(
+      getSubscribeToggleButton(slackId),
       blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
       blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
     ),
@@ -73,13 +80,16 @@ function getHelpMenuBlocks() {
   ] }
 }
 
-function getSubscribeToggleButton(message) {
-  const userInfo = user.getUserInfo(message.user);
+function getSubscribeToggleButton(slackId) {
+  const userInfo = user.getUserInfo(slackId);
   const buttonText = userInfo.isSubscribed ? 'Unsubscribe' : 'Subscribe';
-  const buttonValue = userInfo.isSubscribed ? help.SUBSCRIBE_ME_VALUE
-  return blocksBuilder.actions(
-    blocksBuilder.button(buttonText, buttonValue)
-  );
+  const buttonValue = userInfo.isSubscribed ? help.UNSUBSCRIBE_ME_VALUE : help.SUBSCRIBE_ME_VALUE;
+  return blocksBuilder.button(buttonText, buttonValue);
+}
+
+
+async function onUnsubscribeMe(bot, message) {
+  console.log('bloop');
 }
 
 async function onSubscribeMe(bot, message) {
@@ -97,7 +107,7 @@ async function onSubscribeMe(bot, message) {
 }
 
 function showHelpMenu(bot, message) {
-  bot.replyInteractive(message, getHelpMenuBlocks());
+  bot.replyInteractive(message, getHelpMenuBlocks(message.user));
 }
 
 function onWhatIsCoffeeTime(bot, message) {

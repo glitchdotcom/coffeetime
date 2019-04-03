@@ -58,9 +58,8 @@ module.exports = function(controller) {
   });
 
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
-    bot.createConversation(message, async function(err, convo) {
-      const slackUser = await user.getSlackUserInfo(bot, message.event.user);
-      user.unsubscribeUser(slackUser);
+    bot.createConversation(message,  function(err, convo) {
+      user.unsubscribeUser(message.event.user);
       convo.say("Enjoy your break from CoffeeTime!");
       convo.say("You can always come back by sending a `subscribe` message.");
       convo.activate();
