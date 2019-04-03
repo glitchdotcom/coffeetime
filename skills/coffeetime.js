@@ -48,41 +48,52 @@ module.exports = function(controller) {
 
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, async function(err, convo) {
-      const slackUser = await user.getSlackUserInfo(bot, message.event.user);
-      const isNewlySubscribed = user.subscribeUser(slackUser);
-      const userInfo = user.getUserInfo(message.event.user);
-      const dialogue = sharedConvo.userSubscribedDialogue(isNewlySubscribed, userInfo);
-      dialogue.forEach(line => convo.say(line));
+      const textToSay = await subscribeUser(bot, message.event.user);
+      convo.say(textToSay);
       convo.activate();
     });
   });
 
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message,  function(err, convo) {
-      const userInfo = user.getUserInfo(message.event.user);
-      const isAlreadyUnsubscribed = !userInfo.isSubscribed;
-      if (!isAlreadyUnsubscribed) {
-        user.unsubscribeUser(message.event.user);
-      }
-      const dialogue = sharedConvo.userUnsubscribedDialogue(isAlreadyUnsubscribed);
-      dialogue.forEach(line => convo.say(line));
+      const textToSay = unsubscribeUser(bot, message.event.user);
+      convo.say(textToSay);
       convo.activate();
     });
   });
   
-  controller.on('slash_command', function(bot, message) {
+  controller.on('slash_command', async function(bot, message) {
     const commandMessage = message.text;
+    let textToSay = '';
+    const userInfo = user.getUserInfo(message.user_id);
     switch (commandMessage) {
       case 'subscribe':
+        textToSay = await subscribeUser(bot, message.user_id);
         break;
       case 'unsubscribe':
+        textToSay = unsubscribeUser(bot, message.user_id);
         break;
       default:
         break;
     }
-    bot.replyPrivate(message, 'haii');
+    bot.replyPrivate(message, textToSay);
   });
 };
 
-function unsubscribeUser() {
+// Subscribes the given user and returns the dialogue to say after doing so.
+async function subscribeUser(bot, slackId) {
+  const slackUser = await user.getSlackUserInfo(bot, slackId);
+  const isNewlySubscribed = user.subscribeUser(slackUser);
+  const userInfo = user.getUserInfo(slackId);
+  return sharedConvo.userSubscribedDialogue(isNewlySubscribed, userInfo).join('\n');
+}
+
+// Unsubscribes the given user and returns the dialogue to say after doing so.
+function unsubscribeUser(bot, slackId){
+  const userInfo = user.getUserInfo(slackId);
+  const isAlreadyUnsubscribed = !userInfo.isSubscribed;
+  if (!isAlreadyUnsubscribed) {
+    user.unsubscribeUser(slackId);
+  }
+  return sharedConvo.userUnsubscribedDialogue(isAlreadyUnsubscribed).join('\n');
 }
