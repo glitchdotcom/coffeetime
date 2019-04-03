@@ -66,7 +66,7 @@ module.exports.userUnsubscribedDialogue = function(isAlreadyUnsubscribed) {
 
 module.exports.getHelpMenuBlocks = function(slackId) {
   return { blocks: [
-    blocksBuilder.section("Hello and welcome to the CoffeeTime help menu! ✨ How can I help you?"),
+    blocksBuilder.section('Hello and welcome to the CoffeeTime help menu! ✨How may I help you?'),
     blocksBuilder.section("*Basics*"),
     blocksBuilder.actions(
       blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),

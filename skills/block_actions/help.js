@@ -31,6 +31,10 @@ module.exports = function(controller) {
           break;
         case help.EXIT_MENU_VALUE:
           onExitHelp(bot, message);
+          break;
+        case help.WHAT_ARE_COMMANDS_VALUE:
+          onWhatAreCommands(bot, message);
+          break;
       }
     }
   });
@@ -110,6 +114,21 @@ function onWhatIsCoffeeTime(bot, message) {
   ];
   bot.replyInteractive(message, { blocks });
 }
+
+function onWhatAreCommands(bot, message) {
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*CoffeeTime Commands*'),
+    blocksBuilder.section(
+      ' • `/coffeetime subscribe` adds you to CoffeeTime',
+      ' • `/coffeetime unsubscribe` removes you from CoffeeTime',
+      ' • `/coffeetime` brings up this help menu',
+    ),
+    backToMenuButton() 
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
 
 function onWhoIsMyCoffeeBuddy(bot, message) {
   const userInfo = user.getUserInfo(message.user);
