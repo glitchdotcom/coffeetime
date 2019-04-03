@@ -32,12 +32,24 @@ module.exports = function(controller) {
           case admin.ADD_USER_CONFIRM_VALUE:
             onSubscribeUserConfirmed(bot, message, actionValue);
             break;
+          case admin.UNSUBSCRIBE_USER:
+            onUnsubscribeUser(bot, message);
+            break;
+          case admin.REMOVE_USER_CONFIRM_VALUE:
+            onUnsubscribeUserConfirmed(bot, message, actionValue);
+            break;
+          case admin.SUBSCRIBE_EVERYONE:
+            onSubscribeAll(bot, message);
+            break;
         }
       }
       
       switch(action.action_id) {
         case admin.SELECT_SUBSCRIBER_ACTION_ID:
           onSubscribeUserSelected(bot, message, action.selected_user);
+          break;
+        case admin.SELECT_UNSUBSCRIBER_ACTION_ID:
+          onUnsubscribeUserSelected(bot, message, action.selected_user);
           break;
       }
     }
@@ -190,6 +202,10 @@ function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserE
   bot.replyInteractive(message, { blocks });
 }
 
+function onUnsubscribeUser(bot, message) {
+  replyInteractiveUnsubscribeUser(bot, message);
+}
+
 async function onUnsubscribeUserSelected(bot, message, selectedUserId) {
   const selectedUserSlackInfo = await user.getSlackUserInfo(bot, selectedUserId);
   const isValidUser = user.isFullSlackUser(selectedUserSlackInfo);
@@ -208,8 +224,7 @@ async function onUnsubscribeUserSelected(bot, message, selectedUserId) {
 
 async function onUnsubscribeUserConfirmed(bot, message, selectedUserId) {
   console.log(selectedUserId);
-  const selectedSlackUser = await user.getSlackUserInfo(bot, selectedUserId);
-  const status = user.subscribeUser(selectedSlackUser);
+  const status = user.unsubscribeUser(selectedUserId);
   console.log(status);
   
   const blocks = [
@@ -222,13 +237,13 @@ async function onUnsubscribeUserConfirmed(bot, message, selectedUserId) {
   bot.replyInteractive(message, { blocks });
 }
 
-function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserErrorMsg) {
+function replyInteractiveUnsubscribeUser(bot, message, selectedUserId, selectUserErrorMsg) {
   const userInfo = user.getUserInfo(message.user);
   
-  const subscribeUserActions = [
+  const unsubscribeUserActions = [
       blocksBuilder.userSelect(
-        'Choose user to add',
-        admin.SELECT_SUBSCRIBER_ACTION_ID, 
+        'Choose user to remove',
+        admin.SELECT_UNSUBSCRIBER_ACTION_ID, 
         selectedUserId || undefined
     )
   ];
@@ -236,11 +251,11 @@ function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserE
   const errorMessageBlocks = [];
   
   if (!selectUserErrorMsg) {
-    subscribeUserActions.push(
+    unsubscribeUserActions.push(
       blocksBuilder.button(
-        'Add',
+        'Remove',
         // Pack selected user id into the confirmation value....
-        admin.ADD_USER_CONFIRM_VALUE + DELIMITER + selectedUserId)
+        admin.REMOVE_USER_CONFIRM_VALUE + DELIMITER + selectedUserId)
     );
   } else {
     errorMessageBlocks.push(blocksBuilder.context(selectUserErrorMsg));
@@ -248,11 +263,53 @@ function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserE
   
   const blocks = [
     blocksBuilder.divider(),
-    blocksBuilder.section('*Subscribe User*'),
-    blocksBuilder.section('Choose a user to add to CoffeeTime'),
-    blocksBuilder.actions(...subscribeUserActions),
+    blocksBuilder.section('*Unsubscribe User*'),
+    blocksBuilder.section('Choose a user to remove from CoffeeTime'),
+    blocksBuilder.actions(...unsubscribeUserActions),
     ...errorMessageBlocks,
     blocksBuilder.divider(),
+    backToMenuButton()
+  ];
+
+  bot.replyInteractive(message, { blocks });
+}
+
+
+async function onSubscribeAll(bot, message) {
+  const allMembers = await user.getAllUsersInSlack(bot);
+  const allSlackIdsFormatted = allMembers
+            .map(m => m.id)
+            .map(user.idToString);
+    
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Subscribe everyone*'),
+    blocksBuilder.section('Here is everyone who would be subscribed to CoffeeTime:'),
+    blocksBuilder.section(
+      '> ' + allSlackIdsFormatted.join(', ')
+    ),
+    blocksBuilder.section(
+      "Does that look right?"
+    ),
+    blocksBuilder.actions(
+      blocksBuilder.button('Looks good!', admin.SUBSCRIBE_EVERYONE_CONFIRM),
+      blocksBuilder.button('Oh hmm, not quite', admin.SHOW_MENU_VALUE),
+      blocksBuilder.button('Exit', admin.EXIT_MENU_VALUE),
+    )
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
+async function onSubscribeAllConfirmed(bot, message) {
+  // Add all users to CoffeeTime.
+  const allMembers = await user.getAllUsersInSlack(bot);
+  user.subscribeUsers(allMembers);
+  
+   const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section(
+      "Great! I've subscribed everyone to CoffeeTime."
+    ),
     backToMenuButton()
   ];
 

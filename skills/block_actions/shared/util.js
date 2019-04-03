@@ -42,6 +42,8 @@ const admin = {
   UNSUBSCRIBE_USER: 'admin_unsubscribe_user',
   SELECT_SUBSCRIBER_ACTION_ID: 'admin_select_subscriber_action_id',
   ADD_USER_CONFIRM_VALUE: 'admin_add_user_confirm_value',
+  SELECT_UNSUBSCRIBER_ACTION_ID: 'admin_select_unsubscriber_action_id',
+  REMOVE_USER_CONFIRM_VALUE: 'admin_remove_user_confirm_value',
   
   SEE_SCHEDULE_VALUE: 'admin_see_schedule',
   SET_SCHEDULE_VALUE: 'admin_set_schedule',

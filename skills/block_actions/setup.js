@@ -130,6 +130,14 @@ async function onSubscribeAll(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
+async function onSubscribeAllConfirmed(bot, message) {
+  // Add all users to CoffeeTime.
+  const allMembers = await user.getAllUsersInSlack(bot);
+  console.log(allMembers);
+  user.subscribeUsers(allMembers);
+  finishInstallSuccess(bot, message);
+}
+
 function onSubscribeNobodyForNow(bot, message) {
   const blocks = [
     blocksBuilder.section(
@@ -154,14 +162,6 @@ async function onSubscribeJustMe(bot, message) {
     blocksBuilder.section('Thanks for setting up CoffeeTime. ' + getEndOfSetupDialogue())
   ];
   bot.replyInteractive(message, { blocks });
-}
-
-async function onSubscribeAllConfirmed(bot, message) {
-  // Add all users to CoffeeTime.
-  const allMembers = await user.getAllUsersInSlack(bot);
-  console.log(allMembers);
-  user.subscribeUsers(allMembers);
-  finishInstallSuccess(bot, message);
 }
 
 function finishInstallSuccess(bot, message) {
