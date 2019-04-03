@@ -71,6 +71,7 @@ module.exports = function(controller) {
   });
   
   controller.on('slash_command', function(bot, message){
-    // TODO - add slash commands via slack admin interface
+    console.log('slashbot');
+    console.log(message);
   });
 };

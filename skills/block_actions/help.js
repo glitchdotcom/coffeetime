@@ -67,7 +67,7 @@ function backToMenuButton() {
 
 function getHelpMenuBlocks(slackId) {
   return { blocks: [
-    blocksBuilder.section("Hello and welcome to CoffeeTime! ✨ How can I help you?"),
+    blocksBuilder.section("Hello and welcome to the CoffeeTime help menu! ✨ How can I help you?"),
     blocksBuilder.section("*Basics*"),
     blocksBuilder.actions(
       blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
@@ -78,11 +78,11 @@ function getHelpMenuBlocks(slackId) {
       blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
       blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
     ),
-    blocksBuilder.section("*Misc*"),
-      blocksBuilder.actions(
-      blocksBuilder.button("Exit", help.EXIT_HELP_VALUE),
-    ),
-    blocksBuilder.divider()
+    blocksBuilder.divider(),
+    blocksBuilder.actions(
+      blocksBuilder.button("Exit", help.EXIT_MENU_VALUE),
+      blocksBuilder.button("Admin menu", help.EXIT_MENU_VALUE),
+    )
   ] }
 }
 
