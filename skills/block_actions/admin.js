@@ -22,6 +22,9 @@ module.exports = function(controller) {
         case admin.SHOW_ALL_UNSUBSCRIBED:
           onViewAllUnsubscribed(bot, message);
           break;
+        case admin.SUBSCRIBE_USER:
+          onSubscribeUser(bot, message);
+          break;
       }
     }
   });
@@ -82,5 +85,42 @@ async function onViewAllUnsubscribed(bot, message) {
     backToMenuButton()
   ];
   
+  bot.replyInteractive(message, { blocks });
+}
+
+function onSubscribeUser(bot, message) {
+  replyInteractiveSubscribeUser(bot, message);
+}
+
+function onSubscribeUserSelected(bot, message, 
+
+function replyInteractiveSubscribeUser(bot, message, selectUserErrorMsg) {
+  const userInfo = user.getUserInfo(message.user);
+  
+  const subscribeUserActions = [
+      blocksBuilder.userSelect(
+        'Choose user to add',
+        admin.SUBSCRIBE_USER_ACTION_ID, 
+    )
+  ];
+  
+  const subscribeUserBlocks = [
+    blocksBuilder.section('*Subscribe User*'),
+    blocksBuilder.section('Choose a user to add to CoffeeTime'),
+  ];
+  
+  if (!selectUserErrorMsg) {
+    subscribeUserActions.push(blocksBuilder.button('Add', admin.ADD_USER_CONFIRM));
+  } else {
+    subscribeUserBlocks.push(blocksBuilder.context(selectUserErrorMsg));
+  } 
+  
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.actions(...subscribeUserActions),
+    blocksBuilder.divider(),
+    backToMenuButton()
+  ];
+
   bot.replyInteractive(message, { blocks });
 }

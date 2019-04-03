@@ -194,7 +194,6 @@ function replyInteractiveWithManagerMenu(bot, message, setManagerErrorMsg) {
   bot.replyInteractive(message, { blocks });
 }
 
-
 function showHelpMenu(bot, message) {
   bot.replyInteractive(message, sharedConvo.getHelpMenuBlocks(message.user));
 }
@@ -228,7 +227,6 @@ function onWhatAreCommands(bot, message) {
   ];
   bot.replyInteractive(message, { blocks });
 }
-
 
 function onWhoIsMyCoffeeBuddy(bot, message) {
   const userInfo = user.getUserInfo(message.user);

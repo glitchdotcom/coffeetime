@@ -1,6 +1,7 @@
 const schedule = require('node-schedule');
 const coffee = require('./../util/coffee.js');
 
+// TODO: save jobs by team id
 module.exports.scheduleCoffeeCron = function(bot) {
   // See usage: https://github.com/node-schedule/node-schedule#usage
   const rule = new schedule.RecurrenceRule();
