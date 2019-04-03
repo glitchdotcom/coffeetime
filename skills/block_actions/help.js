@@ -35,6 +35,9 @@ module.exports = function(controller) {
         case help.WHAT_ARE_COMMANDS_VALUE:
           onWhatAreCommands(bot, message);
           break;
+        case help.SET_MANAGER_VALUE:
+          onSetManagerValue(bot, message);
+          break;
       }
     }
   });
@@ -99,6 +102,21 @@ async function onSubscribeMe(bot, message) {
   ];
   bot.replyInteractive(message, { blocks });
 }
+
+
+
+function onSetManagerValue(bot, message) {
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Set Manager*'),
+    blocksBuilder.section(...dialogue),
+    blocksBuilder.section('*Set Manager*'),
+    backToMenuButton()
+  ];
+
+  bot.replyInteractive(message, { blocks });
+}
+
 
 function showHelpMenu(bot, message) {
   bot.replyInteractive(message, sharedConvo.getHelpMenuBlocks(message.user));

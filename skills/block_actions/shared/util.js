@@ -20,7 +20,8 @@ const help = {
   MY_PROFILE_VALUE: 'help_my_profile',
   SHOW_HELP_MENU: 'help_show_help_menu',
   EXIT_MENU_VALUE: 'exit_menu_value',
-  WHAT_ARE_COMMANDS_VALUE: 'what_are_commands_value'
+  WHAT_ARE_COMMANDS_VALUE: 'what_are_commands_value',
+  SET_MANAGER_VALUE: 'set_manager_value'
 };
 
 function button(text, value) {
@@ -52,7 +53,6 @@ function section(...text) {
   };
 }
 
-
 function sectionWithAccessory(text, accessory) {
   return {
     "type": "section",
@@ -62,6 +62,9 @@ function sectionWithAccessory(text, accessory) {
     },
     accessory
   };
+}
+
+function userSelect(placeholder, actionId, ) {
 }
 
 function divider() {
