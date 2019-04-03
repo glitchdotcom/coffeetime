@@ -46,8 +46,9 @@ const admin = {
   SEE_SCHEDULE_VALUE: 'admin_see_schedule',
   SET_SCHEDULE_VALUE: 'admin_set_schedule',
   RUN_COFFFEETIME_NOW: 'admin_run_coffeetime_now'
-
 };
+
+const DELIMITER = '|';
 
 //////////////////////////////////////
 
@@ -158,5 +159,6 @@ module.exports = {
   admin,
   setup,
   blocksBuilder,
-  help
+  help, 
+  DELIMITER
 }

@@ -144,7 +144,6 @@ function onSubscribeNobodyForNow(bot, message) {
 }
 
 async function onSubscribeJustMe(bot, message) {
-  console.log(message);
   const slackUser = await user.getSlackUserInfo(bot, message.user);
   const status = user.subscribeUser(slackUser);
   const blocks = [

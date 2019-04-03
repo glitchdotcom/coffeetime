@@ -2,33 +2,39 @@ const coffee = require('../../util/coffee');
 const user = require('../../util/user');
 const storage = require('../../util/storage');
 const sharedConvo = require('./shared/convo');
-const { admin, blocksBuilder } = require('./shared/util');
+const { admin, blocksBuilder, DELIMITER } = require('./shared/util');
 
 
 module.exports = function(controller) {
   // receive an interactive message, and reply with a message that will replace the original
   controller.on('block_actions', function(bot, message) {
-    for (const action of message.actions) {     
-      switch(action.value) {
-        case admin.SHOW_MENU_VALUE:
-          showAdminMenu(bot, message);
-          break;
-        case admin.EXIT_MENU_VALUE:
-          onExitHelp(bot, message);
-          break;
-        case admin.SHOW_ALL_SUBSCRIBED:
-          onViewAllSubscribed(bot, message);
-          break;
-        case admin.SHOW_ALL_UNSUBSCRIBED:
-          onViewAllUnsubscribed(bot, message);
-          break;
-        case admin.SUBSCRIBE_USER:
-          onSubscribeUser(bot, message);
-          break;
-        case admin.ADD_USER_CONFIRM_VALUE:
-          onSubscribeUserConfirmed(bot, message);
-          break;
+    for (const action of message.actions) {   
+      
+      if (action.value) {
+        const [actionName, actionValue] = action.value.split(DELIMITER);
+      
+        switch(actionName) {
+          case admin.SHOW_MENU_VALUE:
+            showAdminMenu(bot, message);
+            break;
+          case admin.EXIT_MENU_VALUE:
+            onExitHelp(bot, message);
+            break;
+          case admin.SHOW_ALL_SUBSCRIBED:
+            onViewAllSubscribed(bot, message);
+            break;
+          case admin.SHOW_ALL_UNSUBSCRIBED:
+            onViewAllUnsubscribed(bot, message);
+            break;
+          case admin.SUBSCRIBE_USER:
+            onSubscribeUser(bot, message);
+            break;
+          case admin.ADD_USER_CONFIRM_VALUE:
+            onSubscribeUserConfirmed(bot, message, actionValue);
+            break;
+        }
       }
+      
       switch(action.action_id) {
         case admin.SELECT_SUBSCRIBER_ACTION_ID:
           onSubscribeUserSelected(bot, message, action.selected_user);
@@ -100,8 +106,7 @@ function onSubscribeUser(bot, message) {
   replyInteractiveSubscribeUser(bot, message);
 }
 
-function getSubscribeUserErrorMessage(userSlackId, userSlackInfo) {
-  const startMessage = 'You cannot subscribe ' + user.idToString(userSlackId);
+function getUserErrorMessage(startMessage, userSlackId, userSlackInfo) {
   const userType = user.getSlackUserType(userSlackInfo);
   switch(userType) {
     case user.TYPE.IS_SLACKBOT: 
@@ -123,7 +128,8 @@ async function onSubscribeUserSelected(bot, message, selectedUserId) {
   let errorMessage;
   let validUserId;
   if (!isValidUser) {
-    errorMessage = getSubscribeUserErrorMessage(selectedUserId, selectedUserSlackInfo);
+    const startMessage = 'You cannot subscribe ' + user.idToString(selectedUserId);
+    errorMessage = getUserErrorMessage(startMessage, selectedUserId, selectedUserSlackInfo);
   } else {
     validUserId = selectedUserId;
   }
@@ -131,27 +137,112 @@ async function onSubscribeUserSelected(bot, message, selectedUserId) {
   replyInteractiveSubscribeUser(bot, message, selectedUserId, errorMessage);
 }
 
-function onSubscribeUserConfirmed(bot, message) {
-  console.log(message);
+async function onSubscribeUserConfirmed(bot, message, selectedUserId) {
+  console.log(selectedUserId);
+  const selectedSlackUser = await user.getSlackUserInfo(bot, selectedUserId);
+  const status = user.subscribeUser(selectedSlackUser);
+  console.log(status);
+  
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section(
+      "*Great!* I've added " + user.idToString(selectedUserId) + ' to CoffeeTime.'
+    ),
+    backToMenuButton()
+  ];
+  bot.replyInteractive(message, { blocks });
 }
-
 
 function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserErrorMsg) {
   const userInfo = user.getUserInfo(message.user);
   
-  console.log('here!');
   const subscribeUserActions = [
       blocksBuilder.userSelect(
         'Choose user to add',
         admin.SELECT_SUBSCRIBER_ACTION_ID, 
-        undefined,
-        blocksBuilder.userSelectConfirm('Confirm add user', 'Are you sure you want to subscribe this user?')
+        selectedUserId || undefined
     )
   ];
   
   const errorMessageBlocks = [];
   
-  if (selectUserErrorMsg) {
+  if (!selectUserErrorMsg) {
+    subscribeUserActions.push(
+      blocksBuilder.button(
+        'Add',
+        // Pack selected user id into the confirmation value....
+        admin.ADD_USER_CONFIRM_VALUE + DELIMITER + selectedUserId)
+    );
+  } else {
+    errorMessageBlocks.push(blocksBuilder.context(selectUserErrorMsg));
+  } 
+  
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Subscribe User*'),
+    blocksBuilder.section('Choose a user to add to CoffeeTime'),
+    blocksBuilder.actions(...subscribeUserActions),
+    ...errorMessageBlocks,
+    blocksBuilder.divider(),
+    backToMenuButton()
+  ];
+
+  bot.replyInteractive(message, { blocks });
+}
+
+async function onUnsubscribeUserSelected(bot, message, selectedUserId) {
+  const selectedUserSlackInfo = await user.getSlackUserInfo(bot, selectedUserId);
+  const isValidUser = user.isFullSlackUser(selectedUserSlackInfo);
+
+  let errorMessage;
+  let validUserId;
+  if (!isValidUser) {
+    const startMessage = 'You cannot unsubscribe ' + user.idToString(selectedUserId);
+    errorMessage = getUserErrorMessage(startMessage, selectedUserId, selectedUserSlackInfo);
+  } else {
+    validUserId = selectedUserId;
+  }
+
+  replyInteractiveUnsubscribeUser(bot, message, selectedUserId, errorMessage);
+}
+
+async function onUnsubscribeUserConfirmed(bot, message, selectedUserId) {
+  console.log(selectedUserId);
+  const selectedSlackUser = await user.getSlackUserInfo(bot, selectedUserId);
+  const status = user.subscribeUser(selectedSlackUser);
+  console.log(status);
+  
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section(
+      "I've unsubscribed " + user.idToString(selectedUserId) + ' from CoffeeTime.'
+    ),
+    backToMenuButton()
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
+function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserErrorMsg) {
+  const userInfo = user.getUserInfo(message.user);
+  
+  const subscribeUserActions = [
+      blocksBuilder.userSelect(
+        'Choose user to add',
+        admin.SELECT_SUBSCRIBER_ACTION_ID, 
+        selectedUserId || undefined
+    )
+  ];
+  
+  const errorMessageBlocks = [];
+  
+  if (!selectUserErrorMsg) {
+    subscribeUserActions.push(
+      blocksBuilder.button(
+        'Add',
+        // Pack selected user id into the confirmation value....
+        admin.ADD_USER_CONFIRM_VALUE + DELIMITER + selectedUserId)
+    );
+  } else {
     errorMessageBlocks.push(blocksBuilder.context(selectUserErrorMsg));
   } 
   
