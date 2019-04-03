@@ -61,6 +61,7 @@ module.exports = function(controller) {
     switch (commandMessage) {
       case 'subscribe': {
         const textToSay = await subscribeUser(bot, message.user_id);
+        bot.replyPrivate(message, textToSay);
         break;
       } 
       case 'unsubscribe': {
