@@ -21,7 +21,7 @@ const help = {
   SHOW_HELP_MENU: 'help_show_help_menu',
   EXIT_MENU_VALUE: 'exit_menu_value',
   WHAT_ARE_COMMANDS_VALUE: 'what_are_commands_value',
-  SET_MANAGER_VALUE: 'set_manager_value',
+  SET_MANAGER_MENU_VALUE: 'set_manager_menu_value',
   SELECT_MANAGER_ACTION_ID: 'select_manager_action_id',
   UNSELECT_MANAGER_VALUE: 'unselect_manager_value'
 };

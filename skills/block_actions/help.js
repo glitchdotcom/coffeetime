@@ -36,14 +36,14 @@ module.exports = function(controller) {
         case help.WHAT_ARE_COMMANDS_VALUE:
           onWhatAreCommands(bot, message);
           break;
-        case help.SET_MANAGER_VALUE:
-          onSetManagerValue(bot, message);
+        case help.SET_MANAGER_MENU_VALUE:
+          onSetManagerMenuValue(bot, message);
           break;
       }
       
       switch(action.action_id) {
         case help.SELECT_MANAGER_ACTION_ID:
-          onSetManagerSelected(bot, message, );
+          onSetManagerSelected(bot, message, action.selected_user);
           break;
       }
     }
@@ -110,7 +110,10 @@ async function onSubscribeMe(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-function onSetManagerValue(bot, message) {
+function onSetManagerSelected(bot, message, slackUserId) {
+}
+
+function onSetManagerMenuValue(bot, message) {
   const userInfo = user.getUserInfo(message.user);
   const blocks = [
     blocksBuilder.divider(),
