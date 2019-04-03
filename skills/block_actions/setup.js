@@ -175,14 +175,6 @@ function finishInstallSuccess(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-function isFullUser(m) {
-  // For some reasons, SlackBot is not considered a bot.... so hardcode its exclusion.
-  if (m.id === 'USLACKBOT') {
-    return false;
-  }
-  return !m.deleted && !m.is_restricted && !m.is_ultra_restricted && !m.is_bot && !m.is_stranger;
-}
-
 // TODO: Possibly move cached subscribers to a globally accessible level.
 const cachedSubscribers = {};
 async function getAllUsersInSlack(bot, teamId) {
@@ -199,7 +191,7 @@ async function getAllUsersInSlackFromApi(bot, cursor) {
   const args = cursor ? {cursor} : {};
   return new Promise((resolve, reject) => {
     bot.api.users.list(args, (error, response) => {
-      const allMembers = response.members.filter(isFullUser);
+      const allMembers = response.members.filter(user.isFullSlackUser);
       resolve({
         allMembers,
         nextCursor: response.response_metadata.next_cursor

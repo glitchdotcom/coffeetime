@@ -1,8 +1,8 @@
 const storage = require('./storage');
 
-module.exports.getSlackUserInfo = async function(bot, messageSender) {
+module.exports.getSlackUserInfo = async function(bot, slackId) {
   return new Promise((resolve, reject) => {
-    bot.api.users.info({ user: messageSender }, (error, response) => {
+    bot.api.users.info({ user: slackId }, (error, response) => {
       if (!response || !response.user) {
         reject(error);
       } else {
@@ -10,6 +10,14 @@ module.exports.getSlackUserInfo = async function(bot, messageSender) {
       }
     });
   });
+}
+
+module.exports.isFullSlackUser = function(slackUser) {
+  // For some reasons, SlackBot is not considered a bot.... so hardcode its exclusion.
+  if (slackUser.id === 'USLACKBOT') {
+    return false;
+  }
+  return !slackUser.deleted && !slackUser.is_restricted && !slackUser.is_ultra_restricted && !slackUser.is_bot && !slackUser.is_stranger;
 }
 
 module.exports.subscribeUser = function(slackUser) {

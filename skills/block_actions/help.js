@@ -9,7 +9,6 @@ module.exports = function(controller) {
   
   // receive an interactive message, and reply with a message that will replace the original
   controller.on('block_actions', function(bot, message) {
-    console.log(message);
     for (const action of message.actions) {     
       switch(action.value) {
         case help.SHOW_HELP_MENU:
@@ -110,7 +109,9 @@ async function onSubscribeMe(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-function onSetManagerSelected(bot, message, slackUserId) {
+async function onSetManagerSelected(bot, message, slackUserId) {
+  module.exports.getSlackUserInfo()
+  console.log(slackUserId);
 }
 
 function onSetManagerMenuValue(bot, message) {
@@ -118,9 +119,9 @@ function onSetManagerMenuValue(bot, message) {
   
   const managerMessage = userInfo.managerSlackId ?
         'Your manager is currently set to ' + coffee.idToString(userInfo.managerSlackId) :
-        "You don't currently have a manager set."
-  const blocks = [
-    blocksBuilder.divider(),
+        "You don't currently have a manager set. Choose one from the dropdown below:"
+  
+  const setManagerBlocks = [
     blocksBuilder.section('*Set Manager*'),
     blocksBuilder.section(managerMessage),
     blocksBuilder.actions(
@@ -128,12 +129,20 @@ function onSetManagerMenuValue(bot, message) {
         'Select your manager',
         help.SELECT_MANAGER_ACTION_ID,
         userInfo.managerSlackId || undefined)
-    ),
-    blocksBuilder.context('test context message'),
+    )
+  ];
+  
+  const removeManagerBlocks = userInfo.managerSlackId ? [
     blocksBuilder.section('*Remove Manager*'),
     blocksBuilder.actions(
       blocksBuilder.button('Unset manager', help.UNSELECT_MANAGER_VALUE)
     ),
+  ] : [];
+  
+  const blocks = [
+    blocksBuilder.divider(),
+    ...setManagerBlocks,
+    ...removeManagerBlocks,
     blocksBuilder.divider(),
     backToMenuButton()
   ];
