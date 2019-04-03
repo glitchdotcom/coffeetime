@@ -16,8 +16,13 @@ module.exports = function(controller) {
         case admin.EXIT_MENU_VALUE:
           onExitHelp(bot, message);
           break;
+        case admin.SHOW_ALL_SUBSCRIBED:
+          onViewAllSubscribed(bot, message);
+          break;
+        case admin.SHOW_ALL_UNSUBSCRIBED:
+          onViewAllUnsubscribed(bot, message);
+          break;
       }
-      
     }
   });
 };
@@ -33,7 +38,21 @@ function showAdminMenu(bot, message) {
   bot.replyInteractive(message, sharedConvo.getAdminMenuBlocks());
 }
 
-async function onExitHelp(bot, message) {
+function onExitHelp(bot, message) {
+  const blocks = [
+    blocksBuilder.section('Bye! Open the admin console again via `/coffeetime admin`.'),
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
+function onViewAllSubscribed(bot, message) {
+  const blocks = [
+    blocksBuilder.section('Bye! Open the admin console again via `/coffeetime admin`.'),
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
+function onViewAllUnsubscribed(bot, message) {
   const blocks = [
     blocksBuilder.section('Bye! Open the admin console again via `/coffeetime admin`.'),
   ];

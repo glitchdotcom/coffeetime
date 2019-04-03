@@ -96,7 +96,6 @@ function getSubscribeToggleButton(slackId) {
   return blocksBuilder.button(buttonText, buttonValue);
 }
 
-
 module.exports.getAdminMenuBlocks = function() {
   return { blocks: [
     blocksBuilder.section(

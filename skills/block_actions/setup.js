@@ -106,7 +106,7 @@ function onSubscribeHelp(bot, message) {
 }
 
 async function onSubscribeAll(bot, message) {
-  const allMembers = await getAllUsersInSlack(bot, message.team.id);
+  const allMembers = await user.getAllUsersInSlack(bot, message.team.id);
   const allSlackIdsFormatted = allMembers
             .map(m => m.id)
             .map(m => `<@${m}>`);
@@ -159,7 +159,7 @@ async function onSubscribeJustMe(bot, message) {
 
 async function onSubscribeAllConfirmed(bot, message) {
   // Add all users to CoffeeTime.
-  const allMembers = await getAllUsersInSlack(bot, message.team.id);
+  const allMembers = await user.getAllUsersInSlack(bot, message.team.id);
   console.log(allMembers);
   user.subscribeUsers(allMembers);
   finishInstallSuccess(bot, message);
@@ -173,29 +173,4 @@ function finishInstallSuccess(bot, message) {
     blocksBuilder.section(getEndOfSetupDialogue())
   ];
   bot.replyInteractive(message, { blocks });
-}
-
-// TODO: Possibly move cached subscribers to a globally accessible level.
-const cachedSubscribers = {};
-async function getAllUsersInSlack(bot, teamId) {
-  if (cachedSubscribers[teamId] !== undefined) {
-    return cachedSubscribers[teamId];
-  }
-  // TODO: Implement pagination
-  const firstPageOfUsers = await getAllUsersInSlackFromApi(bot);
-  cachedSubscribers[teamId] = firstPageOfUsers.allMembers;
-  return cachedSubscribers[teamId];
-}
-
-async function getAllUsersInSlackFromApi(bot, cursor) {
-  const args = cursor ? {cursor} : {};
-  return new Promise((resolve, reject) => {
-    bot.api.users.list(args, (error, response) => {
-      const allMembers = response.members.filter(user.isFullSlackUser);
-      resolve({
-        allMembers,
-        nextCursor: response.response_metadata.next_cursor
-      });
-    });
-  });
 }

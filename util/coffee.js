@@ -136,10 +136,10 @@ function createBlockedMatches(data) {
   return [...blockedMatchesSet];
 }
 
+// TODO: Probably move these functions to a better location? 
 function idToString(slackId) {
   return `<@${slackId}> `;
 }
-
 function slackPrintGroup(slackIdList) {
   if (slackIdList.length === 0) {
     return '';

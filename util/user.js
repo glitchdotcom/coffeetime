@@ -170,3 +170,23 @@ module.exports.getManager = function(slackId) {
 function getManagerHelper(data, userSlackId) {
   return data.userData.find(u => u.slackId === userSlackId).managerSlackId;
 }
+
+module.exports.getAllUsersInSlack = async function (bot, teamId) {
+  // TODO: Implement pagination
+  // TODO: Possibly implement caching
+  const firstPageOfUsers = await getAllUsersInSlackFromApi(bot);
+  return firstPageOfUsers.allMembers;
+}
+
+async function getAllUsersInSlackFromApi(bot, cursor) {
+  const args = cursor ? {cursor} : {};
+  return new Promise((resolve, reject) => {
+    bot.api.users.list(args, (error, response) => {
+      const allMembers = response.members.filter(module.exports.isFullSlackUser);
+      resolve({
+        allMembers,
+        nextCursor: response.response_metadata.next_cursor
+      });
+    });
+  });
+}
