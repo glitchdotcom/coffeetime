@@ -70,8 +70,19 @@ module.exports = function(controller) {
     });
   });
   
-  controller.on('slash_command', function(bot, message){
-    console.log('slashbot');
-    console.log(message);
+  controller.on('slash_command', function(bot, message) {
+    const commandMessage = message.text;
+    switch (commandMessage) {
+      case 'subscribe':
+        break;
+      case 'unsubscribe':
+        break;
+      default:
+        break;
+    }
+    bot.replyPrivate(message, 'haii');
   });
 };
+
+function unsubscribeUser() {
+}

@@ -81,9 +81,9 @@ function getHelpMenuBlocks(slackId) {
     blocksBuilder.divider(),
     blocksBuilder.actions(
       blocksBuilder.button("Exit", help.EXIT_MENU_VALUE),
-      blocksBuilder.button("Admin menu", help.EXIT_MENU_VALUE),
+      //blocksBuilder.button("Admin menu", help.EXIT_MENU_VALUE),
     )
-  ] }
+  ] };
 }
 
 function getSubscribeToggleButton(slackId) {
