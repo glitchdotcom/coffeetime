@@ -20,6 +20,40 @@ module.exports.isFullSlackUser = function(slackUser) {
   return !slackUser.deleted && !slackUser.is_restricted && !slackUser.is_ultra_restricted && !slackUser.is_bot && !slackUser.is_stranger;
 }
 
+module.exports.TYPE = Object.freeze({
+    // Someone who is a full member.
+  IS_FULL_MEMBER: Symbol('is full member'),
+
+  // The one and only Slackbot.
+  IS_SLACKBOT: Symbol('is slackbot'),
+  
+  // Is a bot (app), but not Slackbot.
+  IS_A_BOT: Symbol('is a bot'),
+  
+  // A non-full member who is not you.
+  NOT_FULL_MEMBER: Symbol('not full member'),
+  
+  // A deleted Slack user.
+  IS_DELETED: Symbol('is deleted')
+});
+
+
+module.exports.getSlackUserType = function(slackUser) {
+  if (slackUser.id === 'USLACKBOT') {
+    return module.exports.TYPE.IS_SLACKBOT;
+  }
+  if (slackUser.deleted) {
+    return module.exports.TYPE.IS_DELETED;
+  }
+  if (slackUser.is_bot) {
+    return module.exports.TYPE.IS_A_BOT;
+  }
+  if (slackUser.is_restricted || slackUser.is_ultra_restricted || slackUser.is_stranger) {
+    return module.exports.TYPE.NOT_FULL_MEMBER;
+  }
+    return module.exports.TYPE.IS_FULL_MEMBER;
+}
+
 module.exports.subscribeUser = function(slackUser) {
   const data = storage.loadData();
   const isSuccessful = addUserToData(slackUser, data);

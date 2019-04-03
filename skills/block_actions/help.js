@@ -38,6 +38,9 @@ module.exports = function(controller) {
         case help.SET_MANAGER_MENU_VALUE:
           onSetManagerMenuValue(bot, message);
           break;
+        case help.UNSELECT_MANAGER_VALUE:
+          onUnselectManager(bot, message);
+          break;
       }
       
       switch(action.action_id) {
@@ -109,25 +112,42 @@ async function onSubscribeMe(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-const SetManagerErrorEnum = Object.freeze({
-    IS_A:   Symbol("red"),
-    BLUE:  Symbol("blue"),
-    GREEN: Symbol("green")
-});
+function getManagerErrorMessage(userSlackId, managerSlackId, managerSlackInfo) {
+  const startMessage = coffee.idToString(managerSlackId) + 'is not a valid manager';
+  if (userSlackId === managerSlackId) {
+    return startMessage + " because you can't be your own manager.";
+  }
+  const userType = user.getSlackUserType(managerSlackInfo);
+  switch(userType) {
+    case user.TYPE.IS_SLACKBOT: 
+      return startMessage + ' because they are Slackbot.';
+    case user.TYPE.IS_DELETED: 
+      return startMessage + ' because they are deleted.';
+    case user.TYPE.IS_A_BOT: 
+      return startMessage + ' because they are a bot.';
+    case user.TYPE.NOT_FULL_MEMBER: 
+      return startMessage + ' because they are not a full member.';
+  }
+  return startMessage + '.'; 
+}
+
 async function onSetManagerSelected(bot, message, managerSlackId) {
   const userSlackId = message.user;
   const managerSlackInfo = await user.getSlackUserInfo(bot, managerSlackId);
   const isValidManager = user.isFullSlackUser(managerSlackInfo) && managerSlackId != userSlackId;
-  console.log(message.user, isValidManager);
   
-  let setManagerErrorMsg;
+  let managerErrorMsg;
   if (isValidManager) {
     user.setManager(userSlackId, managerSlackId);
   } else {
-    const 
-    setManagerErrorMsg = coffee.idToString(userInfo.managerSlackId)
+    managerErrorMsg = getManagerErrorMessage(userSlackId, managerSlackId, managerSlackInfo);
   }
   
+  replyInteractiveWithManagerMenu(bot, message, managerErrorMsg);
+}
+
+function onUnselectManager(bot, message) {
+  user.setManager(message.user, null);
   replyInteractiveWithManagerMenu(bot, message);
 }
 
@@ -140,7 +160,7 @@ function replyInteractiveWithManagerMenu(bot, message, setManagerErrorMsg) {
   
   const managerMessage = userInfo.managerSlackId ?
         'Your manager is currently set to ' + coffee.idToString(userInfo.managerSlackId) :
-        "You don't currently have a manager set. Choose one from the dropdown below:"
+        "You don't currently have a manager set. Set one now:"
   
   const setManagerBlocks = [
     blocksBuilder.section('*Set Manager*'),
