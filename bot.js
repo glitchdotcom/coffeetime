@@ -68,6 +68,7 @@ if (!process.env.clientId || !process.env.clientSecret) {
   require('./skills/coffeetime.js')(controller);
   require('./skills/block_actions/setup.js')(controller);
   require('./skills/block_actions/help.js')(controller);
+  require('./skills/block_actions/admin.js')(controller);
 }
 
 

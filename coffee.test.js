@@ -162,8 +162,8 @@ test('coffee time should not ever pair someone with their manager', () => {
 
 test('check for user should return true if the user list already contains the user', () => {
   
-    expect(coffee.checkForUser(mockSlackUser.id, mockJsonUsers)).toBe(true);
-    expect(coffee.checkForUser(mockSlackUser.id, mockJasonUsers2)).toBe(false);
+    expect(coffee.isUserInDatabase(mockSlackUser.id, mockJsonUsers)).toBe(true);
+    expect(coffee.isUserInDatabase(mockSlackUser.id, mockJasonUsers2)).toBe(false);
 
 
 });
@@ -172,7 +172,7 @@ test('add user to data should return the data with the new user', () => {
   const newData = coffee.addUserToData(mockSlackUser, mockJasonUsers2);
   
   // now we can use check for duplicates to make sure it's in there :)
-  expect(coffee.checkForUser(mockSlackUser.id, newData)).toBe(true);
+  expect(coffee.isUserInDatabase(mockSlackUser.id, newData)).toBe(true);
 
 });
 

@@ -96,7 +96,7 @@ module.exports.getSlackIdsForAllUsers = function() {
   return userList;
 }
 
-module.exports.checkForUser = function(slackId, data) {
+module.exports.isUserInDatabase = function(slackId, data) {
   for (let i = 0; i < data.userData.length; i++) {
     if (slackId === data.userData[i].slackId) {
       return true;
@@ -138,7 +138,7 @@ function getCoffeePartners(slackId, allPairs) {
 
 function addUserToData(slackUser, data) {
   console.log('adding', slackUser.id);
-  if (module.exports.checkForUser(slackUser.id, data)) {
+  if (module.exports.isUserInDatabase(slackUser.id, data)) {
     console.warn(`not adding user ${slackUser.id} twice!`);
     return false;
   }

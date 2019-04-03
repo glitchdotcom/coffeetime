@@ -59,7 +59,7 @@ module.exports = function(controller) {
     bot.createConversation(message, function(err, convo) {
       const data = storage.loadData();
 
-      if (user.checkForUser(message.user, data)) {
+      if (user.isUserInDatabase(message.user, data)) {
         convo.say('You are all set! Use `unsubscribe` to stop pairing.');
         const managerId = user.getManager(message.user);
         if (managerId) {

@@ -8,7 +8,7 @@ module.exports = function(controller) {
     bot.createConversation(message, function(err, convo) {
       const regex = /<@([^>]+)>/;
       const managerMatch = regex.exec(message.text);
-      if (!user.checkForUser(message.user, storage.loadData())) {
+      if (!user.isUserInDatabase(message.user, storage.loadData())) {
         convo.say('You are not subscribed yet. Use `subscribe` to change that.');
       } else if (managerMatch) {
         const managerId = managerMatch[1];
