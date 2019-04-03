@@ -73,6 +73,29 @@ function getHelpMenuBlocks() {
   ] }
 }
 
+function getSubscribeToggleButton(message) {
+  const userInfo = user.getUserInfo(message.user);
+  const buttonText = userInfo.isSubscribed ? 'Unsubscribe' : 'Subscribe';
+  const buttonValue = userInfo.isSubscribed ? help.SUBSCRIBE_ME_VALUE
+  return blocksBuilder.actions(
+    blocksBuilder.button(buttonText, buttonValue)
+  );
+}
+
+async function onSubscribeMe(bot, message) {
+  const slackUser = await user.getSlackUserInfo(bot, message.user);
+  const isNewlySubscribed = user.subscribeUser(slackUser);
+  const userInfo = user.getUserInfo(message.user);
+  const dialogue = sharedConvo.userSubscribedDialogue(isNewlySubscribed, userInfo);
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Subscribe*'),
+    blocksBuilder.section(...dialogue),
+    backToMenuButton()
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
 function showHelpMenu(bot, message) {
   bot.replyInteractive(message, getHelpMenuBlocks());
 }

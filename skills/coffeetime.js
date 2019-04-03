@@ -49,10 +49,9 @@ module.exports = function(controller) {
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message, async function(err, convo) {
       const slackUser = await user.getSlackUserInfo(bot, message.event.user);
-      const status = user.subscribeUser(slackUser);
+      const isNewlySubscribed = user.subscribeUser(slackUser);
       const userInfo = user.getUserInfo(message.event.user);
-      const dialogue = sharedConvo.userSubscribedDialogue(isAlreadySubscribed, userInfo);
-      console.log(userInfo);
+      const dialogue = sharedConvo.userSubscribedDialogue(isNewlySubscribed, userInfo);
       dialogue.forEach(line => convo.say(line));
       convo.activate();
     });

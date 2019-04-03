@@ -29,8 +29,12 @@ module.exports.defineCoffeeTimeDialogue = function() {
   ];
 };
 
-module.exports.userSubscribedDialogue = function(userInfo) {
-  if (userInfo.isSubscribed) {
+module.exports.userSubscribedDialogue = function(isNewlySubscribed, userInfo) {
+  if (!userInfo.isSubscribed) {
+    return ["Darn, something weird happened and you aren't subscribed.",
+            "Contact the CoffeeTime team? Sorry!!"];
+  }
+  if (isNewlySubscribed) {
     // TODO: Update to be possibly not Monday. 
     return ["Yay!! You've subscribed to CoffeeTime! ✨ ",
             "I'll message you with you coffee buddy on *Monday*."];
@@ -43,7 +47,8 @@ module.exports.userSubscribedDialogue = function(userInfo) {
     // TODO: Change Monday to a variable
     dialogue.push("You haven't been matched with a partner yet. Check back Monday around 9am!");
   } else {
-    dialogue.push('This week you are getting coffee with ' + coffee.slackPrintGroup(userInfo.coffeePartners));
+    dialogue.push('This week you are getting coffee with ' + coffee.slackPrintGroup(userInfo.coffeePartners) + '.');
+    dialogue.push("Reach out to them if you haven't already!");
   }
   return dialogue;
 };
