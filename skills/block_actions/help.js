@@ -115,9 +115,14 @@ function onSetManagerSelected(bot, message, slackUserId) {
 
 function onSetManagerMenuValue(bot, message) {
   const userInfo = user.getUserInfo(message.user);
+  
+  const managerMessage = userInfo.managerSlackId ?
+        'Your manager is currently set to ' + coffee.idToString(userInfo.managerSlackId) :
+        "You don't currently have a manager set."
   const blocks = [
     blocksBuilder.divider(),
     blocksBuilder.section('*Set Manager*'),
+    blocksBuilder.section(managerMessage),
     blocksBuilder.actions(
       blocksBuilder.userSelect(
         'Select your manager',
