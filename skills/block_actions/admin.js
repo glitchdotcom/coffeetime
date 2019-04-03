@@ -44,6 +44,16 @@ module.exports = function(controller) {
           case admin.SUBSCRIBE_EVERYONE_CONFIRM:
             onSubscribeAllConfirmed(bot, message);
             break;
+          case admin.SEE_SCHEDULE_VALUE:
+            onSeeSchedule(bot, message);
+          case admin.SET_SCHEDULE_VALUE:
+            onSetSchedule(bot, message);
+          case admin.RUN_COFFFEETIME_NOW:
+            onRunCoffeeTimeNow(bot, message);
+            break;
+          case admin.RUN_COFFFEETIME_NOW_CONFIRM:
+            onRunCoffeeTimeNowConfirmed(bot, message);
+            break;
         }
       }
       
@@ -315,4 +325,55 @@ async function onSubscribeAllConfirmed(bot, message) {
   ];
 
   bot.replyInteractive(message, { blocks });
+}
+
+function onSeeSchedule(bot, message) {
+   const blocks = [
+    blocksBuilder.divider(),
+     blocksBuilder.section('*CoffeeTime schedule*'),
+    blocksBuilder.section(
+      "CoffeeTime is currently set to run again next *Monday*, at *10am ET*."
+    ),
+    backToMenuButton()
+  ];
+
+  bot.replyInteractive(message, { blocks });
+}
+
+function onSetSchedule(bot, message) {
+   const blocks = [
+    blocksBuilder.divider(),
+     blocksBuilder.section('*Set CoffeeTime schedule*'),
+    blocksBuilder.section(
+      "jk not implemented yet 😅"
+    ),
+    backToMenuButton()
+  ];
+
+  bot.replyInteractive(message, { blocks });
+}
+
+
+function onRunCoffeeTimeNow(bot, message) {
+   const blocks = [
+    blocksBuilder.divider(),
+     blocksBuilder.section('*Run CoffeeTime*'),
+    blocksBuilder.section(
+      "CoffeeTime is currently set to run again next *Monday*, at *10am ET*."
+    ),
+    blocksBuilder.section(
+      "Are you sure you want to force it to run now? This will create and message all new pairings!"
+    ),
+    blocksBuilder.actions(
+      blocksBuilder.button('Yes!', admin.RUN_COFFFEETIME_NOW_CONFIRM),
+      blocksBuilder.button('Cancel', admin.SHOW_MENU_VALUE),
+      blocksBuilder.button('Exit', admin.EXIT_MENU_VALUE),
+    )
+  ];
+
+  bot.replyInteractive(message, { blocks });
+}
+
+function onRunCoffeeTimeNowConfirmed(bot, message) {
+  bot.replyInteractive(message, sharedConvo.getRunCoffeetimeBlocks());
 }

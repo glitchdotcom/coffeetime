@@ -125,3 +125,20 @@ module.exports.getAdminMenuBlocks = function() {
   ] };
 }
 
+module.exports.getRunCoffeetimeBlocks = function() {
+  return { blocks: [
+    blocksBuilder.divider(),
+     blocksBuilder.section('*Run CoffeeTime*'),
+    blocksBuilder.section(
+      "CoffeeTime is currently set to run again next *Monday*, at *10am ET*."
+    ),
+    blocksBuilder.section(
+      "Are you sure you want to force it to run now? This will create and message all new pairings!"
+    ),
+    blocksBuilder.actions(
+      blocksBuilder.button('Yes!', admin.RUN_COFFFEETIME_NOW_CONFIRM),
+      blocksBuilder.button('Cancel', admin.SHOW_MENU_VALUE),
+      blocksBuilder.button('Exit', admin.EXIT_MENU_VALUE),
+    )
+  ] };
+}

@@ -36,14 +36,8 @@ module.exports = function(controller) {
   
   
   controller.hears(['^coffeetimerun'], 'direct_message', function(bot, message) {
-    coffee.runCoffeeTime(bot);
-
-    bot.createConversation(message, function(err, convo) {
-      //Right now let's trigger the pairing by sending the bot a message with "coffeetime"      
-      convo.say('We just ran coffeetime and generated a pair of users, lets message them all!!');      
-      convo.say('~Done~');
-      convo.activate();
-    });
+    console.log('hello!');
+    bot.replyPrivate(message, sharedConvo.getRunCoffeetimeBlocks());
   });
 
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
