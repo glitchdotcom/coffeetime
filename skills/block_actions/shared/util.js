@@ -39,7 +39,12 @@ const admin = {
   SUBSCRIBE_EVERYONE_CONFIRM: 'admin_subscribe_everyone_confirm',
   
   SUBSCRIBE_USER: 'admin_subscribe_user',
-  UNSUBSCRIBE_USER: 'admin_unsubscribe_user'
+  UNSUBSCRIBE_USER: 'admin_unsubscribe_user',
+  
+  SEE_SCHEDULE_VALUE: 'admin_see_schedule',
+  SET_SCHEDULE_VALUE: 'admin_set_schedule',
+  RUN_COFFFEETIME_NOW: ''
+
 };
 
 //////////////////////////////////////

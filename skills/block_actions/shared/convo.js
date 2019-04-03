@@ -100,9 +100,26 @@ function getSubscribeToggleButton(slackId) {
 module.exports.getAdminMenuBlocks = function() {
   return { blocks: [
     blocksBuilder.section(
-      'This is the admin menu for CoffeeTime',
-      '_*Warning:* These changes can affect all CoffeeTime users!_'),
+      'This is the *admin* console for CoffeeTime. ⌨️',
+      'Here you can modify CoffeeTime settings for everyone.'),
     blocksBuilder.section("*Subscriber info*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("View all subscribed", admin.SHOW_ALL_SUBSCRIBED),
+      blocksBuilder.button('View all unsubscribed', admin.SHOW_ALL_UNSUBSCRIBED),
+    ),
+    blocksBuilder.section("*Add/remove users*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("Subscribe a person", admin.SUBSCRIBE_USER),
+      blocksBuilder.button('Unsubscribe a person', admin.UNSUBSCRIBE_USER),
+      blocksBuilder.button("Subscribe everyone", admin.SUBSCRIBE_EVERYONE),
+    ),
+    blocksBuilder.section("*Scheduling CoffeeTime*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("View CoffeeTime schedule", admin.SEE_SCHEDULE_VALUE),
+      blocksBuilder.button("Set schedule", admin.SET_SCHEDULE_VALUE),
+      blocksBuilder.button('Run CoffeeTime now', admin.RUN_COFFFEETIME_NOW),
+    ),
+    blocksBuilder.divider(),
     blocksBuilder.actions(
       blocksBuilder.button("Exit", admin.EXIT_MENU_VALUE),
     )
