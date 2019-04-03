@@ -22,11 +22,11 @@ const help = {
   AM_I_SIGNED_UP_VALUE: 'help_am_i_signed_up',
   MY_PROFILE_VALUE: 'help_my_profile',
   SHOW_HELP_MENU: 'help_show_help_menu',
-  EXIT_MENU_VALUE: 'exit_menu_value',
-  WHAT_ARE_COMMANDS_VALUE: 'what_are_commands_value',
-  SET_MANAGER_MENU_VALUE: 'set_manager_menu_value',
-  SELECT_MANAGER_ACTION_ID: 'select_manager_action_id',
-  UNSELECT_MANAGER_VALUE: 'unselect_manager_value'
+  EXIT_MENU_VALUE: 'help_exit_menu_value',
+  WHAT_ARE_COMMANDS_VALUE: 'help_what_are_commands_value',
+  SET_MANAGER_MENU_VALUE: 'help_set_manager_menu_value',
+  SELECT_MANAGER_ACTION_ID: 'help_select_manager_action_id',
+  UNSELECT_MANAGER_VALUE: 'help_unselect_manager_value'
 };
 
 const admin = {
@@ -40,6 +40,8 @@ const admin = {
   
   SUBSCRIBE_USER: 'admin_subscribe_user',
   UNSUBSCRIBE_USER: 'admin_unsubscribe_user',
+  SELECT_SUBSCRIBER_ACTION_ID: 'admin_select_subscriber_action_id',
+  ADD_USER_CONFIRM_VALUE: 'admin_add_user_confirm_value',
   
   SEE_SCHEDULE_VALUE: 'admin_see_schedule',
   SET_SCHEDULE_VALUE: 'admin_set_schedule',

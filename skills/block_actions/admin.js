@@ -25,6 +25,14 @@ module.exports = function(controller) {
         case admin.SUBSCRIBE_USER:
           onSubscribeUser(bot, message);
           break;
+        case admin.ADD_USER_CONFIRM_VALUE:
+          onSubscribeUserConfirmed(bot, message);
+          break;
+      }
+      switch(action.action_id) {
+        case admin.SELECT_SUBSCRIBER_ACTION_ID:
+          onSubscribeUserSelected(bot, message, action.selected_user);
+          break;
       }
     }
   });
@@ -92,32 +100,66 @@ function onSubscribeUser(bot, message) {
   replyInteractiveSubscribeUser(bot, message);
 }
 
-function onSubscribeUserSelected(bot, message, 
+function getSubscribeUserErrorMessage(userSlackId, userSlackInfo) {
+  const startMessage = 'You cannot subscribe ' + user.idToString(userSlackId);
+  const userType = user.getSlackUserType(userSlackInfo);
+  switch(userType) {
+    case user.TYPE.IS_SLACKBOT: 
+      return startMessage + ' because they are Slackbot.';
+    case user.TYPE.IS_DELETED: 
+      return startMessage + ' because they are deleted.';
+    case user.TYPE.IS_A_BOT: 
+      return startMessage + ' because they are a bot.';
+    case user.TYPE.NOT_FULL_MEMBER: 
+      return startMessage + ' because they are not a full member.';
+  }
+  return startMessage + '.'; 
+}
 
-function replyInteractiveSubscribeUser(bot, message, selectUserErrorMsg) {
+async function onSubscribeUserSelected(bot, message, selectedUserId) {
+  const selectedUserSlackInfo = await user.getSlackUserInfo(bot, selectedUserId);
+  const isValidUser = user.isFullSlackUser(selectedUserSlackInfo);
+
+  let errorMessage;
+  let validUserId;
+  if (!isValidUser) {
+    errorMessage = getSubscribeUserErrorMessage(selectedUserId, selectedUserSlackInfo);
+  } else {
+    validUserId = 
+  }
+
+  replyInteractiveSubscribeUser(bot, message, errorMessage);
+}
+
+function onSubscribeUserConfirmed(bot, message) {
+  console.log(message);
+}
+
+
+function replyInteractiveSubscribeUser(bot, message, selectedUserId, selectUserErrorMsg) {
   const userInfo = user.getUserInfo(message.user);
   
   const subscribeUserActions = [
       blocksBuilder.userSelect(
         'Choose user to add',
-        admin.SUBSCRIBE_USER_ACTION_ID, 
+        admin.SELECT_SUBSCRIBER_ACTION_ID, 
     )
   ];
   
-  const subscribeUserBlocks = [
-    blocksBuilder.section('*Subscribe User*'),
-    blocksBuilder.section('Choose a user to add to CoffeeTime'),
-  ];
+  const errorMessageBlocks = [];
   
   if (!selectUserErrorMsg) {
-    subscribeUserActions.push(blocksBuilder.button('Add', admin.ADD_USER_CONFIRM));
+    subscribeUserActions.push(blocksBuilder.button('Add', admin.ADD_USER_CONFIRM_VALUE));
   } else {
-    subscribeUserBlocks.push(blocksBuilder.context(selectUserErrorMsg));
+    errorMessageBlocks.push(blocksBuilder.context(selectUserErrorMsg));
   } 
   
   const blocks = [
     blocksBuilder.divider(),
+    blocksBuilder.section('*Subscribe User*'),
+    blocksBuilder.section('Choose a user to add to CoffeeTime'),
     blocksBuilder.actions(...subscribeUserActions),
+    ...errorMessageBlocks,
     blocksBuilder.divider(),
     backToMenuButton()
   ];
