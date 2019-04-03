@@ -1,14 +1,17 @@
 const schedule = require('node-schedule');
 const coffee = require('./../util/coffee.js');
 
+
+// System time is ahead of NYC time by +4 hours
+const ET_TIMEZONE_OFFSET = 4;
+
 // TODO: save jobs by team id
 module.exports.scheduleCoffeeCron = function(bot) {
   // See usage: https://github.com/node-schedule/node-schedule#usage
   const rule = new schedule.RecurrenceRule();
-  rule.dayOfWeek = 3;  // Wednesday
-  rule.hour = 14;
-  rule.minute = 42;
-  console.log('hello!');
+  rule.dayOfWeek = 1;  // Monday
+  rule.hour = 10 + ET_TIMEZONE_OFFSET; // 10am NYC time
+  rule.minute = 0;
   
   schedule.scheduleJob(rule, () => {
     console.log('Running coffee time~~~');
