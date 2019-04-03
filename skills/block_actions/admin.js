@@ -377,7 +377,17 @@ function onRunCoffeeTimeCanceled(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-
 function onRunCoffeeTimeNowConfirmed(bot, message) {
-  bot.replyInteractive(message, sharedConvo.getRunCoffeetimeBlocks());
+  console.log('Running coffee time~~~');
+  coffee.runCoffeeTime(bot);
+  
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*CoffeeTime complete!*'),
+    blocksBuilder.section(
+      "Great, I just created new CoffeeTime pairings and messaged each group!"
+    )
+  ];
+
+  bot.replyInteractive(message, { blocks });
 }

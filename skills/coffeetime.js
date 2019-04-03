@@ -36,8 +36,7 @@ module.exports = function(controller) {
   
   
   controller.hears(['^coffeetimerun'], 'direct_message', function(bot, message) {
-    console.log('hello!');
-    bot.replyPrivate(message, sharedConvo.getRunCoffeetimeBlocks());
+    bot.reply(message, sharedConvo.getRunCoffeetimeBlocks());
   });
 
   controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
