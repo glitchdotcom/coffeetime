@@ -64,7 +64,7 @@ module.exports = function(controller) {
   
   controller.on('slash_command', async function(bot, message) {
     const commandMessage = message.text;
-    let textToSay = '';
+    let textToSay = 'help';
     const userInfo = user.getUserInfo(message.user_id);
     switch (commandMessage) {
       case 'subscribe':
@@ -74,6 +74,7 @@ module.exports = function(controller) {
         textToSay = unsubscribeUser(bot, message.user_id);
         break;
       default:
+        bot.replyPrivate(message, sharedConvo.getHelpMenuBlocks(
         break;
     }
     bot.replyPrivate(message, textToSay);

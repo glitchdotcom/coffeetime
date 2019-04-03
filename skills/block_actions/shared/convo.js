@@ -1,5 +1,7 @@
 const coffee = require('./../../../util/coffee');
-const { setup, blocksBuilder } = require('./util');
+const user = require('./../../../util/user');
+
+const { setup, help, blocksBuilder } = require('./util');
 
 module.exports.startAdminSetupConversation = function(bot, user) {
   const blocks = [
@@ -60,3 +62,32 @@ module.exports.userUnsubscribedDialogue = function(isAlreadyUnsubscribed) {
   return ["Enjoy your break from CoffeeTime!",
       "You can always come back by sending a `subscribe` message."];
 };
+
+
+module.exports.getHelpMenuBlocks = function(slackId) {
+  return { blocks: [
+    blocksBuilder.section("Hello and welcome to the CoffeeTime help menu! ✨ How can I help you?"),
+    blocksBuilder.section("*Basics*"),
+    blocksBuilder.actions(
+      blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
+    ),
+    blocksBuilder.section("*Manage subscription*"),
+    blocksBuilder.actions(
+      getSubscribeToggleButton(slackId),
+      blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
+      blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
+    ),
+    blocksBuilder.divider(),
+    blocksBuilder.actions(
+      blocksBuilder.button("Exit", help.EXIT_MENU_VALUE),
+      //blocksBuilder.button("Admin menu", help.EXIT_MENU_VALUE),
+    )
+  ] };
+}
+
+function getSubscribeToggleButton(slackId) {
+  const userInfo = user.getUserInfo(slackId);
+  const buttonText = userInfo.isSubscribed ? 'Unsubscribe' : 'Subscribe';
+  const buttonValue = userInfo.isSubscribed ? help.UNSUBSCRIBE_ME_VALUE : help.SUBSCRIBE_ME_VALUE;
+  return blocksBuilder.button(buttonText, buttonValue);
+}

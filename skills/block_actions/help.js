@@ -36,7 +36,7 @@ module.exports = function(controller) {
   });
   
   controller.hears(['^help'], 'direct_message,direct_mention', function(bot, message) {
-    bot.reply(message, getHelpMenuBlocks(message.event.user));
+    bot.reply(message, sharedConvo.getHelpMenuBlocks(message.event.user));
   });
   
   controller.hears(['^oldhelp'], 'direct_message,direct_mention', function(bot, message) {
@@ -64,35 +64,6 @@ function backToMenuButton() {
       blocksBuilder.button("Back", help.SHOW_HELP_MENU),
   );
 }
-
-function getHelpMenuBlocks(slackId) {
-  return { blocks: [
-    blocksBuilder.section("Hello and welcome to the CoffeeTime help menu! ✨ How can I help you?"),
-    blocksBuilder.section("*Basics*"),
-    blocksBuilder.actions(
-      blocksBuilder.button("What's CoffeeTime?", help.WHAT_IS_THIS_VALUE),
-    ),
-    blocksBuilder.section("*Manage subscription*"),
-    blocksBuilder.actions(
-      getSubscribeToggleButton(slackId),
-      blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
-      blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
-    ),
-    blocksBuilder.divider(),
-    blocksBuilder.actions(
-      blocksBuilder.button("Exit", help.EXIT_MENU_VALUE),
-      //blocksBuilder.button("Admin menu", help.EXIT_MENU_VALUE),
-    )
-  ] };
-}
-
-function getSubscribeToggleButton(slackId) {
-  const userInfo = user.getUserInfo(slackId);
-  const buttonText = userInfo.isSubscribed ? 'Unsubscribe' : 'Subscribe';
-  const buttonValue = userInfo.isSubscribed ? help.UNSUBSCRIBE_ME_VALUE : help.SUBSCRIBE_ME_VALUE;
-  return blocksBuilder.button(buttonText, buttonValue);
-}
-
 
 function onUnsubscribeMe(bot, message) {
   const userInfo = user.getUserInfo(message.user);
@@ -125,7 +96,7 @@ async function onSubscribeMe(bot, message) {
 }
 
 function showHelpMenu(bot, message) {
-  bot.replyInteractive(message, getHelpMenuBlocks(message.user));
+  bot.replyInteractive(message, sharedConvo.getHelpMenuBlocks(message.user));
 }
 
 function onWhatIsCoffeeTime(bot, message) {
