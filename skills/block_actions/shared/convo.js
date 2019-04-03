@@ -27,3 +27,16 @@ module.exports.defineCoffeeTimeDialogue = function() {
     "> • You can change your participation in CoffeeTime with `/coffeetime subscribe` or `/coffeetime unsubscribe`."
   ];
 };
+
+module.exports.userSubscribedDialogue = function(isSubscribed) {
+  if (isSubscribed) {
+    return ["Yay!! You've subscribed to CoffeeTime! ✨ ",
+        
+        convo.say("I'll message you with you coffee buddy on *Monday*.");
+      } else {
+        // TODO: finish this
+        convo.say("You're already subscribed to CoffeeTime!");
+        convo.say("Your buddy this week is");
+      }
+};
+
