@@ -29,6 +29,8 @@ module.exports = function(controller) {
         case help.UNSUBSCRIBE_ME_VALUE:
           onUnsubscribeMe(bot, message);
           break;
+        case help.EXIT_MENU_VALUE:
+          onExitHelp(bot, message);
       }
     }
   });
@@ -76,6 +78,10 @@ function getHelpMenuBlocks(slackId) {
       blocksBuilder.button("My Coffee Buddy", help.WHO_IS_MY_BUDDY_VALUE),
       blocksBuilder.button('My Profile', help.MY_PROFILE_VALUE),
     ),
+    blocksBuilder.section("*Misc*"),
+      blocksBuilder.actions(
+      blocksBuilder.button("Exit", help.EXIT_HELP_VALUE),
+    ),
     blocksBuilder.divider()
   ] }
 }
@@ -88,8 +94,20 @@ function getSubscribeToggleButton(slackId) {
 }
 
 
-async function onUnsubscribeMe(bot, message) {
-  console.log('bloop');
+function onUnsubscribeMe(bot, message) {
+  const userInfo = user.getUserInfo(message.user);
+  const isAlreadyUnsubscribed = !userInfo.isSubscribed;
+  if (!isAlreadyUnsubscribed) {
+    user.unsubscribeUser(message.user);
+  }
+  const dialogue = sharedConvo.userUnsubscribedDialogue(isAlreadyUnsubscribed);
+  const blocks = [
+    blocksBuilder.divider(),
+    blocksBuilder.section('*Unsubscribe*'),
+    blocksBuilder.section(...dialogue),
+    backToMenuButton()
+  ];
+  bot.replyInteractive(message, { blocks });
 }
 
 async function onSubscribeMe(bot, message) {
@@ -113,7 +131,7 @@ function showHelpMenu(bot, message) {
 function onWhatIsCoffeeTime(bot, message) {
   const blocks = [
     blocksBuilder.divider(),
-    blocksBuilder.section('*What is CoffeeTime*'),
+    blocksBuilder.section('*What is CoffeeTime?*'),
     blocksBuilder.section(
       ...sharedConvo.defineCoffeeTimeDialogue()
     ),
@@ -162,6 +180,13 @@ function onMyProfile(bot, message) {
       '> • This week, you are paired with ' + coffee.slackPrintGroup(userInfo.coffeePartners)
     ),
     backToMenuButton()
+  ];
+  bot.replyInteractive(message, { blocks });
+}
+
+async function onExitHelp(bot, message) {
+  const blocks = [
+    blocksBuilder.section('See you later! Summon me anytime with `help`.'),
   ];
   bot.replyInteractive(message, { blocks });
 }

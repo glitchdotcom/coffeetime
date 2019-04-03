@@ -19,6 +19,7 @@ const help = {
   AM_I_SIGNED_UP_VALUE: 'help_am_i_signed_up',
   MY_PROFILE_VALUE: 'help_my_profile',
   SHOW_HELP_MENU: 'help_show_help_menu',
+  EXIT_MENU_VALUE: 'exit_menu_value'
 };
 
 function button(text, value) {
