@@ -39,13 +39,13 @@ module.exports = function(controller) {
     bot.reply(message, sharedConvo.getRunCoffeetimeBlocks());
   });
 
-  controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
-    bot.createConversation(message, async function(err, convo) {
-      const textToSay = await subscribeUser(bot, message.event.user);
-      convo.say(textToSay);
-      convo.activate();
-    });
+controller.hears(['^subscribe'], 'direct_message,direct_mention', function(bot, message) {
+  bot.createConversation(message, async function(err, convo) {
+    const textToSay = await subscribeUser(bot, message.event.user);
+    convo.say(textToSay);
+    convo.activate();
   });
+});
 
   controller.hears(['^unsubscribe'], 'direct_message,direct_mention', function(bot, message) {
     bot.createConversation(message,  function(err, convo) {
