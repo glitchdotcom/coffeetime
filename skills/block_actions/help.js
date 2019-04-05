@@ -274,7 +274,7 @@ function onMyProfile(bot, message) {
   bot.replyInteractive(message, { blocks });
 }
 
-async function onExitHelp(bot, message) {
+function onExitHelp(bot, message) {
   const blocks = [
     blocksBuilder.section('See you later! Summon me anytime with `/coffeetime`.'),
   ];
