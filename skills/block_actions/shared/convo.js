@@ -74,8 +74,7 @@ module.exports.getHelpMenuBlocks = function(slackId) {
     ),
     blocksBuilder.section("*Manage subscription*"),
     blocksBuilder.actions(
-      getSubscribeToggleButton(slackId),
-      blocksBuilder.button("Set Manager", help.SET_MANAGER_MENU_VALUE),
+      ...getSubscriptionButtons(slackId)
     ),
     blocksBuilder.section("*Your info*"),
     blocksBuilder.actions(
@@ -89,11 +88,17 @@ module.exports.getHelpMenuBlocks = function(slackId) {
   ] };
 }
 
-function getSubscribeToggleButton(slackId) {
+function getSubscriptionButtons(slackId) {
+  const buttons = [];
   const userInfo = user.getUserInfo(slackId);
   const buttonText = userInfo.isSubscribed ? 'Unsubscribe' : 'Subscribe';
   const buttonValue = userInfo.isSubscribed ? help.UNSUBSCRIBE_ME_VALUE : help.SUBSCRIBE_ME_VALUE;
-  return blocksBuilder.button(buttonText, buttonValue);
+  buttons.push(blocksBuilder.button(buttonText, buttonValue));
+  
+  if (userInfo.isSubscribed) {
+    buttons.push(blocksBuilder.button("Set Manager", help.SET_MANAGER_MENU_VALUE));
+  }
+  return buttons;
 }
 
 module.exports.getAdminMenuBlocks = function() {
