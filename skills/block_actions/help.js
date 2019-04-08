@@ -237,7 +237,7 @@ function onWhoIsMyCoffeeBuddy(bot, message) {
     }
     if (!userInfo.coffeePartners || userInfo.coffeePartners.length === 0) {
       // TODO: Change Monday to a variable
-      return "You haven't been matched with a partner yet. Check back Monday around 10am!";
+      return "You haven't been matched with a partner yet. Check back Monday around 10am ET!";
     }
     // You have subscribed and you have a coffee partner
     return 'This week, you are paired with ' + user.slackPrintGroup(userInfo.coffeePartners) + '. ' +
