@@ -18,26 +18,30 @@ function runCoffeeTime(bot) {
   const allUserSlackIds = user.getSlackIdsForAllUsers();
   const blockedMatches = createBlockedMatches(data);
   const { pastMatches } = data;
-  
+
   // Generate coffeetime pairs.
   const newPairs = pairUsers(allUserSlackIds, pastMatches, blockedMatches);
   // Save the updated pairings.
   saveNewPairings(newPairs.pairs, newPairs.pastMatches);
   // Inform everyone of the new groups.
-  broadcastCoffeeGroups(bot, newPairs.pairs,
-        (pair) =>
-          "Hi " + user.slackPrintGroup(pair) + "!\n" +
-          "You're getting coffee together this week! ☕️\n" +
-          "I've put you in this chat together so you can figure out the details.\n" +
-          "Schedule a time that works for the both of you, and have fun!"
-      );
+  broadcastCoffeeGroups(
+    bot,
+    newPairs.pairs,
+    (pair) =>
+      'Hi ' +
+      user.slackPrintGroup(pair) +
+      '!\n' +
+      "You're getting coffee together this week! ☕️\n" +
+      "I've put you in this chat together so you can figure out the details.\n" +
+      'Schedule a time that works for the both of you, and have fun!',
+  );
 }
 
 // Updates the database with new pairs and matches.
 function saveNewPairings(pairs, pastMatches) {
   const data = storage.loadData();
   const newData = Object.assign({}, data, { pairs, pastMatches });
-  storage.saveData(newData);  
+  storage.saveData(newData);
 }
 
 // Returns an object with:
@@ -45,8 +49,7 @@ function saveNewPairings(pairs, pastMatches) {
 //   pairs: updated newest pairings,
 //   pastMatches: updated past matches.
 // }
-function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
-
+function pairUsers(allUserSlackIds, pastMatches = [], blockedMatches = []) {
   const blockedMatchesSet = new Set([].concat(blockedMatches, ...pastMatches));
 
   const pairs = []; // [ [id1, id2], [id3, id4] ] the actual result
@@ -107,15 +110,14 @@ function pairUsers(allUserSlackIds, pastMatches=[], blockedMatches=[]) {
 }
 
 function sendMessageToUsers(bot, slackIds, message) {
-  const slackBotToken = process.env.SLACK_BOT_TOKEN;  
+  const slackBotToken = process.env.SLACK_BOT_TOKEN;
   bot.api.conversations.open({ users: slackIds.join(',') }, (error, response) => {
     bot.api.chat.postMessage({
       channel: response.channel.id,
-      text: message
+      text: message,
     });
   });
 }
-
 
 // `pairs`: A list of all pairs (each pair is a list, and a "pair" can be 3 people)
 // `messageFactory`: Function that takes a list of slackIds and returns a string message
@@ -128,7 +130,7 @@ function broadcastCoffeeGroups(bot, pairs, messageFactory) {
 
 function createBlockedMatches(data) {
   const blockedMatchesSet = new Set();
-  data.userData.forEach(user => {
+  data.userData.forEach((user) => {
     if (user.managerSlackId) {
       blockedMatchesSet.add(userPairKey(user.slackId, user.managerSlackId));
     }
@@ -136,12 +138,10 @@ function createBlockedMatches(data) {
   return [...blockedMatchesSet];
 }
 
-
-
 module.exports = {
-  pairUsers,  // Exported for testing
-  createBlockedMatches,  // Exported for testing
+  pairUsers, // Exported for testing
+  createBlockedMatches, // Exported for testing
   runCoffeeTime,
   saveNewPairings,
-  broadcastCoffeeGroups
+  broadcastCoffeeGroups,
 };
