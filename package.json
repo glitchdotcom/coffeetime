@@ -20,7 +20,7 @@
     "querystring": "^0.2.0",
     "request": "^2.88.0",
     "wordfilter": "^0.2.6",
-    "node-schedule": "^1.3.2",
+    "node-schedule": "^1.3.2"
   },
   "devDependencies": {
     "jest": "^23.2.0"
