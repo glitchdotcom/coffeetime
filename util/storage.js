@@ -4,12 +4,12 @@ const DATA_PATH = './.data/coffee.json';
 
 const dataFormat = {
   // Note that "pairs" is sometimes a misnomer, as there can be groups of 3.
-  "pairs": [],
+  pairs: [],
   // TODO: userData is probably better as a map (via {}) instead of a list, though
   // it  would take some refactoring to change.
-  "userData": [],
-  "pastMatches": []
-}
+  userData: [],
+  pastMatches: [],
+};
 
 // Always loads data from disk and returns a copy of the data.
 // If data does not exist on disk, return an empty copy of `dataFormat`.
@@ -21,7 +21,9 @@ module.exports.loadData = function() {
     } catch (error) {
       console.warn("didn't load data file:");
       console.warn(error);
-      return { ...dataFormat }
+      return {
+        ...dataFormat,
+      };
     }
   } else {
     return { ...dataFormat };
@@ -30,7 +32,7 @@ module.exports.loadData = function() {
 
 module.exports.saveData = function(data) {
   try {
-    fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function (err) {
+    fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), function(err) {
       if (err) {
         console.warn(err);
       }
@@ -42,4 +44,4 @@ module.exports.saveData = function(data) {
 
 module.exports.deleteAllData = function() {
   module.exports.saveData(dataFormat);
-}
+};
