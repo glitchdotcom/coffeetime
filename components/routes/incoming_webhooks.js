@@ -26,13 +26,13 @@ function onSlackRecieve(req, res) {
 
 function onAppUninstalled(payload, controller) {
   console.log('uninstalling!!!!');
-  // Delete this from the team database.
-  controller.storage.teams.delete(payload.team_id);
+  // TODO: Delete this from the team database.
+  //controller.storage.teams.delete(payload.team_id);
   
   // Delete all users.
   // TODO: Once we support multiple teams, we should only delete the team 
   // whose app was uninstalled.
-  storage.deleteAllData();
+  //storage.deleteAllData();
   
   // TODO: Delete cron when here
 }
