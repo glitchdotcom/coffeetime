@@ -21,6 +21,7 @@
     "request": "^2.88.0",
     "wordfilter": "^0.2.6",
     "node-schedule": "^1.3.2"
+    "jsverify": "^0.8.4"
   },
   "devDependencies": {
     "jest": "^23.2.0"

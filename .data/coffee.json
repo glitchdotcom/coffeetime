@@ -1,0 +1,305 @@
+{
+  "pairs": [
+    [
+      "U4E6TJJ1Z",
+      "U0254J411"
+    ],
+    [
+      "UERJFTDJS",
+      "U2N0B7Y2Z"
+    ],
+    [
+      "UEV6J2717",
+      "UEJU3ASRZ"
+    ],
+    [
+      "UGNBPSGG3",
+      "U8ACJAXFH"
+    ],
+    [
+      "U6XMBJL64",
+      "UF8FXH481"
+    ],
+    [
+      "U3P20J8LT",
+      "U3PR26A4F"
+    ],
+    [
+      "U02RXTZMC",
+      "UGNBQRAH1"
+    ],
+    [
+      "UHHGECQ92",
+      "UA3DGLJLB"
+    ],
+    [
+      "U0MPN2EJZ",
+      "UFXDKBE66"
+    ],
+    [
+      "U054HCSV6",
+      "UH394P9U7"
+    ],
+    [
+      "U50PQLB6K",
+      "U039VEN3Z"
+    ],
+    [
+      "U56U9BX44",
+      "UEQ3BRG6P"
+    ],
+    [
+      "UEP8YK0AU",
+      "U087QFJ94",
+      "UEHD3B9B2"
+    ],
+    [
+      "UEJB7CCCV",
+      "UEJ1ZFX6C"
+    ],
+    [
+      "UGNQ6FQKF",
+      "U40Q6PY48"
+    ],
+    [
+      "UH3L8GYFQ",
+      "UGPKZ0VD5"
+    ],
+    [
+      "UCZN924LS",
+      "UBK37TQHF"
+    ]
+  ],
+  "userData": [
+    {
+      "slackId": "UCZN924LS",
+      "id": 0,
+      "name": "Melissa McEwen"
+    },
+    {
+      "slackId": "UEQ3BRG6P",
+      "id": 0,
+      "name": "Matt Claypotch",
+      "managerSlackId": "U02R25M8C"
+    },
+    {
+      "slackId": "U3PR26A4F",
+      "id": 2,
+      "name": "Sean O'Brien"
+    },
+    {
+      "slackId": "U4E6TJJ1Z",
+      "id": 4,
+      "name": "Angelo Stavrow"
+    },
+    {
+      "slackId": "UGNBQRAH1",
+      "name": "Justin Falcone"
+    },
+    {
+      "slackId": "UGNBPSGG3",
+      "name": "Sarah Zinger"
+    },
+    {
+      "slackId": "UERJFTDJS",
+      "name": "Lyzi Diamond"
+    },
+    {
+      "slackId": "UA3DGLJLB",
+      "name": "Meg Tobin"
+    },
+    {
+      "slackId": "UF8FXH481",
+      "name": "Sheridan Kates"
+    },
+    {
+      "slackId": "U2N0B7Y2Z",
+      "name": "Anil Dash"
+    },
+    {
+      "slackId": "UH394P9U7",
+      "name": "Michael Kelly"
+    },
+    {
+      "slackId": "U40Q6PY48",
+      "name": "Jenn Schiffer"
+    },
+    {
+      "slackId": "U50PQLB6K",
+      "name": "Esteban Molina-Estolano"
+    },
+    {
+      "slackId": "U6XMBJL64",
+      "name": "Niki Simonutti"
+    },
+    {
+      "slackId": "U56U9BX44",
+      "name": "cori schlegel"
+    },
+    {
+      "slackId": "UGNQ6FQKF",
+      "name": "Keith Kurson",
+      "managerSlackId": "U40Q6PY48"
+    },
+    {
+      "slackId": "U3P20J8LT",
+      "name": "Cherylyn Wilson"
+    },
+    {
+      "slackId": "U0254J411",
+      "name": "isaac schwarz"
+    },
+    {
+      "slackId": "UEJU3ASRZ",
+      "name": "Daniel Luxemburg"
+    },
+    {
+      "slackId": "UFXDKBE66",
+      "name": "Tara Vancil"
+    },
+    {
+      "slackId": "UEJ1ZFX6C",
+      "name": "Mads Hartmann"
+    },
+    {
+      "slackId": "UEHD3B9B2",
+      "name": "Emmett Walsh"
+    },
+    {
+      "slackId": "U02RXTZMC",
+      "name": "Tim Kington"
+    },
+    {
+      "slackId": "UBK37TQHF",
+      "name": "Tiffany Tseng"
+    },
+    {
+      "slackId": "U039VEN3Z",
+      "name": "Emanuele Tamponi"
+    },
+    {
+      "slackId": "U054HCSV6",
+      "name": "Greg Weil",
+      "managerSlackId": "U40Q6PY48"
+    },
+    {
+      "slackId": "U8ACJAXFH",
+      "name": "Maurice Cherry"
+    },
+    {
+      "slackId": "UEV6J2717",
+      "name": "Hosanna Tolman"
+    },
+    {
+      "slackId": "UEP8YK0AU",
+      "name": "Antoinette Smith"
+    },
+    {
+      "slackId": "UH3L8GYFQ",
+      "name": "Victoria Kirst",
+      "managerSlackId": null
+    },
+    {
+      "slackId": "UHHGECQ92",
+      "name": "Nkasi Okafor"
+    },
+    {
+      "slackId": "UGPKZ0VD5",
+      "name": "Michael Stewart"
+    },
+    {
+      "slackId": "U0MPN2EJZ",
+      "name": "Jess Moy"
+    },
+    {
+      "slackId": "UEJB7CCCV",
+      "name": "Johnicholas Hines"
+    },
+    {
+      "slackId": "U087QFJ94",
+      "name": "Jordan Harris"
+    }
+  ],
+  "pastMatches": [
+    [
+      "U3PR26A4F-UGNBPSGG3",
+      "U50PQLB6K-UEQ3BRG6P",
+      "U3P20J8LT-UGNQ6FQKF",
+      "UA3DGLJLB-UH394P9U7",
+      "UCZN924LS-UEP8YK0AU",
+      "U40Q6PY48-U56U9BX44",
+      "UF8FXH481-UGNBQRAH1",
+      "U2N0B7Y2Z-U6XMBJL64",
+      "U4E6TJJ1Z-UH3L8GYFQ",
+      "U054HCSV6-UERJFTDJS"
+    ],
+    [
+      "UF8FXH481-UGNQ6FQKF",
+      "UCZN924LS-UH394P9U7",
+      "U3P20J8LT-U6XMBJL64",
+      "UERJFTDJS-UGNBPSGG3",
+      "U054HCSV6-U40Q6PY48",
+      "UEP8YK0AU-UEQ3BRG6P",
+      "UA3DGLJLB-UGNBQRAH1",
+      "U50PQLB6K-U56U9BX44",
+      "U3PR26A4F-UH3L8GYFQ",
+      "U2N0B7Y2Z-U4E6TJJ1Z"
+    ],
+    [
+      "U039VEN3Z-UCZN924LS",
+      "U3PR26A4F-U6XMBJL64",
+      "UGNBPSGG3-UGNQ6FQKF",
+      "UBK37TQHF-UH3L8GYFQ",
+      "U02RXTZMC-UERJFTDJS",
+      "UEJ1ZFX6C-UF8FXH481",
+      "U0254J411-UFXDKBE66",
+      "U054HCSV6-UGNBQRAH1",
+      "U40Q6PY48-U50PQLB6K",
+      "U4E6TJJ1Z-UH394P9U7",
+      "U8ACJAXFH-UEQ3BRG6P",
+      "U2N0B7Y2Z-U3P20J8LT",
+      "U56U9BX44-UEJU3ASRZ",
+      "UA3DGLJLB-UEHD3B9B2"
+    ],
+    [
+      "U8ACJAXFH-UEP8YK0AU",
+      "U3PR26A4F-U4E6TJJ1Z",
+      "U039VEN3Z-UF8FXH481",
+      "U3P20J8LT-U50PQLB6K",
+      "U40Q6PY48-UEJU3ASRZ",
+      "U02RXTZMC-UH394P9U7",
+      "U6XMBJL64-UEQ3BRG6P",
+      "U054HCSV6-UBK37TQHF",
+      "UGNQ6FQKF-UHHGECQ92",
+      "UCZN924LS-UEHD3B9B2",
+      "UFXDKBE66-UGNBPSGG3",
+      "U0254J411-U2N0B7Y2Z",
+      "UERJFTDJS-UGPKZ0VD5",
+      "UEJ1ZFX6C-UGNBQRAH1",
+      "U56U9BX44-UA3DGLJLB",
+      "UEV6J2717-UH3L8GYFQ"
+    ],
+    [
+      "U0254J411-U4E6TJJ1Z",
+      "U2N0B7Y2Z-UERJFTDJS",
+      "UEJU3ASRZ-UEV6J2717",
+      "U8ACJAXFH-UGNBPSGG3",
+      "U6XMBJL64-UF8FXH481",
+      "U3P20J8LT-U3PR26A4F",
+      "U02RXTZMC-UGNBQRAH1",
+      "UA3DGLJLB-UHHGECQ92",
+      "U0MPN2EJZ-UFXDKBE66",
+      "U054HCSV6-UH394P9U7",
+      "U039VEN3Z-U50PQLB6K",
+      "U56U9BX44-UEQ3BRG6P",
+      "U087QFJ94-UEP8YK0AU",
+      "UEJ1ZFX6C-UEJB7CCCV",
+      "U40Q6PY48-UGNQ6FQKF",
+      "UGPKZ0VD5-UH3L8GYFQ",
+      "UBK37TQHF-UCZN924LS",
+      "UEHD3B9B2-UEP8YK0AU",
+      "U087QFJ94-UEHD3B9B2"
+    ]
+  ],
+  "largestId": 6
+}
