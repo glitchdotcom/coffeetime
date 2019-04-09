@@ -20,8 +20,12 @@ module.exports.loadData = function() {
       return { ...dataFormat, ...JSON.parse(data) };
     } catch (error) {
       console.warn("didn't load data file:");
-      console.warn(error);
-      return { ...dataFormat }
+                   console.warn(error);
+      return {
+        ...dataFormat 
+      
+      
+      }
     }
   } else {
     return { ...dataFormat };
