@@ -6,10 +6,12 @@ function createFakeUsers(countUsers) {
 }
 
 test('coffee time should pair everyone', () => {
+  const twoAndAbove = jsc.nat.smap(
+    function (x) { return x + 2; },
+    function (x) { return x - 2; }
+  );
   
-  jsc.assert(jsc.forall(jsc.nat, (countUsers) => {
-    countUsers += 2;
-
+  jsc.assert(jsc.forall(twoAndAbove, (countUsers) => {
     const users = createFakeUsers(countUsers);
     const coffeepairs = coffee.pairUsers(users);
     const pairs = coffeepairs.pairs;
