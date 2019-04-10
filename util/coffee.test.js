@@ -16,15 +16,18 @@ test('coffee time should pair everyone', () => {
   expect(flattened).toEqual(expect.arrayContaining(users));
 });
 
-jsc.property("coffee time should pair everyone", jsc.nat, (countUsers) => {
-  /*
-  const users = createFakeUsers(countUsers);
-  const coffeepairs = coffee.pairUsers(users);
-  const pairs = coffeepairs.pairs;
-  var flattened = pairs.reduce(function(accumulator, currentValue) {
-    return accumulator.concat(currentValue);
-  }, []);
-  return flattened == arrayContaining(users);
-  */
-  return true;
+test('pair everyone in a property-based way', () => {
+  jsc.assert(jsc.forall(jsc.nat, (countUsers) => {
+    const users = createFakeUsers(countUsers);
+    const coffeepairs = coffee.pairUsers(users);
+    const pairs = coffeepairs.pairs;
+    
+    var flattened = pairs.reduce(function(accumulator, currentValue) {
+      return accumulator.concat(currentValue);
+    }, []);
+    for (let i = 0; i < flattened.length; i += 1) {
+      
+    }
+    return deepEqual(flattened, users);
+  }));
 });
