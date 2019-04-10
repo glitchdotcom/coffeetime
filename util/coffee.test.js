@@ -5,29 +5,26 @@ function createFakeUsers(countUsers) {
   return Array.from({ length: countUsers }, (v, i) => i + 1);
 }
 
-
 test('coffee time should pair everyone', () => {
-  const users = createFakeUsers(5);
-  const coffeepairs = coffee.pairUsers(users);
-  const pairs = coffeepairs.pairs;
-  var flattened = pairs.reduce(function(accumulator, currentValue) {
-    return accumulator.concat(currentValue);
-  }, []);
-  expect(flattened).toEqual(expect.arrayContaining(users));
-});
-
-test('pair everyone in a property-based way', () => {
+  
   jsc.assert(jsc.forall(jsc.nat, (countUsers) => {
+    countUsers += 2;
+
     const users = createFakeUsers(countUsers);
     const coffeepairs = coffee.pairUsers(users);
     const pairs = coffeepairs.pairs;
-    
-    var flattened = pairs.reduce(function(accumulator, currentValue) {
-      return accumulator.concat(currentValue);
-    }, []);
-    for (let i = 0; i < flattened.length; i += 1) {
-      
+
+    let people_in_pairs = new Set();
+    for (let i = 0; i < pairs.length; i += 1) {
+      for (let j = 0; j < pairs[i].length; j += 1) {
+        people_in_pairs.add(pairs[i][j]);
+      }
     }
-    return deepEqual(flattened, users);
+    for (let i = 0; i < users.length; i += 1) {
+      if (!people_in_pairs.has(users[i])) {
+        return false;
+      }
+    }
+    return true;
   }));
 });
