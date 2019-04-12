@@ -4,7 +4,7 @@ const jsc = require('jsverify');
 function createFakeUsers(countUsers) {
   return Array.from({ length: countUsers }, (v, i) => i + 1);
 }
-
+`
 test('coffee time should pair everyone', () => {
   const twoAndAbove = jsc.nat.smap(
     function (x) { return x + 2; },
