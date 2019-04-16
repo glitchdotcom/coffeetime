@@ -12,7 +12,7 @@ module.exports.scheduleCoffeeCron = function(bot) {
   // TODO: Move this back to Monday.
   rule.dayOfWeek = 2;  // Tuesday
   rule.hour = 10 + ET_TIMEZONE_OFFSET; // 10am NYC time
-  rule.minute = 0;
+  rule.minute = 16;
   
   schedule.scheduleJob(rule, () => {
     console.log('Running coffee time~~~');
