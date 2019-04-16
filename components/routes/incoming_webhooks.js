@@ -14,7 +14,6 @@ function onSlackRecieve(req, res) {
   
   // Respond to an uninstall event, since AFAICT it's not handled by Botkit.
   if (req.body.event && req.body.event.type === 'app_uninstalled') {
-    
     onAppUninstalled(req.body, req.controller);
     res.end();
     return;
@@ -26,6 +25,8 @@ function onSlackRecieve(req, res) {
 
 function onAppUninstalled(payload, controller) {
   console.log('uninstalling!!!!');
+  // TODO: Figure out what we want to do on unisntall.
+  
   // TODO: Delete this from the team database.
   //controller.storage.teams.delete(payload.team_id);
   
@@ -37,7 +38,6 @@ function onAppUninstalled(payload, controller) {
   // TODO: Delete cron when here
 }
 
-debug('Configured /slack/receive url');
 router.post('/slack/receive', onSlackRecieve);
 
 module.exports = router;
