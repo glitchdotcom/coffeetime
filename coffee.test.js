@@ -1,3 +1,20 @@
+// vrk: This file is OBSOLETE!!!!!!!
+// - Keeping it so that we can use it as inspiration for migrating tests to coffee.test.js
+// - We should delete this file after all tests are ported! 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const fs = require('fs');
 const coffee = require('./coffee');
 var jsc = require('jsverify');

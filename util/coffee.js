@@ -110,8 +110,20 @@ function pairUsers(allUserSlackIds, pastMatches = [], blockedMatches = []) {
 }
 
 function sendMessageToUsers(bot, slackIds, message) {
-  const slackBotToken = process.env.SLACK_BOT_TOKEN;
   bot.api.conversations.open({ users: slackIds.join(',') }, (error, response) => {
+    
+    if (error) {
+      console.log('error for: ' + slackIds.join(','));
+      console.log(error);
+      return;
+    }
+    
+    if (!response || !response.channel) {
+      console.log('no response.channel for: ' + slackIds.join(','));
+      return;
+    }
+    
+    // Send message to the users.
     bot.api.chat.postMessage({
       channel: response.channel.id,
       text: message,

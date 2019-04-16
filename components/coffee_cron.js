@@ -9,7 +9,8 @@ const ET_TIMEZONE_OFFSET = 4;
 module.exports.scheduleCoffeeCron = function(bot) {
   // See usage: https://github.com/node-schedule/node-schedule#usage
   const rule = new schedule.RecurrenceRule();
-  rule.dayOfWeek = 1;  // Monday
+  // TODO: Move this back to Monday.
+  rule.dayOfWeek = 2;  // Tuesday
   rule.hour = 10 + ET_TIMEZONE_OFFSET; // 10am NYC time
   rule.minute = 0;
   

@@ -6,7 +6,7 @@ const storage = require('./../../util/storage.js');
 
 function onSlackRecieve(req, res) {
 
-  // NOTE: we should enforce the token check here
+  // TODO: We should enforce the token check here!!
 
   // respond to Slack that the webhook has been received.
   res.status(200);
