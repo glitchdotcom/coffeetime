@@ -5,7 +5,7 @@ const router = express.Router();
 const coffeeCron = require('./../coffee_cron.js');
 
 function onGetOath(req, res) {
-  console.log('oathhhhhhhhhhhhhh');
+  console.log('oath!');
   const code = req.query.code;
   const state = req.query.state;
   const controller = req.controller;
@@ -121,29 +121,7 @@ function onLogin(req, res) {
   res.redirect(req.controller.getAuthorizeURL());
 };
 
-function help(req, res) {
-  console.log('help has been called');
-  
-  const slackBotToken = process.env.SLACK_BOT_TOKEN;
-  const authedBot = req.controller.spawn({
-    token: slackBotToken
-  });
-
-  authedBot.startPrivateConversation({user: 'UH1HHBF41'},function(err,convo) {
-    if (err) {
-      console.log(err);
-    } else {
-      convo.say('Send a message on cue');
-    }
-  });
-  //console.log(req.controller);
-  res.json('hello');
-}
-
-
 router.get('/oauth', onGetOath);
 router.get('/login', onLogin);
-router.get('/help', help);
-
 
 module.exports = router;
