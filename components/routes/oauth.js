@@ -96,8 +96,6 @@ function onOAuthSuccess(payload, controller) {
       botkitBot.identity.name = bot_auth.user;
       botkitBot.team_info = team;
 
-      // Replace this with your own database!
-
       controller.storage.teams.save(team, function(err, id) {
         if (err) {
             console.log('Error: could not save team record:', err);
