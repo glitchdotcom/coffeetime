@@ -9,4 +9,4 @@ We have it currently installed in the Glitch Slack:
 ## Documentation
 
 Check out the wiki page for information on developing CoffeeTime:
-- [CoffeeTime wiki](https://github.com/FogCreek/coffeetime/wiki)
+- [CoffeeTime wiki](https://github.com/glitchdotcom/coffeetime/wiki)
