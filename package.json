@@ -10,7 +10,7 @@
   "dependencies": {
     "array-shuffle": "^1.0.1",
     "body-parser": "^1.18.3",
-    "botkit": "^0.7.3",
+    "botkit": "^4.15.0",
     "botkit-storage-mongo": "^1.0.7",
     "cookie-parser": "^1.4.4",
     "debug": "^4.1.0",
